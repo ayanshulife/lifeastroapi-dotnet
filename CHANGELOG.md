@@ -25,7 +25,9 @@ First release of the official .NET SDK.
   `lat` / `lon` for a chart, `birth.*` for the natal chart of transit-style methods, `boy.*` / `girl.*` for
   kundli matching, `personA.*` / `personB.*` for Western pairs. Moment methods send today's date in the
   given `tz` when `Date` is left out (IANA ids and UTC offsets; on .NET Framework the common IANA ids are
-  mapped to Windows zones).
+  mapped to Windows zones). Old and current names of a zone both work (`Asia/Calcutta` and `Asia/Kolkata`,
+  `Asia/Katmandu` and `Asia/Kathmandu`, ...), also on Linux systems that ship only one of them, such as
+  Ubuntu 24.04 and slim container images.
 - `LifeAstroDate` / `LifeAstroTime`: every date and time parameter takes a string, `DateTime`,
   `DateTimeOffset`, `TimeSpan` and, on .NET 8+, `DateOnly` / `TimeOnly`. All values are formatted with the
   invariant culture (numbers as JavaScript writes them, dates in the Gregorian calendar), whatever the
