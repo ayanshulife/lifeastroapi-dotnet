@@ -1,0 +1,56 @@
+# Publishes both packages to nuget.org when a version tag (v0.1.0, v0.2.0, ...) is pushed, with nuget.org
+# Trusted Publishing: no API key is stored anywhere. NuGet/login exchanges this job's GitHub OIDC token for
+# an API key that is valid for one hour. The nuget.org policy (account lifeastroapi -> Trusted Publishing)
+# names this repository and this file, publish.yml.
+name: Publish to nuget.org
+
+on:
+  push:
+    tags: ['v*']
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # GitHub OIDC token for nuget.org Trusted Publishing
+    env:
+      DOTNET_CLI_TELEMETRY_OPTOUT: 1
+      DOTNET_NOLOGO: 1
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+
+      - name: Tag matches the package version
+        run: |
+          version=$(sed -n 's:.*<Version>\(.*\)</Version>.*:\1:p' Directory.Build.props | head -1)
+          if [ "v$version" != "$GITHUB_REF_NAME" ]; then
+            echo "Tag $GITHUB_REF_NAME does not match <Version>$version</Version> in Directory.Build.props"
+            exit 1
+          fi
+          echo "VERSION=$version" >> "$GITHUB_ENV"
+
+      - run: dotnet build LifeAstroApi.sln -c Release -p:ContinuousIntegrationBuild=true
+      - run: dotnet test LifeAstroApi.sln -c Release --no-build
+      - run: dotnet pack LifeAstroApi.sln -c Release --no-build -o artifacts -p:ContinuousIntegrationBuild=true
+      - run: ls -l artifacts
+
+      - name: NuGet login (OIDC -> short-lived API key)
+        uses: NuGet/login@v1
+        id: login
+        with:
+          user: lifeastroapi # nuget.org profile name that owns the packages
+
+      # Core first: the DI package depends on it. The .snupkg next to each .nupkg goes up with it.
+      - name: Push LifeAstroApi
+        run: >
+          dotnet nuget push "artifacts/LifeAstroApi.$VERSION.nupkg"
+          --api-key "${{ steps.login.outputs.NUGET_API_KEY }}"
+          --source https://api.nuget.org/v3/index.json --skip-duplicate
+      - name: Push LifeAstroApi.Extensions.DependencyInjection
+        run: >
+          dotnet nuget push "artifacts/LifeAstroApi.Extensions.DependencyInjection.$VERSION.nupkg"
+          --api-key "${{ steps.login.outputs.NUGET_API_KEY }}"
+          --source https://api.nuget.org/v3/index.json --skip-duplicate

@@ -10,7 +10,38 @@ The repository owner publishes. Two packages go up together:
 Each comes with a symbol package (`.snupkg`) for debugging, and SourceLink points the debugger at the
 GitHub sources of the commit it was built from.
 
-## One-time setup
+## Recommended: Trusted Publishing (GitHub Actions, no API key)
+
+`.github/workflows/publish.yml` builds, tests, packs and pushes both packages when a tag `v<version>` is
+pushed. nuget.org Trusted Publishing gives the workflow a one-hour API key through GitHub's OIDC token, so
+no key is stored on a laptop or in GitHub secrets.
+
+**One-time:** nuget.org → your name → *Trusted Publishing* → *Create*:
+
+| Field | Value |
+|-------|-------|
+| Policy Name | `lifeastroapi-dotnet` (any name) |
+| Package Owner | `lifeastroapi` |
+| CI/CD Provider | GitHub Actions |
+| Repository Owner | `ayanshulife` |
+| Repository | `lifeastroapi-dotnet` |
+| Workflow File | `publish.yml` (file name only, not the path) |
+| Environment | leave empty |
+| Scopes | **Push** → *Push new packages and package versions* |
+| Glob Patterns and Packages | `LifeAstroApi*` |
+
+A new policy can start "temporarily active" for 7 days (nuget.org does this mostly for private repositories);
+the first successful publish makes it permanent. If the window passes unused, restart it on the same page.
+
+**Each release:** set the version (step 1 below), update the CHANGELOG, commit and push with GitHub Desktop,
+then create the tag: on github.com → *Releases* → *Draft a new release* → *Choose a tag* → type `v0.1.0` →
+*Create new tag on publish*, target `main`, paste the CHANGELOG entry, *Publish release*. The workflow
+(*Actions* tab → *Publish to nuget.org*) refuses a tag that does not match `<Version>` in
+`Directory.Build.props`. Then wait for validation and check (steps 7 and 8 below).
+
+The manual route below (an API key on your machine) still works, for example if GitHub Actions is down.
+
+## One-time setup (manual route)
 
 1. **nuget.org account.** Go to https://www.nuget.org, click *Sign in* and use a Microsoft account (a
    personal Outlook/Hotmail account or a work account). Choose the user name shown as the package owner
