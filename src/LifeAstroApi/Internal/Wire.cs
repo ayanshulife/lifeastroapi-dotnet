@@ -196,6 +196,44 @@ namespace LifeAstroApi
             ["UTC"] = "UTC",
         };
 
+        /// <summary>
+        /// Old and current names of the same IANA zone, both ways. Some systems have only one of them:
+        /// Ubuntu 24.04 and slim container images ship the old names (<c>Asia/Calcutta</c>) only in the
+        /// optional tzdata-legacy package, and ICU turns the Windows id back into the old name.
+        /// </summary>
+        private static readonly Dictionary<string, string> IanaAliases = BuildAliases(
+            "Asia/Calcutta", "Asia/Kolkata",
+            "Asia/Katmandu", "Asia/Kathmandu",
+            "Asia/Dacca", "Asia/Dhaka",
+            "Asia/Thimbu", "Asia/Thimphu",
+            "Asia/Rangoon", "Asia/Yangon",
+            "Asia/Saigon", "Asia/Ho_Chi_Minh",
+            "Asia/Ujung_Pandang", "Asia/Makassar",
+            "Europe/Kiev", "Europe/Kyiv",
+            "America/Buenos_Aires", "America/Argentina/Buenos_Aires",
+            "America/Indianapolis", "America/Indiana/Indianapolis",
+            "Pacific/Truk", "Pacific/Chuuk",
+            "US/Eastern", "America/New_York",
+            "US/Central", "America/Chicago",
+            "US/Mountain", "America/Denver",
+            "US/Pacific", "America/Los_Angeles",
+            "GB", "Europe/London");
+
+        private static Dictionary<string, string> BuildAliases(params string[] pairs)
+        {
+            var map = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            for (int i = 0; i < pairs.Length; i += 2)
+            {
+                map[pairs[i]] = pairs[i + 1];
+                if (!map.ContainsKey(pairs[i + 1]))
+                {
+                    map[pairs[i + 1]] = pairs[i];
+                }
+            }
+
+            return map;
+        }
+
         /// <summary>The UTC offset of <paramref name="tz"/> at <paramref name="now"/>, or null when it is unknown.</summary>
         internal static TimeSpan? OffsetAt(string? tz, DateTimeOffset now)
         {
@@ -236,6 +274,29 @@ namespace LifeAstroApi
 
         internal static TimeZoneInfo? Find(string id)
         {
+            TimeZoneInfo? zone = TryFind(id);
+            if (zone != null)
+            {
+                return zone;
+            }
+
+            // The other name of the same zone (Asia/Calcutta <-> Asia/Kolkata), then the Windows id.
+            if (IanaAliases.TryGetValue(id, out string? alias) && (zone = TryFind(alias)) != null)
+            {
+                return zone;
+            }
+
+            if (IanaToWindows.TryGetValue(id, out string? windowsId)
+                || (alias != null && IanaToWindows.TryGetValue(alias, out windowsId)))
+            {
+                return TryFind(windowsId);
+            }
+
+            return null;
+        }
+
+        private static TimeZoneInfo? TryFind(string id)
+        {
             try
             {
                 return TimeZoneInfo.FindSystemTimeZoneById(id);
@@ -248,23 +309,6 @@ namespace LifeAstroApi
             }
             catch (System.Security.SecurityException)
             {
-            }
-
-            if (IanaToWindows.TryGetValue(id, out string? windowsId))
-            {
-                try
-                {
-                    return TimeZoneInfo.FindSystemTimeZoneById(windowsId);
-                }
-                catch (TimeZoneNotFoundException)
-                {
-                }
-                catch (InvalidTimeZoneException)
-                {
-                }
-                catch (System.Security.SecurityException)
-                {
-                }
             }
 
             return null;

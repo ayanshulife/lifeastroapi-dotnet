@@ -149,6 +149,9 @@ namespace LifeAstroApi.Tests
             Assert.Equal(TimeSpan.FromHours(5.5), TimeZones.OffsetAt("Asia/Kolkata", DateTimeOffset.UtcNow));
             Assert.Equal(TimeSpan.FromHours(5.75), TimeZones.OffsetAt("Asia/Kathmandu", DateTimeOffset.UtcNow));
             Assert.Null(TimeZones.OffsetAt("", DateTimeOffset.UtcNow));
+            Assert.Equal(TimeSpan.FromHours(5.75), TimeZones.OffsetAt("Asia/Katmandu", DateTimeOffset.UtcNow));
+            Assert.Equal(TimeSpan.FromHours(6.5), TimeZones.OffsetAt("Asia/Rangoon", DateTimeOffset.UtcNow));
+            Assert.Null(TimeZones.Find("Not/AZone"));
         }
 
         [Fact]
