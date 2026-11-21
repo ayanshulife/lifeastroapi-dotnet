@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>LifeAstroApi</RootNamespace>
+    <AssemblyName>LifeAstroApi</AssemblyName>
+    <PackageId>LifeAstroApi</PackageId>
+    <Title>LifeAstroAPI .NET SDK</Title>
+    <Description>Official .NET client for LifeAstroAPI (https://lifeastroapi.com), the Vedic astrology and Hindu calendar REST API: panchang, festivals, kundli, dasha, kundli matching, muhurat, transits, horoscopes, numerology, Lal Kitab, remedies, readings and JSON reports in English and 9 Indian languages, plus Western astrology and tarot. 323 async methods, typed errors, retries, credit and rate-limit info. For .NET 8+, ASP.NET Core and .NET Framework 4.6.2+.</Description>
+  </PropertyGroup>
+
+  <!-- System.Text.Json is part of .NET 8; netstandard2.0 (.NET Framework, older runtimes) gets the package. -->
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="System.Text.Json" Version="8.0.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="LifeAstroApi.Tests" />
+    <InternalsVisibleTo Include="LifeAstroApi.NetStandard.Tests" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)../../README.md" Pack="true" PackagePath="\" Visible="false" />
+  </ItemGroup>
+
+</Project>

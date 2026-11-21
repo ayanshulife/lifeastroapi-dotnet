@@ -1,0 +1,22 @@
+# Build output
+bin/
+obj/
+artifacts/
+*.nupkg
+*.snupkg
+TestResults/
+*.trx
+*.log
+
+# IDEs
+.vs/
+.idea/
+*.user
+*.suo
+.vscode/
+
+# macOS
+.DS_Store
+
+# Live sweep dumps
+sweep-dump/

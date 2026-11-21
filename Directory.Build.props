@@ -1,0 +1,29 @@
+<Project>
+  <!-- Shared by every project in the repository. Packable libraries add more in src/Directory.Build.props. -->
+  <PropertyGroup>
+    <Version>0.1.0</Version>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <Deterministic>true</Deterministic>
+    <IsPackable>false</IsPackable>
+
+    <Authors>Ayanshu Life</Authors>
+    <Company>Ayanshu Life</Company>
+    <Copyright>Copyright (c) 2026 Ayanshu Life</Copyright>
+    <Product>LifeAstroAPI .NET SDK</Product>
+    <NeutralLanguage>en</NeutralLanguage>
+
+    <PackageProjectUrl>https://lifeastroapi.com</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/ayanshulife/lifeastroapi-dotnet</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageTags>astrology;vedic-astrology;jyotish;panchang;kundli;horoscope;kundli-matching;muhurat;numerology;hindu-calendar;festivals;lal-kitab;western-astrology;tarot;astrology-api;lifeastroapi;sdk</PackageTags>
+  </PropertyGroup>
+
+  <!-- Reproducible package builds on CI servers (GitHub Actions, Azure DevOps or CI=true). -->
+  <PropertyGroup Condition="'$(CI)' == 'true' or '$(GITHUB_ACTIONS)' == 'true' or '$(TF_BUILD)' == 'true'">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+  </PropertyGroup>
+</Project>

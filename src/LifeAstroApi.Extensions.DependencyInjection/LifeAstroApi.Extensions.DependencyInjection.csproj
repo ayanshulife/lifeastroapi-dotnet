@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>LifeAstroApi.Extensions.DependencyInjection</RootNamespace>
+    <AssemblyName>LifeAstroApi.Extensions.DependencyInjection</AssemblyName>
+    <PackageId>LifeAstroApi.Extensions.DependencyInjection</PackageId>
+    <Title>LifeAstroAPI for ASP.NET Core dependency injection</Title>
+    <Description>Registers the LifeAstroAPI .NET client (package LifeAstroApi) in Microsoft.Extensions.DependencyInjection: services.AddLifeAstro(configuration.GetSection("LifeAstroApi")) binds the options from appsettings.json, sends requests through IHttpClientFactory and registers one shared, thread-safe LifeAstroClient. For ASP.NET Core, worker services and any generic host.</Description>
+    <PackageTags>$(PackageTags);aspnetcore;dependency-injection;httpclientfactory</PackageTags>
+  </PropertyGroup>
+
+  <!--
+    Microsoft.Extensions.* 8.0.0: the lowest version line that ships both netstandard2.0 and net8.0
+    assets. Apps on .NET 8, 9 or 10 already have these (or newer) versions, so NuGet resolves to the
+    app's own and nothing is upgraded; .NET Framework apps get the 8.0 packages.
+  -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../LifeAstroApi/LifeAstroApi.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+</Project>

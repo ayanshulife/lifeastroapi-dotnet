@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>LifeAstroApi.Examples.AspNetCore</RootNamespace>
+    <WarnOnPackingNonPackableProject>false</WarnOnPackingNonPackableProject>
+  </PropertyGroup>
+
+  <!-- In your own project: <PackageReference Include="LifeAstroApi.Extensions.DependencyInjection" Version="0.1.0" /> -->
+  <ItemGroup>
+    <ProjectReference Include="../../src/LifeAstroApi.Extensions.DependencyInjection/LifeAstroApi.Extensions.DependencyInjection.csproj" />
+  </ItemGroup>
+
+</Project>

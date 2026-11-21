@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    The tests of LifeAstroApi.Tests, run against the netstandard2.0 build of the library (the one
+    .NET Framework applications get): its code paths for HttpClientHandler, header reading, number
+    formatting and time zones differ from the net8.0 build. Tests of .NET 8-only APIs (DateOnly,
+    TimeOnly) are left out with LIFEASTRO_NETSTANDARD.
+  -->
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <IsTestProject>true</IsTestProject>
+    <RootNamespace>LifeAstroApi.Tests</RootNamespace>
+    <DefineConstants>$(DefineConstants);LIFEASTRO_NETSTANDARD</DefineConstants>
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageReference Include="xunit" Version="2.9.3" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="3.1.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../src/LifeAstroApi/LifeAstroApi.csproj" SetTargetFramework="TargetFramework=netstandard2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="../LifeAstroApi.Tests/*.cs" Link="%(Filename)%(Extension)" />
+    <Compile Include="../Shared/*.cs" Link="Shared/%(Filename)%(Extension)" />
+    <None Include="../LifeAstroApi.Tests/Resources/*.json" Link="Resources/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+</Project>
