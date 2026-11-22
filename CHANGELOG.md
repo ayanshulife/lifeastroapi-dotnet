@@ -1,5 +1,52 @@
 # Changelog
 
+## 0.2.0 (2026-11-22)
+
+New: the SDK makes branded PDF reports, on your own machine. Upgrading from 0.1.0 needs no code change: nothing
+was removed or renamed, and there is no new dependency. Add `using LifeAstroApi.Pdf;` and pass a report to it:
+
+```csharp
+byte[] pdf = await PdfReports.KundliLitePdfAsync(report, new PdfBranding { CompanyName = "Acme Astro" });
+```
+
+What you get:
+
+- A PDF for each of the twelve report endpoints, in all ten languages (Punjabi included), with your company
+  name, logo, colours, footer text and watermark. Pass what `client.Reports` returned, or a report you saved as
+  a JSON string.
+- Your colours reach through the Brihad kundli: headings, banners, tables, charts, contents page numbers, running
+  header and footer. Without a brand colour it is saffron. A colour too pale to read prints in a darker shade.
+- A watermark prints faintly on every page (in the Brihad kundli behind the content), sized to fit, and adds
+  no page. It stays whole when you print without backgrounds.
+- `PdfOptions` win over a report's own print CSS: margins side by side, paper format, landscape, printing
+  without backgrounds, and a header or footer of your own in place of the report's. `Timeout` and
+  `PrintTimeout` give a long Brihad more time.
+- The Brihad kundli prints at full size, and a section of a few lines shares its page with the next one.
+- The Brihad kundli has a running header and footer with your branding, a table of contents with the real page
+  numbers followed by Part 1 on a new page, and bookmarks that read correctly in every script. The PDF keeps
+  its title.
+- North Indian charts keep every planet inside its cell, also when many share one, in every script.
+- A field that should be a list and is not never stops a PDF: a lone value prints, or that block is left out.
+- A null inside a list never stops a PDF either: that item prints empty or is left out, and your JSON is not edited.
+- The output does not depend on the server's culture or time zone: a timestamp without a zone is read as UTC.
+- Numerology prints the person's name, with each label above its value. Varshaphal prints the solar return in
+  the local time of the birth when the report carries it, otherwise in UTC.
+- The HTML alone, if you prefer: `PdfReports.Render*Html(...)` needs no browser and no network, so it also works
+  in desktop and mobile apps that print with a web view (`PdfReports.A4PrintOptions` has the page size). It is
+  the same HTML as the Node.js SDK 0.14.0 makes.
+
+What you need to print:
+
+- Chrome, Chromium or Microsoft Edge on the machine (Windows 10 and 11 come with Edge). The SDK finds it, or
+  set `LIFEASTRO_CHROME`. Keep one `ChromePdfEngine` for many PDFs: it is safe to share between requests,
+  takes a `CancellationToken`, has timeouts, and cleans up the browser and its temporary profile.
+- Or a Gotenberg service you run (`GotenbergPdfEngine`), or any converter of your own (`IPdfEngine`).
+- Fonts for the Indian scripts on that machine (`fonts-noto-core` on Debian and Ubuntu).
+
+Nothing is sent to LifeAstroAPI to make a PDF, and making one costs no credits. A failed print throws
+`LifeAstroPdfException`, which is a `LifeAstroException`. The README has an ASP.NET Core download endpoint,
+WebView2, .NET Framework and Docker; `examples/PdfReport` is a runnable example.
+
 ## 0.1.0 (2026-11-21)
 
 First release of the official .NET SDK.
@@ -53,4 +100,3 @@ First release of the official .NET SDK.
   with `TryAdd` semantics. Uses `Microsoft.Extensions.*` 8.0.0.
 - SourceLink and a symbol package (`.snupkg`) for both packages.
 - README: console, ASP.NET Core (minimal API and controller), Entity Framework Core and .NET Framework usage.
-  Not in this version: the PDF rendering of the Node.js SDK (the JSON report endpoints are included).

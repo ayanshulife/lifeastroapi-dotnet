@@ -25,4 +25,6 @@ jobs:
         with:
           global-json-file: global.json
       - run: dotnet build LifeAstroApi.sln -c Release
+      # The PDF tests print with the runner's Chrome or Edge. Ubuntu 24.04 does not let Chrome build its sandbox,
+      # so on Linux CI the tests (never the library) opt in to --no-sandbox. The 432-report parity test skips here.
       - run: dotnet test LifeAstroApi.sln -c Release --no-build

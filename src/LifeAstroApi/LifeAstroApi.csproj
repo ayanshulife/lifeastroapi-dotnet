@@ -5,7 +5,7 @@
     <AssemblyName>LifeAstroApi</AssemblyName>
     <PackageId>LifeAstroApi</PackageId>
     <Title>LifeAstroAPI .NET SDK</Title>
-    <Description>Official .NET client for LifeAstroAPI (https://lifeastroapi.com), the Vedic astrology and Hindu calendar REST API: panchang, festivals, kundli, dasha, kundli matching, muhurat, transits, horoscopes, numerology, Lal Kitab, remedies, readings and JSON reports in English and 9 Indian languages, plus Western astrology and tarot. 323 async methods, typed errors, retries, credit and rate-limit info. For .NET 8+, ASP.NET Core and .NET Framework 4.6.2+.</Description>
+    <Description>Official .NET client for LifeAstroAPI (https://lifeastroapi.com), the Vedic astrology and Hindu calendar REST API: panchang, festivals, kundli, dasha, kundli matching, muhurat, transits, horoscopes, numerology, Lal Kitab, remedies, readings and reports in English and 9 Indian languages, plus Western astrology and tarot. Branded PDF reports rendered on your side (Chrome, Edge, Chromium or Gotenberg). 323 async methods, typed errors, retries, credit and rate-limit info. For .NET 8+, ASP.NET Core and .NET Framework 4.6.2+.</Description>
   </PropertyGroup>
 
   <!-- System.Text.Json is part of .NET 8; netstandard2.0 (.NET Framework, older runtimes) gets the package. -->

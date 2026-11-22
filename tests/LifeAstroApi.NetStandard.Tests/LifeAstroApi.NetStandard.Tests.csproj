@@ -26,8 +26,10 @@
 
   <ItemGroup>
     <Compile Include="../LifeAstroApi.Tests/*.cs" Link="%(Filename)%(Extension)" />
+    <Compile Include="../LifeAstroApi.Tests/Pdf/*.cs" Link="Pdf/%(Filename)%(Extension)" />
     <Compile Include="../Shared/*.cs" Link="Shared/%(Filename)%(Extension)" />
     <None Include="../LifeAstroApi.Tests/Resources/*.json" Link="Resources/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../LifeAstroApi.Tests/Resources/Pdf/**" Link="Resources/Pdf/%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>

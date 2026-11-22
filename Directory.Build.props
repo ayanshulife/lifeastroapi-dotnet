@@ -1,7 +1,7 @@
 <Project>
   <!-- Shared by every project in the repository. Packable libraries add more in src/Directory.Build.props. -->
   <PropertyGroup>
-    <Version>0.1.0</Version>
+    <Version>0.2.0</Version>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
     <ImplicitUsings>disable</ImplicitUsings>
@@ -19,7 +19,7 @@
     <RepositoryUrl>https://github.com/ayanshulife/lifeastroapi-dotnet</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageTags>astrology;vedic-astrology;jyotish;panchang;kundli;horoscope;kundli-matching;muhurat;numerology;hindu-calendar;festivals;lal-kitab;western-astrology;tarot;astrology-api;lifeastroapi;sdk</PackageTags>
+    <PackageTags>astrology;vedic-astrology;jyotish;panchang;kundli;horoscope;kundli-matching;muhurat;numerology;hindu-calendar;festivals;lal-kitab;western-astrology;tarot;pdf;kundli-pdf;white-label;astrology-api;lifeastroapi;sdk</PackageTags>
   </PropertyGroup>
 
   <!-- Reproducible package builds on CI servers (GitHub Actions, Azure DevOps or CI=true). -->

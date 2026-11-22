@@ -3,7 +3,7 @@
 Official **C# / .NET SDK** for [LifeAstroAPI](https://lifeastroapi.com), a REST
 [astrology API](https://lifeastroapi.com/apis/) for Vedic astrology and the Hindu calendar: panchang,
 festivals, kundli, dasha, kundli matching, muhurat, transits, horoscopes, numerology, Lal Kitab, remedies,
-readings, JSON reports, plus Western astrology and tarot. Location-aware, in 10 languages, pay per call.
+readings, reports with branded PDFs, plus Western astrology and tarot. Location-aware, in 10 languages, pay per call.
 Free tier: 1,500 credits a month, no card, [get a key](https://lifeastroapi.com/signup/).
 
 - **All 322 endpoints** as 323 async methods in 23 resource groups (`Chart.NavamsaAsync` is a shortcut for
@@ -12,6 +12,8 @@ Free tier: 1,500 credits a month, no card, [get a key](https://lifeastroapi.com/
   `netstandard2.0`). One dependency: `System.Text.Json`, which .NET 8 already has.
 - **Dependency injection package** for ASP.NET Core: `services.AddLifeAstro(...)` from `appsettings.json`,
   requests through `IHttpClientFactory`.
+- **Branded PDF reports, made on your side**: one call per report, in all 10 languages, with Chrome, Chromium,
+  Microsoft Edge or Gotenberg, or just the HTML for a web view. See [PDF reports](#pdf-reports).
 - A parameter class per method: required values in the constructor, optional ones as properties.
 - Answers as `System.Text.Json.JsonElement`, or mapped to your own classes.
 - Typed exceptions, automatic retries (408, 425, 429, 5xx, network) that honour `Retry-After`, a timeout
@@ -29,7 +31,7 @@ dotnet add package LifeAstroApi
 ```
 
 ```xml
-<PackageReference Include="LifeAstroApi" Version="0.1.0" />
+<PackageReference Include="LifeAstroApi" Version="0.2.0" />
 ```
 
 In an ASP.NET Core application, add the dependency injection package instead (it brings `LifeAstroApi`
@@ -40,7 +42,7 @@ dotnet add package LifeAstroApi.Extensions.DependencyInjection
 ```
 
 ```xml
-<PackageReference Include="LifeAstroApi.Extensions.DependencyInjection" Version="0.1.0" />
+<PackageReference Include="LifeAstroApi.Extensions.DependencyInjection" Version="0.2.0" />
 ```
 
 ## Quick start
@@ -235,7 +237,7 @@ JsonElement day = await client.Panchang.BasicAsync(new PanchangBasicParams(new P
 | `Lalkitab` | Lal Kitab chart and dasha |
 | `Remedies` | by rule id, `ForGrahaAsync`, mantra, pooja, vrat, daan, rudraksha, yantra, Lal Kitab |
 | `Narrative` | authored readings: lagna, planets, yogas, doshas, dasha phal, transit phal, prashna, outlooks, personalised horoscopes |
-| `Reports` | JSON reports: kundli (lite, detailed, brihad), match making, mangal dosha, sade sati, varshaphal, numerology, dasha analysis, horoscopes |
+| `Reports` | reports as JSON, for [branded PDFs](#pdf-reports) or your own pages: kundli (lite, detailed, brihad), match making, mangal dosha, sade sati, varshaphal, numerology, dasha analysis, horoscopes |
 | `Geo` | place search, reverse geocoding, time zone |
 | `Tarot` | cards, a card, daily card, spreads, yes/no |
 | `Meta` | free catalogs: endpoints with their credit cost, ayanamsas, yogas, doshas, locales, version |
@@ -331,6 +333,7 @@ catch (LifeAstroException e)
 | `RateLimitException` | 429: rate limit or daily quota; `RetryAfter` |
 | `ServerException` | 5xx |
 | `LifeAstroConnectionException` | no HTTP response: DNS, refused or reset connection, TLS (code `connection_error`, `Status` 0) |
+| `LifeAstroPdfException` | a PDF could not be printed (namespace `LifeAstroApi.Pdf`), see [PDF reports](#options-and-errors) |
 | `LifeAstroTimeoutException` | the call took longer than the timeout (code `timeout`); it extends `LifeAstroConnectionException`, so catch it first |
 
 All extend `LifeAstroException` (in the `LifeAstroApi` namespace; `Body` holds the parsed error body). 408,
@@ -538,7 +541,8 @@ public async Task<SavedReport> SaveKundliReportAsync(int customerId, Lang lang, 
 }
 ```
 
-Read it back with `JsonDocument.Parse(saved.Json)` or `JsonSerializer.Deserialize<MyReport>(saved.Json, LifeAstroJson.DefaultOptions)`.
+Read it back with `JsonDocument.Parse(saved.Json)` or `JsonSerializer.Deserialize<MyReport>(saved.Json, LifeAstroJson.DefaultOptions)`,
+or print it again with `PdfReports.KundliLitePdfAsync(saved.Json)`.
 
 ## .NET Framework
 
@@ -582,8 +586,299 @@ are left out. Formatting is culture-invariant.
 
 ## PDF reports
 
-The JSON report endpoints (`client.Reports`) are in this version. Branded PDF rendering of those reports,
-as the Node.js SDK does it (`lifeastroapi/pdf`), is planned for a later version.
+Turn the JSON of any `client.Reports` method into a branded, print-ready PDF (kundli lite, detailed and
+Brihad, match making, mangal dosha, sade sati, varshaphal, numerology, dasha analysis, horoscopes) in any
+of the 10 languages. It is in the `LifeAstroApi` package, namespace `LifeAstroApi.Pdf`, and adds no
+dependency. Pass what the client returned: there is nothing to convert.
+
+**Where the PDF is made.** On your side, by this package. LifeAstroAPI returns the report as JSON (that
+call costs the report's credits); turning it into HTML and PDF costs nothing and sends nothing to
+LifeAstroAPI.
+
+```csharp
+using LifeAstroApi.Pdf;
+
+JsonElement report = await client.Reports.KundliDetailedAsync(
+    new ReportsKundliDetailedParams(arjun) { Name = "Arjun Mehta", Place = "Mumbai", Lang = Lang.Hi });
+
+byte[] pdf = await PdfReports.KundliDetailedPdfAsync(report, new PdfBranding { CompanyName = "Acme Astro" });
+File.WriteAllBytes("kundli.pdf", pdf);
+```
+
+### Two layers
+
+| Layer | Methods | Needs |
+|-------|---------|-------|
+| **HTML** | `PdfReports.Render*Html(report, branding)` | Nothing: no browser, process, file or network. A complete, self-contained document, the same bytes as the Node.js SDK 0.14.0. |
+| **PDF** | `PdfReports.*PdfAsync(report, branding, options, engine, cancellationToken)`, `PdfReports.HtmlToPdfAsync(html)` for your own HTML | A PDF engine: Chrome, Chromium or Microsoft Edge on the machine, or a Gotenberg service. |
+
+`report` is the `JsonElement` from the client or the report as a JSON string (for example one you saved).
+
+| Report (`client.Reports`) | HTML | PDF |
+|--------|------|-----|
+| `KundliLiteAsync` | `RenderKundliLiteHtml` | `KundliLitePdfAsync` |
+| `KundliDetailedAsync` | `RenderKundliDetailedHtml` | `KundliDetailedPdfAsync` |
+| `KundliBrihadAsync` | `RenderKundliBrihadHtml` | `KundliBrihadPdfAsync` (table of contents, running header, bookmarks) |
+| `MatchMakingAsync` | `RenderMatchMakingHtml` | `MatchMakingPdfAsync` |
+| `MangalDoshaAsync` | `RenderMangalDoshaHtml` | `MangalDoshaPdfAsync` |
+| `SadeSatiAsync` | `RenderSadeSatiHtml` | `SadeSatiPdfAsync` |
+| `VarshaphalAsync` | `RenderVarshaphalHtml` | `VarshaphalPdfAsync` |
+| `NumerologyAsync` | `RenderNumerologyHtml` | `NumerologyPdfAsync` |
+| `DashaAnalysisAsync` | `RenderDashaAnalysisHtml` | `DashaAnalysisPdfAsync` |
+| `HoroscopeDailyAsync`, `HoroscopeWeeklyAsync`, `HoroscopeMonthlyAsync` | `RenderHoroscopeHtml` | `HoroscopePdfAsync` |
+
+The report's language is the `Lang` you requested it in; the PDF needs nothing extra for it.
+
+### Branding
+
+Every field is optional; what you set wins over the branding inside the report JSON.
+
+```csharp
+var branding = new PdfBranding
+{
+    CompanyName = "Acme Astro",
+    LogoUrl = "https://acme.example/logo.png",   // or a data:image/... URI
+    PrimaryColor = "#6b21a8",                    // headings, table headers: hex, name, rgb() or hsl()
+    SecondaryColor = "#9333ea",                  // secondary text, footer
+    FooterText = "Acme Astro · www.acme.example",
+    WatermarkText = "SAMPLE",
+};
+```
+
+- A field that is null or only white space is not set. Company name and footer text print as you write them.
+- A colour too pale to read on paper prints in a darker shade of it.
+- The watermark is faint, on every page (in the Brihad kundli behind the content), and sized so that it is
+  not cut at the edge.
+- The Brihad kundli is saffron until it gets a brand colour. Then its headings, banners, tables, charts,
+  contents page numbers and running header and footer follow the brand. The API's default colours in the
+  report are no brand. The company name and footer text are in its running header and footer.
+
+### Choose a PDF engine
+
+**1. Chrome, Chromium or Microsoft Edge (default).** With no engine given, each `*PdfAsync` call starts a
+headless browser and closes it afterwards. The browser is looked up in this order:
+
+1. `new ChromePdfEngineOptions { ExecutablePath = ... }`;
+2. the environment variables `LIFEASTRO_CHROME`, `CHROME_PATH`, `PUPPETEER_EXECUTABLE_PATH`;
+3. the usual install locations: Chrome, Chromium, then Edge. Windows 10 and 11 come with Edge.
+
+Starting a browser takes a moment, so for more than one PDF create **one** engine and pass it to every call.
+It is thread-safe, prints up to `MaxConcurrency` (4) documents at a time, and starts the browser again if it
+has gone away:
+
+```csharp
+using (var engine = new ChromePdfEngine())
+{
+    byte[] lite = await PdfReports.KundliLitePdfAsync(liteReport, branding, engine: engine);
+    byte[] match = await PdfReports.MatchMakingPdfAsync(matchReport, branding, engine: engine);
+}
+```
+
+Each engine has a temporary browser profile of its own, deleted when the engine is disposed. The browser is
+started with `--no-sandbox` only when your process runs as root, or when you set
+`ChromePdfEngineOptions.NoSandbox = true`. Do that only for HTML you trust.
+`WebSocketDebuggerUrl` uses a browser that already runs, for example in a container of its own: the engine
+prints in a browser context of its own there, whose tabs close with the connection.
+
+**2. Gotenberg (no browser next to your app).** Where you cannot run a browser, run
+[Gotenberg](https://gotenberg.dev) somewhere you control. The report's HTML, with your customer's birth
+details, goes to that service.
+
+```bash
+docker run --rm -p 3000:3000 gotenberg/gotenberg:8
+```
+
+```csharp
+using var engine = new GotenbergPdfEngine("http://localhost:3000");   // optional: headers, your HttpClient
+byte[] pdf = await PdfReports.MatchMakingPdfAsync(matchReport, engine: engine);
+```
+
+Any other converter works through the one-method `IPdfEngine` interface.
+
+### ASP.NET Core: an endpoint that returns a PDF
+
+```csharp
+using LifeAstroApi;
+using LifeAstroApi.Params;
+using LifeAstroApi.Pdf;
+
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddLifeAstro(builder.Configuration.GetSection("LifeAstroApi"));
+builder.Services.AddSingleton<IPdfEngine>(_ => new ChromePdfEngine());   // disposed with the application
+
+var app = builder.Build();
+
+app.MapPost("/kundli/pdf", async (BirthRequest r, LifeAstroClient astro, IPdfEngine engine, CancellationToken ct) =>
+{
+    var birth = new BirthInput(r.Date, r.Time, r.Tz, r.Lat, r.Lon);
+    var report = await astro.Reports.KundliLiteAsync(
+        new ReportsKundliLiteParams(birth) { Lang = Lang.Hi }, cancellationToken: ct);
+    byte[] pdf = await PdfReports.KundliLitePdfAsync(
+        report, new PdfBranding { CompanyName = "Acme Astro" }, engine: engine, cancellationToken: ct);
+    return Results.File(pdf, "application/pdf", "kundli.pdf");
+});
+
+app.Run();
+
+public sealed record BirthRequest(string Date, string Time, string Tz, double Lat, double Lon);
+```
+
+A Brihad kundli runs to a few hundred pages and is printed twice (the second time with the page of every
+section in its table of contents): make it in a background job (`BackgroundService`, Hangfire, a queue
+worker), not while a request waits.
+
+### Desktop and mobile apps
+
+Your backend calls the API, so the key stays on it. It can send the app the finished PDF, the HTML, or the
+report JSON: `Render*Html` is pure .NET and runs inside the app too. The app prints the HTML with the
+platform's web view. For a print API that ignores the CSS `@page` rule, `PdfReports.A4PrintOptions` has the
+page size and margins, in points and in inches.
+
+WPF and WinForms with WebView2 (package `Microsoft.Web.WebView2` in your app):
+
+```csharp
+// webView.CoreWebView2, after: await webView.EnsureCoreWebView2Async();
+static async Task<bool> SavePdfAsync(CoreWebView2 web, string reportJson, string pdfPath)
+{
+    string html = PdfReports.RenderKundliLiteHtml(reportJson, new PdfBranding { CompanyName = "Acme Astro" });
+
+    // A file, because NavigateToString takes 2 MB at most and a Brihad kundli can be larger.
+    string page = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N") + ".html");
+    File.WriteAllText(page, html);
+    try
+    {
+        var loaded = new TaskCompletionSource<bool>();
+        EventHandler<CoreWebView2NavigationCompletedEventArgs> done = (sender, e) => loaded.TrySetResult(e.IsSuccess);
+        web.NavigationCompleted += done;
+        try
+        {
+            web.Navigate(new Uri(page).AbsoluteUri);
+            if (!await loaded.Task) return false;
+        }
+        finally
+        {
+            web.NavigationCompleted -= done;
+        }
+
+        PdfPrintGeometry a4 = PdfReports.A4PrintOptions;
+        CoreWebView2PrintSettings settings = web.Environment.CreatePrintSettings();
+        settings.PageWidth = a4.WidthInches;
+        settings.PageHeight = a4.HeightInches;
+        settings.MarginTop = a4.MarginTopInches;
+        settings.MarginRight = a4.MarginRightInches;
+        settings.MarginBottom = a4.MarginBottomInches;
+        settings.MarginLeft = a4.MarginLeftInches;
+        settings.ShouldPrintBackgrounds = true;
+        settings.ShouldPrintHeaderAndFooter = false;
+        return await web.PrintToPdfAsync(pdfPath, settings);
+    }
+    finally
+    {
+        File.Delete(page);
+    }
+}
+```
+
+The running header, table of contents and bookmarks of the Brihad kundli come from `KundliBrihadPdfAsync`,
+so make that PDF on the backend.
+
+### .NET Framework
+
+The same API, from C# 7.3, for example in ASP.NET MVC 5. The Chrome engine uses `ClientWebSocket`, which on
+.NET Framework needs Windows 8 / Server 2012 or later.
+
+```csharp
+public class KundliController : Controller
+{
+    private static readonly LifeAstroClient Astro = new LifeAstroClient();   // LIFEASTRO_API_KEY
+    internal static readonly ChromePdfEngine Engine = new ChromePdfEngine(); // dispose it in Application_End
+
+    public async Task<ActionResult> Pdf(CancellationToken cancellationToken)
+    {
+        var birth = new BirthInput("1990-01-15", "10:30", "Asia/Kolkata", 19.076, 72.8777);
+        JsonElement report = await Astro.Reports.KundliLiteAsync(
+            new ReportsKundliLiteParams(birth) { Lang = Lang.Hi }, cancellationToken: cancellationToken);
+        byte[] pdf = await PdfReports.KundliLitePdfAsync(report, engine: Engine, cancellationToken: cancellationToken);
+        return File(pdf, "application/pdf", "kundli.pdf");
+    }
+}
+```
+
+If the application pool's account is not allowed to start a browser, use `GotenbergPdfEngine`.
+
+### Fonts
+
+The text is shaped with the fonts of the machine that prints. Missing fonts show as empty boxes.
+
+| Where it prints | Fonts for the Indian scripts |
+|-----------------|------------------------------|
+| Windows | the system's Nirmala UI, or Noto Sans when installed |
+| macOS | the system fonts, or Noto Sans when installed |
+| Debian, Ubuntu | `fonts-noto-core` |
+| Other Linux | Noto Sans for Devanagari, Bengali, Gujarati, Gurmukhi, Tamil, Telugu, Kannada and Malayalam |
+| Gotenberg | the fonts inside its image |
+
+### Docker
+
+The .NET 8 images are Debian, which packages Chromium:
+
+```dockerfile
+FROM mcr.microsoft.com/dotnet/aspnet:8.0
+USER root
+RUN apt-get update && apt-get install -y --no-install-recommends chromium fonts-noto-core
+USER app
+```
+
+The .NET 10 images are Ubuntu, whose `chromium` package is a snap, so install Google Chrome (amd64):
+
+```dockerfile
+FROM mcr.microsoft.com/dotnet/aspnet:10.0
+USER root
+RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates curl fonts-noto-core \
+ && curl -fsSLo /tmp/chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
+ && apt-get install -y /tmp/chrome.deb && rm /tmp/chrome.deb
+USER app
+```
+
+Docker's default security profile can stop Chrome from building its sandbox for a non-root user. Then either
+allow it (`--security-opt seccomp=...` with a profile for Chrome), run the browser as a Gotenberg service, or,
+when you print only your own report HTML, set `new ChromePdfEngineOptions { NoSandbox = true }`.
+
+### Options and errors
+
+```csharp
+byte[] pdf = await PdfReports.NumerologyPdfAsync(report, options: new PdfOptions
+{
+    Format = PdfPaperFormat.Letter,              // A4 (default), A3, A5, Letter, Legal, Tabloid
+    Landscape = false,
+    Margin = new PdfMargin { Top = "25mm" },     // a side you set wins; the others keep the report's
+    PrintBackground = true,                      // false saves ink (and keeps the watermark)
+    Timeout = TimeSpan.FromSeconds(60),          // to load the document, its images and its fonts (30 s)
+    PrintTimeout = TimeSpan.FromMinutes(5),      // to print it (default: four times Timeout)
+}, cancellationToken: ct);
+```
+
+These options win over the report's own print CSS: where that needs CSS, the SDK adds it to the HTML it
+hands to Chrome, to Gotenberg or to an engine of your own.
+
+- A `Format` other than A4, or `Landscape`, sets the paper. `PreferCssPageSize = true` keeps the document's
+  own page size instead, and `false` scales the document to the paper.
+- `DisplayHeaderFooter = true` with a `FooterTemplate` prints your footer in place of the report's footer line.
+- The Brihad kundli has its running header and footer unless you set `DisplayHeaderFooter = false`. Your
+  `HeaderTemplate` or `FooterTemplate` replaces the report's, and your margins replace its own side by side
+  (26mm top, 16mm bottom, 0 at the sides).
+- A long Brihad on a busy server may need a longer `PrintTimeout`, which is for each of its two prints.
+
+A failed print throws `LifeAstroPdfException` (a `LifeAstroException`) with `Code` `browser_not_found` (the
+message says what to install), `browser_error`, `timeout`, `connection_error`, `render_failed` or
+`invalid_pdf`, or `engine_closed` when the engine was disposed before the PDF was done. JSON that cannot be
+printed as that report throws `ArgumentException`, and a cancelled print `OperationCanceledException`. A
+field that should be a list and is not does not throw: that block is left out, or the lone value is printed.
+A null inside a list does not throw either: that item prints empty or is left out.
+
+**Logo URL.** The browser that prints fetches it. If your customers type it in, check it, or store the image
+and pass a `data:image/...` URI. Only `http(s)`, `data:image` and relative URLs are used (`//host/logo.png`
+becomes https); others are dropped.
 
 ## Development
 
@@ -594,6 +889,8 @@ the same endpoints, method names and wire parameters. With the Node SDK checked 
 ```bash
 node tool/generate.mjs          # src/LifeAstroApi/Generated, tests/Shared/Samples.g.cs, test manifest
 node tool/node-goldens.mjs      # records the Node SDK's request for every method (parity fixture)
+node tool/generate-pdf.mjs      # src/LifeAstroApi/Pdf/Generated, from the Node SDK's src/pdf templates
+node tool/pdf-goldens.mjs       # records Node's HTML for the PDF tests
 dotnet build -c Release         # both targets, warnings are errors
 dotnet test -c Release
 dotnet pack -c Release -o artifacts
@@ -606,6 +903,11 @@ is no default URL, so it never reaches production by accident):
 ```bash
 LIFEASTRO_API_KEY=dv_test_... dotnet run -c Release --project tools/LiveSweep -- --base-url http://127.0.0.1:18080
 ```
+
+The PDF templates are the Node.js SDK's, translated by `tool/generate-pdf.mjs`, and the tests check that
+every renderer gives byte-identical HTML. When `../LifeAstroAPI/pdf_work` exists (or `LIFEASTRO_PDF_WORK`
+points to it) they also compare 432 full reports. The browser tests need Chrome, Chromium or Edge and are
+skipped without one; they opt in to `--no-sandbox` on Linux CI, or with `LIFEASTRO_TEST_NO_SANDBOX=1`.
 
 The .NET 10 SDK builds everything (`global.json`); the libraries target `netstandard2.0` and `net8.0`.
 

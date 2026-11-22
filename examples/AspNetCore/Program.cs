@@ -7,11 +7,13 @@
 //   curl "http://localhost:5000/panchang/today?lat=19.076&lon=72.8777&tz=Asia/Kolkata&lang=gu"
 //   curl -X POST http://localhost:5000/kundli -H "Content-Type: application/json" \
 //        -d '{"date":"1990-01-15","time":"10:30","tz":"Asia/Kolkata","lat":19.076,"lon":72.8777}'
+//   the same body to http://localhost:5000/kundli/pdf?lang=hi returns kundli.pdf (needs Chrome, Chromium or Edge).
 //
 // The key can also come from the environment: LifeAstroApi__ApiKey or LIFEASTRO_API_KEY.
 using System.Text.Json;
 using LifeAstroApi;
 using LifeAstroApi.Params;
+using LifeAstroApi.Pdf;
 using Microsoft.Extensions.Caching.Memory;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,6 +21,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddLifeAstro(builder.Configuration.GetSection("LifeAstroApi"));
 builder.Services.AddMemoryCache();
 builder.Services.AddSingleton<PanchangService>();
+builder.Services.AddSingleton<IPdfEngine>(_ => new ChromePdfEngine()); // one browser, disposed with the app
 
 var app = builder.Build();
 
@@ -37,6 +40,11 @@ app.Use(async (context, next) =>
     {
         await Results.Problem(e.Message, statusCode: StatusCodes.Status400BadRequest, extensions: new Dictionary<string, object?> { ["code"] = e.Code }).ExecuteAsync(context);
     }
+    catch (LifeAstroPdfException e)
+    {
+        app.Logger.LogError(e, "PDF rendering failed: {Code}", e.Code);
+        await Results.Problem("The PDF could not be made.", statusCode: StatusCodes.Status500InternalServerError).ExecuteAsync(context);
+    }
     catch (LifeAstroException e)
     {
         app.Logger.LogError(e, "LifeAstroAPI call failed: {Status} {Code}, request {RequestId}", e.Status, e.Code, e.RequestId);
@@ -53,6 +61,17 @@ app.MapPost("/kundli", async (BirthRequest birth, string? lang, LifeAstroClient 
     Results.Ok(await astro.Chart.PlanetsAsync(
         new ChartPlanetsParams(birth.ToBirthInput()) { Lang = Languages.Parse(lang) },
         cancellationToken: ct)));
+
+// POST /kundli/pdf?lang=hi  (the body of /kundli): a branded PDF, rendered by this application
+app.MapPost("/kundli/pdf", async (BirthRequest birth, string? lang, LifeAstroClient astro, IPdfEngine engine, CancellationToken ct) =>
+{
+    JsonElement report = await astro.Reports.KundliLiteAsync(
+        new ReportsKundliLiteParams(birth.ToBirthInput()) { Lang = Languages.Parse(lang) },
+        cancellationToken: ct);
+    byte[] pdf = await PdfReports.KundliLitePdfAsync(
+        report, new PdfBranding { CompanyName = "Acme Astro" }, engine: engine, cancellationToken: ct);
+    return Results.File(pdf, "application/pdf", "kundli.pdf");
+});
 
 // POST /match  {"boy":{...},"girl":{...},"lang":"hi"}
 app.MapPost("/match", async (MatchRequest match, LifeAstroClient astro, CancellationToken ct) =>

@@ -6,7 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
-  <!-- In your own project: <PackageReference Include="LifeAstroApi" Version="0.1.0" /> -->
+  <!-- In your own project: <PackageReference Include="LifeAstroApi" Version="0.2.0" /> -->
   <ItemGroup>
     <ProjectReference Include="../../src/LifeAstroApi/LifeAstroApi.csproj" />
   </ItemGroup>

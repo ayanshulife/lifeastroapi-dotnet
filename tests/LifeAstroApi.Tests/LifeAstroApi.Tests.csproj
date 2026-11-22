@@ -21,6 +21,7 @@
   <ItemGroup>
     <Compile Include="../Shared/*.cs" Link="Shared/%(Filename)%(Extension)" />
     <None Include="Resources/*.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Update="Resources/Pdf/**" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>

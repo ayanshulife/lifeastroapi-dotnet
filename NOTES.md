@@ -37,5 +37,29 @@ dotnet: `DOTNET_CLI_TELEMETRY_OPTOUT=1 DOTNET_NOLOGO=1 PATH="$HOME/.dotnet:$PATH
 
 ## Next (owner / later helper)
 - Owner: commit + push (GitHub Desktop), then RELEASING.md steps 5-9 (pack with CI flag, nuget push, validation, tag).
-- Later: 0.2.0 PDF reports (as PHP did); optional package icon; tell other SDKs about HouseSystem `whole-sign` (API
-  wants `whole_sign`).
+- Optional package icon. (HouseSystem: the live API takes `whole-sign` and `whole_sign` since 2026-11-22; this
+  SDK keeps sending `whole_sign`, as published.)
+
+## 0.2.0 PDF reports (2026-11-22)
+- src/LifeAstroApi/Pdf: public API + PdfOutline; Engine/ (CDP over ClientWebSocket, locator, process lifetime);
+  Runtime/ (JavaScript semantics); Generated/ (templates, never edit: `node tool/generate-pdf.mjs`).
+- Node's src/pdf is the truth. After it changes: generate-pdf, pdf-goldens, then test. A construct outside the
+  translator's subset stops the generator with file and line: add it to tool/generate-pdf.mjs and Runtime/.
+- Tests: tests/LifeAstroApi.Tests/Pdf, also run on the netstandard2.0 build. Fixtures Resources/Pdf are byte-exact
+  (.gitattributes -text). Deep parity: ../LifeAstroAPI/pdf_work (432 cases).
+- Traps: never RegexOptions.IgnoreCase/ECMAScript in templates; never Unicode-normalise; .NET 10 raises no
+  ProcessExit on SIGTERM (Engine/UnixLauncher keeps browsers from being orphaned); on netstandard2.0 do not use
+  IAsyncDisposable (Microsoft.Bcl.AsyncInterfaces is not deployed on .NET Core 3.1 to 7).
+- Synced to Node 0.14.0's templates (2026-11-22, SYNC5). Hand-ported from Node, so check them on every sync (HTML
+  parity does not cover them): src/pdf/index.ts (Brihad wrapper: wrapper.json), render.ts printOptionsCss +
+  mergeMargin (PdfPrintCss.cs, PdfOptions.MergeMargin: branding.json) and src/pdf/outline.ts (outline.json).
+- Print CSS is added in PdfReports (so custom engines get it) and in both engines (for direct callers); Apply adds
+  it once. All-default options must leave the HTML untouched.
+- Colour maths: Math.Pow differs from V8 in the last bit, but no RGB colour is nearer than 1.4e-7 to a contrast
+  threshold (3, 4.5, 5.2), so every decision is the same. Re-check that if Node changes a threshold.
+- Timestamps: no zone (T, t or space) is UTC, as Node's parseTimestamp reads them; pdf-goldens needs no TZ.
+- Templates look keys up in plain tables (no JavaScript prototype); Node's own() is translated with Js.HasOwn.
+- Engine contract: every call settles as a result, LifeAstroPdfException (engine_closed when disposed) or the caller's
+  own cancellation; nothing unobserved, Dispose never throws. The browser's working directory is never the app's
+  (its helpers outlive it and would pin that folder).
+- In tests pass StringComparison.Ordinal to Assert.Contains: the culture comparison ignores control characters.
