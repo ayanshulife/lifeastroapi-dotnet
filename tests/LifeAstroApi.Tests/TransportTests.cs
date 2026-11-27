@@ -153,14 +153,13 @@ namespace LifeAstroApi.Tests
         }
 
         [Fact]
-        public async Task ReturnsANonJsonSuccessBodyAsAJsonString()
+        public async Task RejectsANonJsonSuccessBody()
         {
             _stub.Respond(new Reply(200, Encoding.UTF8.GetBytes("plain text"), new Dictionary<string, string> { ["Content-Type"] = "text/plain" }));
             using LifeAstroClient client = Fixtures.Client(_stub);
-            JsonElement res = await client.RequestAsync("/v1/text");
-            Assert.Equal(JsonValueKind.String, res.ValueKind);
-            Assert.Equal("plain text", res.GetString());
-            Assert.Equal("plain text", await client.RequestAsync<string>("/v1/text"));
+            LifeAstroException e = await Assert.ThrowsAsync<LifeAstroException>(() => client.RequestAsync("/v1/text"));
+            Assert.Equal("non_json_response", e.Code);
+            Assert.Equal(200, e.Status);
         }
 
         [Fact]

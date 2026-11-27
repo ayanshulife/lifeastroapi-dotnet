@@ -92,8 +92,10 @@ namespace LifeAstroApi.Tests
         public async Task DefaultCodesWhenTheBodyHasNoError()
         {
             LifeAstroException e = await Fail(502, "<html>bad gateway</html>", new Dictionary<string, string> { ["X-Request-ID"] = "hdr_1" });
-            Assert.Equal("internal_error", e.Code);
-            Assert.Equal("HTTP 502", e.Message);
+            Assert.Equal("non_json_response", e.Code);
+            Assert.IsType<ServerException>(e);
+            Assert.Contains("HTTP 502", e.Message);
+            Assert.Contains("<html>bad gateway</html>", e.Message);
             Assert.Equal("hdr_1", e.RequestId);
             Assert.Equal("<html>bad gateway</html>", e.Body!.Value.GetString());
             Assert.Equal("bad_request", (await Fail(409, "{}")).Code);

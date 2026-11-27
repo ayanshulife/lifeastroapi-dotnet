@@ -193,17 +193,25 @@ namespace LifeAstroApi
                     }
 
                     int status = (int)response.StatusCode;
-                    JsonElement? body = Decode(bytes);
+                    JsonElement? body = Decode(bytes, out bool nonJson);
                     string? headerRequestId = Header(response, "X-Request-ID");
                     if (status >= 200 && status < 300)
                     {
                         Emit(options, status, path, response);
+                        if (nonJson)
+                        {
+                            // A 2xx that is not JSON is not an API answer (a proxy or captive page).
+                            return Step.Fail(LifeAstroException.NonJson(status, body!.Value, null, headerRequestId));
+                        }
+
                         JsonElement value = options?.Raw == true ? (body ?? JsonNull) : Unwrap(body);
                         return Step.Success(new Result(value, body, status, headerRequestId));
                     }
 
                     TimeSpan? retryAfter = ParseRetryAfter(Header(response, "Retry-After"), DateTimeOffset.UtcNow);
-                    LifeAstroException error = LifeAstroException.FromResponse(status, body, retryAfter, headerRequestId);
+                    LifeAstroException error = nonJson
+                        ? LifeAstroException.NonJson(status, body!.Value, retryAfter, headerRequestId)
+                        : LifeAstroException.FromResponse(status, body, retryAfter, headerRequestId);
                     if (Array.IndexOf(RetryableStatus, status) >= 0 && attempt < MaxRetries)
                     {
                         return Step.Retry(Backoff(attempt, retryAfter));
@@ -294,9 +302,10 @@ namespace LifeAstroApi
             return new DeflateStream(input, CompressionMode.Decompress);
         }
 
-        /// <summary>The body as JSON; text that is not JSON as a JSON string (as the Node.js SDK returns it); null when empty.</summary>
-        private static JsonElement? Decode(byte[] bytes)
+        /// <summary>The body as JSON; text that is not JSON as a JSON string, with <paramref name="nonJson"/> set; null when empty.</summary>
+        private static JsonElement? Decode(byte[] bytes, out bool nonJson)
         {
+            nonJson = false;
             if (bytes.Length == 0)
             {
                 return null;
@@ -312,6 +321,7 @@ namespace LifeAstroApi
             }
             catch (JsonException)
             {
+                nonJson = true;
                 string text = Encoding.UTF8.GetString(bytes, start, bytes.Length - start);
                 using (JsonDocument doc = JsonDocument.Parse(JsonSerializer.Serialize(text)))
                 {

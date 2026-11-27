@@ -336,6 +336,9 @@ catch (LifeAstroException e)
 | `LifeAstroPdfException` | a PDF could not be printed (namespace `LifeAstroApi.Pdf`), see [PDF reports](#options-and-errors) |
 | `LifeAstroTimeoutException` | the call took longer than the timeout (code `timeout`); it extends `LifeAstroConnectionException`, so catch it first |
 
+A response that is not JSON (an HTML page from a proxy or firewall in between, for example) throws the exception of
+its status with code `non_json_response`; the message carries the HTTP status and the start of the body.
+
 All extend `LifeAstroException` (in the `LifeAstroApi` namespace; `Body` holds the parsed error body). 408,
 425, 429, 500, 502, 503, 504, network errors and timeouts are retried first (exponential backoff from 0.5 s
 up to 8 s with jitter, or the `Retry-After` wait up to 30 s), up to `MaxRetries` times. Other 4xx are not

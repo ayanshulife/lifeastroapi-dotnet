@@ -110,6 +110,30 @@ namespace LifeAstroApi
             code ??= DefaultCode(status);
             message ??= "HTTP " + status;
             requestId ??= headerRequestId;
+            return Build(status, message, code, requestId, body, retryAfter);
+        }
+
+        /// <summary>
+        /// The exception for a response whose body is not JSON: it did not come from the API (an HTML
+        /// page from a proxy, firewall or CDN in between). The same class per status as
+        /// <see cref="FromResponse"/>, with code <c>non_json_response</c>.
+        /// </summary>
+        internal static LifeAstroException NonJson(int status, JsonElement body, TimeSpan? retryAfter, string? headerRequestId)
+        {
+            string snippet = string.Join(" ", (body.GetString() ?? string.Empty)
+                .Split((char[]?)null, StringSplitOptions.RemoveEmptyEntries));
+            if (snippet.Length > 120)
+            {
+                snippet = snippet.Substring(0, 120);
+            }
+
+            string message = "The response did not come from the API as JSON (HTTP " + status + "). "
+                + "A proxy, firewall or CDN in between may have answered. Body starts: " + snippet;
+            return Build(status, message, "non_json_response", headerRequestId, body, retryAfter);
+        }
+
+        private static LifeAstroException Build(int status, string message, string code, string? requestId, JsonElement? body, TimeSpan? retryAfter)
+        {
             switch (status)
             {
                 case 400:
