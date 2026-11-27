@@ -13,23 +13,29 @@ namespace LifeAstroApi.Params
     /// <remarks>
     /// <para>Full numerology report (driver, conductor, soul, personality, destiny).</para>
     /// <code>
-    /// var p = new NumerologyFullParams() { Name = "Arjun Mehta", Dob = "1990-01-15" };
+    /// var p = new NumerologyFullParams("1990-01-15") { Name = "Arjun Mehta" };
     /// JsonElement result = await client.Numerology.FullAsync(p);
     /// </code>
-    /// <para>Every value is optional. <see cref="LifeAstroApi.LifeAstroParams.ToQuery"/> shows what is sent.</para>
+    /// <para>
+    /// Required: <c>Dob</c> (constructor parameters). The other values are optional properties;
+    /// <see cref="LifeAstroApi.LifeAstroParams.ToQuery"/> shows what is sent.
+    /// </para>
     /// </remarks>
     public sealed class NumerologyFullParams : LifeAstroParams
     {
-        /// <summary>Creates the parameters; set the values you need.</summary>
-        public NumerologyFullParams()
+        /// <summary>Creates the parameters.</summary>
+        /// <param name="dob">Date of birth (YYYY-MM-DD).</param>
+        /// <exception cref="System.ArgumentException">A required value is empty.</exception>
+        public NumerologyFullParams(LifeAstroDate dob)
         {
+            Dob = Wire.RequireDate(dob, nameof(dob));
         }
+
+        /// <summary>Date of birth (YYYY-MM-DD).</summary>
+        public LifeAstroDate Dob { get; }
 
         /// <summary>Full name.</summary>
         public string? Name { get; set; }
-
-        /// <summary>Date of birth (YYYY-MM-DD).</summary>
-        public LifeAstroDate? Dob { get; set; }
 
         /// <summary>Response language.</summary>
         public Lang? Lang { get; set; }
@@ -42,6 +48,7 @@ namespace LifeAstroApi.Params
             query.Put("name", Name);
             query.Put("dob", Dob);
             query.Put("lang", Lang);
+            query.Put("dob", Dob);
         }
     }
 }

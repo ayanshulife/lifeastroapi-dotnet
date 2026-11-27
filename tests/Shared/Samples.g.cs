@@ -402,7 +402,7 @@ namespace LifeAstroApi.Samples
             all.Add(new Sample("numerology.driver", "/v1/numerology/driver", "custom", true,
                 (c, lang) => c.Numerology.DriverAsync(new NumerologyDriverParams("1990-01-15") { Lang = lang })));
             all.Add(new Sample("numerology.full", "/v1/numerology/full", "numerology", true,
-                (c, lang) => c.Numerology.FullAsync(new NumerologyFullParams() { Name = "Arjun Mehta", Dob = "1990-01-15", Lang = lang })));
+                (c, lang) => c.Numerology.FullAsync(new NumerologyFullParams("1990-01-15") { Name = "Arjun Mehta", Lang = lang })));
             all.Add(new Sample("numerology.personalPeriods", "/v1/numerology/personal-periods", "custom", true,
                 (c, lang) => c.Numerology.PersonalPeriodsAsync(new NumerologyPersonalPeriodsParams("1990-01-15") { Lang = lang })));
             all.Add(new Sample("numerology.personality", "/v1/numerology/personality", "custom", true,

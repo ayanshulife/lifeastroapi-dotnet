@@ -1,5 +1,28 @@
 # Changelog
 
+## 1.0.0 (2026-11-27)
+
+This is the first stable release, of both packages: `LifeAstroApi` and `LifeAstroApi.Extensions.DependencyInjection`.
+From 1.0.0 on, a change that needs a code change on your side only comes with a new major version. There is no new
+dependency.
+
+New:
+
+- Clear error for a reply that is not JSON. Such a reply did not come from the API: a proxy, firewall or CDN in
+  between answered, usually with an HTML page. It now throws the exception of its HTTP status with code
+  `non_json_response`; the message gives the status and the start of the body.
+- README: the `non_json_response` error.
+
+Changes that may need a code change:
+
+- A 200 reply with a body that is not JSON now throws instead of returning the text.
+  Before: the call returned the body as a JSON string (`JsonElement`).
+  Now: `catch (LifeAstroException e) when (e.Code == "non_json_response") { /* ... */ }`
+- `Numerology.FullAsync` requires the date of birth. The API always required it. `Dob` is now the constructor
+  parameter of `NumerologyFullParams`, and `FullAsync` no longer accepts a call without parameters.
+  Before: `await client.Numerology.FullAsync(new NumerologyFullParams { Name = "Arjun Mehta", Dob = "1990-01-15" });`
+  Now: `await client.Numerology.FullAsync(new NumerologyFullParams("1990-01-15") { Name = "Arjun Mehta" });`
+
 ## 0.2.0 (2026-11-22)
 
 New: the SDK makes branded PDF reports, on your own machine. Upgrading from 0.1.0 needs no code change: nothing

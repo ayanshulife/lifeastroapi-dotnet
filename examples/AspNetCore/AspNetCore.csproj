@@ -7,7 +7,7 @@
     <WarnOnPackingNonPackableProject>false</WarnOnPackingNonPackableProject>
   </PropertyGroup>
 
-  <!-- In your own project: <PackageReference Include="LifeAstroApi.Extensions.DependencyInjection" Version="0.2.0" /> -->
+  <!-- In your own project: <PackageReference Include="LifeAstroApi.Extensions.DependencyInjection" Version="1.0.0" /> -->
   <ItemGroup>
     <ProjectReference Include="../../src/LifeAstroApi.Extensions.DependencyInjection/LifeAstroApi.Extensions.DependencyInjection.csproj" />
   </ItemGroup>

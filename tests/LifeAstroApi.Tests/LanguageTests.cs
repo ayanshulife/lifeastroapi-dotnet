@@ -56,7 +56,7 @@ namespace LifeAstroApi.Tests
             yield return Case("chart.kundliFacts", "/v1/chart/kundli-facts", c => c.Chart.KundliFactsAsync(new ChartKundliFactsParams(Arjun) { Lang = gu }), true);
             yield return Case("prashna.chart", "/v1/prashna/chart", c => c.Prashna.ChartAsync(new PrashnaChartParams(Mumbai) { Date = D, Time = "12:00", Lang = gu }), true);
             yield return Case("numerology.driver", "/v1/numerology/driver", c => c.Numerology.DriverAsync(new NumerologyDriverParams("1990-01-15") { Lang = gu }), true);
-            yield return Case("numerology.full", "/v1/numerology/full", c => c.Numerology.FullAsync(new NumerologyFullParams { Name = "Arjun Mehta", Dob = "1990-01-15", Lang = gu }), false);
+            yield return Case("numerology.full", "/v1/numerology/full", c => c.Numerology.FullAsync(new NumerologyFullParams("1990-01-15") { Name = "Arjun Mehta", Lang = gu }), false);
             yield return Case("dasha.vimshottari", "/v1/dasha/vimshottari", c => c.Dasha.VimshottariAsync(new DashaVimshottariParams(Arjun) { Lang = gu }), true);
             yield return Case("varshaphal.chart", "/v1/varshaphal/chart", c => c.Varshaphal.ChartAsync(new VarshaphalChartParams(Arjun, 2026) { Lang = gu }), true);
             yield return Case("ashtakavarga.bhinna", "/v1/ashtakavarga/bhinna/Jupiter", c => c.Ashtakavarga.BhinnaAsync(new AshtakavargaBhinnaParams("Jupiter", Arjun) { Lang = gu }), true);

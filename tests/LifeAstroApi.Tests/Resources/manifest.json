@@ -13261,9 +13261,25 @@
    "shape": "numerology",
    "cost": 20,
    "params": "NumerologyFullParams",
-   "optionalParams": true,
-   "extras": [],
+   "optionalParams": false,
+   "extras": [
+    {
+     "wire": "dob",
+     "field": "dob",
+     "required": true
+    }
+   ],
    "fields": [
+    {
+     "name": "dob",
+     "property": "Dob",
+     "type": "LifeAstroDate",
+     "required": true,
+     "kind": "scalar",
+     "wires": [
+      "dob"
+     ]
+    },
     {
      "name": "name",
      "property": "Name",
@@ -13272,16 +13288,6 @@
      "kind": "scalar",
      "wires": [
       "name"
-     ]
-    },
-    {
-     "name": "dob",
-     "property": "Dob",
-     "type": "LifeAstroDate?",
-     "required": false,
-     "kind": "scalar",
-     "wires": [
-      "dob"
      ]
     },
     {

@@ -277,20 +277,19 @@ namespace LifeAstroApi.Resources
         /// <remarks>
         /// Cost: 20 credits per call. <c>GET /v1/numerology/full</c>. Node.js SDK: <c>numerology.full</c>.
         /// </remarks>
-        /// <param name="parameters">
-        /// The parameters, or null for none (<see cref="LifeAstroApi.Params.NumerologyFullParams"/>).
-        /// </param>
+        /// <param name="parameters">The parameters (<see cref="LifeAstroApi.Params.NumerologyFullParams"/>).</param>
         /// <param name="options">Per-call timeout, raw body or <c>OnResponse</c> hook; null for none.</param>
         /// <param name="cancellationToken">Cancels the call.</param>
         /// <returns>The response JSON.</returns>
+        /// <exception cref="System.ArgumentNullException"><paramref name="parameters"/> is null.</exception>
         /// <exception cref="LifeAstroApi.LifeAstroException">
         /// An API error (a subclass per status), or a network failure or timeout.
         /// </exception>
         /// <exception cref="System.OperationCanceledException">
         /// <paramref name="cancellationToken"/> was cancelled.
         /// </exception>
-        public Task<JsonElement> FullAsync(NumerologyFullParams? parameters = null, RequestOptions? options = null, CancellationToken cancellationToken = default) =>
-            _client.SendAsync<JsonElement>(parameters ?? new NumerologyFullParams(), options, cancellationToken);
+        public Task<JsonElement> FullAsync(NumerologyFullParams parameters, RequestOptions? options = null, CancellationToken cancellationToken = default) =>
+            _client.SendAsync<JsonElement>(Wire.NotNull(parameters, nameof(parameters)), options, cancellationToken);
 
         /// <summary>
         /// Full numerology report (driver, conductor, soul, personality, destiny). Mapped to your own type.
@@ -302,12 +301,11 @@ namespace LifeAstroApi.Resources
         /// Your type, read with System.Text.Json
         /// (<see cref="LifeAstroApi.LifeAstroClientOptions.JsonSerializerOptions"/>).
         /// </typeparam>
-        /// <param name="parameters">
-        /// The parameters, or null for none (<see cref="LifeAstroApi.Params.NumerologyFullParams"/>).
-        /// </param>
+        /// <param name="parameters">The parameters (<see cref="LifeAstroApi.Params.NumerologyFullParams"/>).</param>
         /// <param name="options">Per-call timeout, raw body or <c>OnResponse</c> hook; null for none.</param>
         /// <param name="cancellationToken">Cancels the call.</param>
         /// <returns>The response mapped to <typeparamref name="T"/>; default for a JSON null.</returns>
+        /// <exception cref="System.ArgumentNullException"><paramref name="parameters"/> is null.</exception>
         /// <exception cref="LifeAstroApi.LifeAstroException">
         /// An API error (a subclass per status), a network failure or timeout, or a response that does not map to
         /// <typeparamref name="T"/> (code <c>invalid_response</c>).
@@ -315,8 +313,8 @@ namespace LifeAstroApi.Resources
         /// <exception cref="System.OperationCanceledException">
         /// <paramref name="cancellationToken"/> was cancelled.
         /// </exception>
-        public Task<T?> FullAsync<T>(NumerologyFullParams? parameters = null, RequestOptions? options = null, CancellationToken cancellationToken = default) =>
-            _client.SendAsync<T>(parameters ?? new NumerologyFullParams(), options, cancellationToken);
+        public Task<T?> FullAsync<T>(NumerologyFullParams parameters, RequestOptions? options = null, CancellationToken cancellationToken = default) =>
+            _client.SendAsync<T>(Wire.NotNull(parameters, nameof(parameters)), options, cancellationToken);
 
         /// <summary>
         /// Compute the Personal Year, Personal Month, and Personal Day numbers for any date — the time-transiting layer

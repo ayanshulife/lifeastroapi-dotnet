@@ -31,7 +31,7 @@ dotnet add package LifeAstroApi
 ```
 
 ```xml
-<PackageReference Include="LifeAstroApi" Version="0.2.0" />
+<PackageReference Include="LifeAstroApi" Version="1.0.0" />
 ```
 
 In an ASP.NET Core application, add the dependency injection package instead (it brings `LifeAstroApi`
@@ -42,7 +42,7 @@ dotnet add package LifeAstroApi.Extensions.DependencyInjection
 ```
 
 ```xml
-<PackageReference Include="LifeAstroApi.Extensions.DependencyInjection" Version="0.2.0" />
+<PackageReference Include="LifeAstroApi.Extensions.DependencyInjection" Version="1.0.0" />
 ```
 
 ## Quick start
