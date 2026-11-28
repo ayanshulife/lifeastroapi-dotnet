@@ -1,5 +1,5 @@
 {
- "node_entries": 323,
+ "node_entries": 334,
  "methods": [
   {
    "key": "ashtakavarga.bhinna",
@@ -731,6 +731,313 @@
      "kind": "scalar",
      "wires": [
       "alt"
+     ]
+    },
+    {
+     "name": "lang",
+     "property": "Lang",
+     "type": "Lang?",
+     "required": false,
+     "kind": "scalar",
+     "wires": [
+      "lang",
+      "locale"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "chart.argala",
+   "group": "Chart",
+   "resource": "ChartResource",
+   "method": "ArgalaAsync",
+   "path": "/v1/chart/argala",
+   "shape": "birth",
+   "cost": 10,
+   "params": "ChartArgalaParams",
+   "optionalParams": false,
+   "extras": [
+    {
+     "wire": "house",
+     "field": "house",
+     "required": false
+    },
+    {
+     "wire": "include_eighth",
+     "field": "includeEighth",
+     "required": false
+    },
+    {
+     "wire": "node_reversal",
+     "field": "nodeReversal",
+     "required": false
+    },
+    {
+     "wire": "vipareeta_min_malefics",
+     "field": "vipareetaMinMalefics",
+     "required": false
+    },
+    {
+     "wire": "lang",
+     "field": "lang",
+     "required": false
+    }
+   ],
+   "fields": [
+    {
+     "name": "lat",
+     "property": "Lat",
+     "type": "double",
+     "required": true,
+     "kind": "scalar",
+     "wires": [
+      "lat"
+     ]
+    },
+    {
+     "name": "lon",
+     "property": "Lon",
+     "type": "double",
+     "required": true,
+     "kind": "scalar",
+     "wires": [
+      "lon"
+     ]
+    },
+    {
+     "name": "date",
+     "property": "Date",
+     "type": "LifeAstroDate",
+     "required": true,
+     "kind": "scalar",
+     "wires": [
+      "date"
+     ]
+    },
+    {
+     "name": "time",
+     "property": "Time",
+     "type": "LifeAstroTime",
+     "required": true,
+     "kind": "scalar",
+     "wires": [
+      "time"
+     ]
+    },
+    {
+     "name": "tz",
+     "property": "Tz",
+     "type": "string",
+     "required": true,
+     "kind": "scalar",
+     "wires": [
+      "tz"
+     ]
+    },
+    {
+     "name": "ayanamsa",
+     "property": "Ayanamsa",
+     "type": "Ayanamsa?",
+     "required": false,
+     "kind": "scalar",
+     "wires": [
+      "ayanamsa"
+     ]
+    },
+    {
+     "name": "houseSystem",
+     "property": "HouseSystem",
+     "type": "HouseSystem?",
+     "required": false,
+     "kind": "scalar",
+     "wires": [
+      "house_system"
+     ]
+    },
+    {
+     "name": "house",
+     "property": "House",
+     "type": "int?",
+     "required": false,
+     "kind": "scalar",
+     "wires": [
+      "house"
+     ]
+    },
+    {
+     "name": "includeEighth",
+     "property": "IncludeEighth",
+     "type": "bool?",
+     "required": false,
+     "kind": "scalar",
+     "wires": [
+      "include_eighth"
+     ]
+    },
+    {
+     "name": "nodeReversal",
+     "property": "NodeReversal",
+     "type": "string?",
+     "required": false,
+     "kind": "scalar",
+     "wires": [
+      "node_reversal"
+     ]
+    },
+    {
+     "name": "vipareetaMinMalefics",
+     "property": "VipareetaMinMalefics",
+     "type": "int?",
+     "required": false,
+     "kind": "scalar",
+     "wires": [
+      "vipareeta_min_malefics"
+     ]
+    },
+    {
+     "name": "lang",
+     "property": "Lang",
+     "type": "Lang?",
+     "required": false,
+     "kind": "scalar",
+     "wires": [
+      "lang",
+      "locale"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "chart.arudhaPadas",
+   "group": "Chart",
+   "resource": "ChartResource",
+   "method": "ArudhaPadasAsync",
+   "path": "/v1/chart/arudha-padas",
+   "shape": "birth",
+   "cost": 10,
+   "params": "ChartArudhaPadasParams",
+   "optionalParams": false,
+   "extras": [
+    {
+     "wire": "exception",
+     "field": "exception",
+     "required": false
+    },
+    {
+     "wire": "scorpio_lord",
+     "field": "scorpioLord",
+     "required": false
+    },
+    {
+     "wire": "aquarius_lord",
+     "field": "aquariusLord",
+     "required": false
+    },
+    {
+     "wire": "lang",
+     "field": "lang",
+     "required": false
+    }
+   ],
+   "fields": [
+    {
+     "name": "lat",
+     "property": "Lat",
+     "type": "double",
+     "required": true,
+     "kind": "scalar",
+     "wires": [
+      "lat"
+     ]
+    },
+    {
+     "name": "lon",
+     "property": "Lon",
+     "type": "double",
+     "required": true,
+     "kind": "scalar",
+     "wires": [
+      "lon"
+     ]
+    },
+    {
+     "name": "date",
+     "property": "Date",
+     "type": "LifeAstroDate",
+     "required": true,
+     "kind": "scalar",
+     "wires": [
+      "date"
+     ]
+    },
+    {
+     "name": "time",
+     "property": "Time",
+     "type": "LifeAstroTime",
+     "required": true,
+     "kind": "scalar",
+     "wires": [
+      "time"
+     ]
+    },
+    {
+     "name": "tz",
+     "property": "Tz",
+     "type": "string",
+     "required": true,
+     "kind": "scalar",
+     "wires": [
+      "tz"
+     ]
+    },
+    {
+     "name": "ayanamsa",
+     "property": "Ayanamsa",
+     "type": "Ayanamsa?",
+     "required": false,
+     "kind": "scalar",
+     "wires": [
+      "ayanamsa"
+     ]
+    },
+    {
+     "name": "houseSystem",
+     "property": "HouseSystem",
+     "type": "HouseSystem?",
+     "required": false,
+     "kind": "scalar",
+     "wires": [
+      "house_system"
+     ]
+    },
+    {
+     "name": "exception",
+     "property": "Exception",
+     "type": "string?",
+     "required": false,
+     "kind": "scalar",
+     "wires": [
+      "exception"
+     ]
+    },
+    {
+     "name": "scorpioLord",
+     "property": "ScorpioLord",
+     "type": "string?",
+     "required": false,
+     "kind": "scalar",
+     "wires": [
+      "scorpio_lord"
+     ]
+    },
+    {
+     "name": "aquariusLord",
+     "property": "AquariusLord",
+     "type": "string?",
+     "required": false,
+     "kind": "scalar",
+     "wires": [
+      "aquarius_lord"
      ]
     },
     {
@@ -3405,6 +3712,152 @@
    ]
   },
   {
+   "key": "chart.upapada",
+   "group": "Chart",
+   "resource": "ChartResource",
+   "method": "UpapadaAsync",
+   "path": "/v1/chart/upapada",
+   "shape": "birth",
+   "cost": 10,
+   "params": "ChartUpapadaParams",
+   "optionalParams": false,
+   "extras": [
+    {
+     "wire": "exception",
+     "field": "exception",
+     "required": false
+    },
+    {
+     "wire": "scorpio_lord",
+     "field": "scorpioLord",
+     "required": false
+    },
+    {
+     "wire": "aquarius_lord",
+     "field": "aquariusLord",
+     "required": false
+    },
+    {
+     "wire": "lang",
+     "field": "lang",
+     "required": false
+    }
+   ],
+   "fields": [
+    {
+     "name": "lat",
+     "property": "Lat",
+     "type": "double",
+     "required": true,
+     "kind": "scalar",
+     "wires": [
+      "lat"
+     ]
+    },
+    {
+     "name": "lon",
+     "property": "Lon",
+     "type": "double",
+     "required": true,
+     "kind": "scalar",
+     "wires": [
+      "lon"
+     ]
+    },
+    {
+     "name": "date",
+     "property": "Date",
+     "type": "LifeAstroDate",
+     "required": true,
+     "kind": "scalar",
+     "wires": [
+      "date"
+     ]
+    },
+    {
+     "name": "time",
+     "property": "Time",
+     "type": "LifeAstroTime",
+     "required": true,
+     "kind": "scalar",
+     "wires": [
+      "time"
+     ]
+    },
+    {
+     "name": "tz",
+     "property": "Tz",
+     "type": "string",
+     "required": true,
+     "kind": "scalar",
+     "wires": [
+      "tz"
+     ]
+    },
+    {
+     "name": "ayanamsa",
+     "property": "Ayanamsa",
+     "type": "Ayanamsa?",
+     "required": false,
+     "kind": "scalar",
+     "wires": [
+      "ayanamsa"
+     ]
+    },
+    {
+     "name": "houseSystem",
+     "property": "HouseSystem",
+     "type": "HouseSystem?",
+     "required": false,
+     "kind": "scalar",
+     "wires": [
+      "house_system"
+     ]
+    },
+    {
+     "name": "exception",
+     "property": "Exception",
+     "type": "string?",
+     "required": false,
+     "kind": "scalar",
+     "wires": [
+      "exception"
+     ]
+    },
+    {
+     "name": "scorpioLord",
+     "property": "ScorpioLord",
+     "type": "string?",
+     "required": false,
+     "kind": "scalar",
+     "wires": [
+      "scorpio_lord"
+     ]
+    },
+    {
+     "name": "aquariusLord",
+     "property": "AquariusLord",
+     "type": "string?",
+     "required": false,
+     "kind": "scalar",
+     "wires": [
+      "aquarius_lord"
+     ]
+    },
+    {
+     "name": "lang",
+     "property": "Lang",
+     "type": "Lang?",
+     "required": false,
+     "kind": "scalar",
+     "wires": [
+      "lang",
+      "locale"
+     ]
+    }
+   ]
+  },
+  {
    "key": "chart.yogas",
    "group": "Chart",
    "resource": "ChartResource",
@@ -3515,6 +3968,298 @@
      "kind": "scalar",
      "wires": [
       "gender"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "dasha.ashtottari",
+   "group": "Dasha",
+   "resource": "DashaResource",
+   "method": "AshtottariAsync",
+   "path": "/v1/dasha/ashtottari",
+   "shape": "birth",
+   "cost": 10,
+   "params": "DashaAshtottariParams",
+   "optionalParams": false,
+   "extras": [
+    {
+     "wire": "depth",
+     "field": "depth",
+     "required": false
+    },
+    {
+     "wire": "scheme",
+     "field": "scheme",
+     "required": false
+    },
+    {
+     "wire": "antar_start",
+     "field": "antarStart",
+     "required": false
+    },
+    {
+     "wire": "lang",
+     "field": "lang",
+     "required": false
+    }
+   ],
+   "fields": [
+    {
+     "name": "lat",
+     "property": "Lat",
+     "type": "double",
+     "required": true,
+     "kind": "scalar",
+     "wires": [
+      "lat"
+     ]
+    },
+    {
+     "name": "lon",
+     "property": "Lon",
+     "type": "double",
+     "required": true,
+     "kind": "scalar",
+     "wires": [
+      "lon"
+     ]
+    },
+    {
+     "name": "date",
+     "property": "Date",
+     "type": "LifeAstroDate",
+     "required": true,
+     "kind": "scalar",
+     "wires": [
+      "date"
+     ]
+    },
+    {
+     "name": "time",
+     "property": "Time",
+     "type": "LifeAstroTime",
+     "required": true,
+     "kind": "scalar",
+     "wires": [
+      "time"
+     ]
+    },
+    {
+     "name": "tz",
+     "property": "Tz",
+     "type": "string",
+     "required": true,
+     "kind": "scalar",
+     "wires": [
+      "tz"
+     ]
+    },
+    {
+     "name": "ayanamsa",
+     "property": "Ayanamsa",
+     "type": "Ayanamsa?",
+     "required": false,
+     "kind": "scalar",
+     "wires": [
+      "ayanamsa"
+     ]
+    },
+    {
+     "name": "houseSystem",
+     "property": "HouseSystem",
+     "type": "HouseSystem?",
+     "required": false,
+     "kind": "scalar",
+     "wires": [
+      "house_system"
+     ]
+    },
+    {
+     "name": "depth",
+     "property": "Depth",
+     "type": "int?",
+     "required": false,
+     "kind": "scalar",
+     "wires": [
+      "depth"
+     ]
+    },
+    {
+     "name": "scheme",
+     "property": "Scheme",
+     "type": "int?",
+     "required": false,
+     "kind": "scalar",
+     "wires": [
+      "scheme"
+     ]
+    },
+    {
+     "name": "antarStart",
+     "property": "AntarStart",
+     "type": "string?",
+     "required": false,
+     "kind": "scalar",
+     "wires": [
+      "antar_start"
+     ]
+    },
+    {
+     "name": "lang",
+     "property": "Lang",
+     "type": "Lang?",
+     "required": false,
+     "kind": "scalar",
+     "wires": [
+      "lang",
+      "locale"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "dasha.ashtottariCurrent",
+   "group": "Dasha",
+   "resource": "DashaResource",
+   "method": "AshtottariCurrentAsync",
+   "path": "/v1/dasha/ashtottari/current",
+   "shape": "birth",
+   "cost": 10,
+   "params": "DashaAshtottariCurrentParams",
+   "optionalParams": false,
+   "extras": [
+    {
+     "wire": "at",
+     "field": "at",
+     "required": false
+    },
+    {
+     "wire": "scheme",
+     "field": "scheme",
+     "required": false
+    },
+    {
+     "wire": "antar_start",
+     "field": "antarStart",
+     "required": false
+    },
+    {
+     "wire": "lang",
+     "field": "lang",
+     "required": false
+    }
+   ],
+   "fields": [
+    {
+     "name": "lat",
+     "property": "Lat",
+     "type": "double",
+     "required": true,
+     "kind": "scalar",
+     "wires": [
+      "lat"
+     ]
+    },
+    {
+     "name": "lon",
+     "property": "Lon",
+     "type": "double",
+     "required": true,
+     "kind": "scalar",
+     "wires": [
+      "lon"
+     ]
+    },
+    {
+     "name": "date",
+     "property": "Date",
+     "type": "LifeAstroDate",
+     "required": true,
+     "kind": "scalar",
+     "wires": [
+      "date"
+     ]
+    },
+    {
+     "name": "time",
+     "property": "Time",
+     "type": "LifeAstroTime",
+     "required": true,
+     "kind": "scalar",
+     "wires": [
+      "time"
+     ]
+    },
+    {
+     "name": "tz",
+     "property": "Tz",
+     "type": "string",
+     "required": true,
+     "kind": "scalar",
+     "wires": [
+      "tz"
+     ]
+    },
+    {
+     "name": "ayanamsa",
+     "property": "Ayanamsa",
+     "type": "Ayanamsa?",
+     "required": false,
+     "kind": "scalar",
+     "wires": [
+      "ayanamsa"
+     ]
+    },
+    {
+     "name": "houseSystem",
+     "property": "HouseSystem",
+     "type": "HouseSystem?",
+     "required": false,
+     "kind": "scalar",
+     "wires": [
+      "house_system"
+     ]
+    },
+    {
+     "name": "at",
+     "property": "At",
+     "type": "string?",
+     "required": false,
+     "kind": "scalar",
+     "wires": [
+      "at"
+     ]
+    },
+    {
+     "name": "scheme",
+     "property": "Scheme",
+     "type": "int?",
+     "required": false,
+     "kind": "scalar",
+     "wires": [
+      "scheme"
+     ]
+    },
+    {
+     "name": "antarStart",
+     "property": "AntarStart",
+     "type": "string?",
+     "required": false,
+     "kind": "scalar",
+     "wires": [
+      "antar_start"
+     ]
+    },
+    {
+     "name": "lang",
+     "property": "Lang",
+     "type": "Lang?",
+     "required": false,
+     "kind": "scalar",
+     "wires": [
+      "lang",
+      "locale"
      ]
     }
    ]
@@ -7973,6 +8718,127 @@
    ]
   },
   {
+   "key": "muhurta.annaprashan",
+   "group": "Muhurta",
+   "resource": "MuhurtaResource",
+   "method": "AnnaprashanAsync",
+   "path": "/v1/muhurta/annaprashan",
+   "shape": "moment",
+   "cost": 20,
+   "params": "MuhurtaAnnaprashanParams",
+   "optionalParams": false,
+   "extras": [
+    {
+     "wire": "birth_date",
+     "field": "birthDate",
+     "required": false
+    },
+    {
+     "wire": "sex",
+     "field": "sex",
+     "required": false
+    },
+    {
+     "wire": "lang",
+     "field": "lang",
+     "required": false
+    }
+   ],
+   "fields": [
+    {
+     "name": "lat",
+     "property": "Lat",
+     "type": "double",
+     "required": true,
+     "kind": "scalar",
+     "wires": [
+      "lat"
+     ]
+    },
+    {
+     "name": "lon",
+     "property": "Lon",
+     "type": "double",
+     "required": true,
+     "kind": "scalar",
+     "wires": [
+      "lon"
+     ]
+    },
+    {
+     "name": "tz",
+     "property": "Tz",
+     "type": "string",
+     "required": true,
+     "kind": "scalar",
+     "wires": [
+      "tz"
+     ]
+    },
+    {
+     "name": "date",
+     "property": "Date",
+     "type": "LifeAstroDate?",
+     "required": false,
+     "kind": "scalar",
+     "wires": [
+      "date"
+     ]
+    },
+    {
+     "name": "time",
+     "property": "Time",
+     "type": "LifeAstroTime?",
+     "required": false,
+     "kind": "scalar",
+     "wires": [
+      "time"
+     ]
+    },
+    {
+     "name": "ayanamsa",
+     "property": "Ayanamsa",
+     "type": "Ayanamsa?",
+     "required": false,
+     "kind": "scalar",
+     "wires": [
+      "ayanamsa"
+     ]
+    },
+    {
+     "name": "birthDate",
+     "property": "BirthDate",
+     "type": "LifeAstroDate?",
+     "required": false,
+     "kind": "scalar",
+     "wires": [
+      "birth_date"
+     ]
+    },
+    {
+     "name": "sex",
+     "property": "Sex",
+     "type": "string?",
+     "required": false,
+     "kind": "scalar",
+     "wires": [
+      "sex"
+     ]
+    },
+    {
+     "name": "lang",
+     "property": "Lang",
+     "type": "Lang?",
+     "required": false,
+     "kind": "scalar",
+     "wires": [
+      "lang",
+      "locale"
+     ]
+    }
+   ]
+  },
+  {
    "key": "muhurta.bestTime",
    "group": "Muhurta",
    "resource": "MuhurtaResource",
@@ -8001,6 +8867,11 @@
     {
      "wire": "ayanamsa",
      "field": "ayanamsa",
+     "required": false
+    },
+    {
+     "wire": "direction",
+     "field": "direction",
      "required": false
     },
     {
@@ -8088,6 +8959,107 @@
      "kind": "scalar",
      "wires": [
       "birth_date"
+     ]
+    },
+    {
+     "name": "ayanamsa",
+     "property": "Ayanamsa",
+     "type": "Ayanamsa?",
+     "required": false,
+     "kind": "scalar",
+     "wires": [
+      "ayanamsa"
+     ]
+    },
+    {
+     "name": "direction",
+     "property": "Direction",
+     "type": "string?",
+     "required": false,
+     "kind": "scalar",
+     "wires": [
+      "direction"
+     ]
+    },
+    {
+     "name": "lang",
+     "property": "Lang",
+     "type": "Lang?",
+     "required": false,
+     "kind": "scalar",
+     "wires": [
+      "lang",
+      "locale"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "muhurta.bhoomiPujan",
+   "group": "Muhurta",
+   "resource": "MuhurtaResource",
+   "method": "BhoomiPujanAsync",
+   "path": "/v1/muhurta/bhoomi-pujan",
+   "shape": "moment",
+   "cost": 20,
+   "params": "MuhurtaBhoomiPujanParams",
+   "optionalParams": false,
+   "extras": [
+    {
+     "wire": "lang",
+     "field": "lang",
+     "required": false
+    }
+   ],
+   "fields": [
+    {
+     "name": "lat",
+     "property": "Lat",
+     "type": "double",
+     "required": true,
+     "kind": "scalar",
+     "wires": [
+      "lat"
+     ]
+    },
+    {
+     "name": "lon",
+     "property": "Lon",
+     "type": "double",
+     "required": true,
+     "kind": "scalar",
+     "wires": [
+      "lon"
+     ]
+    },
+    {
+     "name": "tz",
+     "property": "Tz",
+     "type": "string",
+     "required": true,
+     "kind": "scalar",
+     "wires": [
+      "tz"
+     ]
+    },
+    {
+     "name": "date",
+     "property": "Date",
+     "type": "LifeAstroDate?",
+     "required": false,
+     "kind": "scalar",
+     "wires": [
+      "date"
+     ]
+    },
+    {
+     "name": "time",
+     "property": "Time",
+     "type": "LifeAstroTime?",
+     "required": false,
+     "kind": "scalar",
+     "wires": [
+      "time"
      ]
     },
     {
@@ -8289,6 +9261,112 @@
      "kind": "scalar",
      "wires": [
       "ayanamsa"
+     ]
+    },
+    {
+     "name": "lang",
+     "property": "Lang",
+     "type": "Lang?",
+     "required": false,
+     "kind": "scalar",
+     "wires": [
+      "lang",
+      "locale"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "muhurta.karnavedha",
+   "group": "Muhurta",
+   "resource": "MuhurtaResource",
+   "method": "KarnavedhaAsync",
+   "path": "/v1/muhurta/karnavedha",
+   "shape": "moment",
+   "cost": 20,
+   "params": "MuhurtaKarnavedhaParams",
+   "optionalParams": false,
+   "extras": [
+    {
+     "wire": "birth_date",
+     "field": "birthDate",
+     "required": false
+    },
+    {
+     "wire": "lang",
+     "field": "lang",
+     "required": false
+    }
+   ],
+   "fields": [
+    {
+     "name": "lat",
+     "property": "Lat",
+     "type": "double",
+     "required": true,
+     "kind": "scalar",
+     "wires": [
+      "lat"
+     ]
+    },
+    {
+     "name": "lon",
+     "property": "Lon",
+     "type": "double",
+     "required": true,
+     "kind": "scalar",
+     "wires": [
+      "lon"
+     ]
+    },
+    {
+     "name": "tz",
+     "property": "Tz",
+     "type": "string",
+     "required": true,
+     "kind": "scalar",
+     "wires": [
+      "tz"
+     ]
+    },
+    {
+     "name": "date",
+     "property": "Date",
+     "type": "LifeAstroDate?",
+     "required": false,
+     "kind": "scalar",
+     "wires": [
+      "date"
+     ]
+    },
+    {
+     "name": "time",
+     "property": "Time",
+     "type": "LifeAstroTime?",
+     "required": false,
+     "kind": "scalar",
+     "wires": [
+      "time"
+     ]
+    },
+    {
+     "name": "ayanamsa",
+     "property": "Ayanamsa",
+     "type": "Ayanamsa?",
+     "required": false,
+     "kind": "scalar",
+     "wires": [
+      "ayanamsa"
+     ]
+    },
+    {
+     "name": "birthDate",
+     "property": "BirthDate",
+     "type": "LifeAstroDate?",
+     "required": false,
+     "kind": "scalar",
+     "wires": [
+      "birth_date"
      ]
     },
     {
@@ -8784,6 +9862,294 @@
    ]
   },
   {
+   "key": "muhurta.upanayan",
+   "group": "Muhurta",
+   "resource": "MuhurtaResource",
+   "method": "UpanayanAsync",
+   "path": "/v1/muhurta/upanayan",
+   "shape": "moment",
+   "cost": 20,
+   "params": "MuhurtaUpanayanParams",
+   "optionalParams": false,
+   "extras": [
+    {
+     "wire": "lang",
+     "field": "lang",
+     "required": false
+    }
+   ],
+   "fields": [
+    {
+     "name": "lat",
+     "property": "Lat",
+     "type": "double",
+     "required": true,
+     "kind": "scalar",
+     "wires": [
+      "lat"
+     ]
+    },
+    {
+     "name": "lon",
+     "property": "Lon",
+     "type": "double",
+     "required": true,
+     "kind": "scalar",
+     "wires": [
+      "lon"
+     ]
+    },
+    {
+     "name": "tz",
+     "property": "Tz",
+     "type": "string",
+     "required": true,
+     "kind": "scalar",
+     "wires": [
+      "tz"
+     ]
+    },
+    {
+     "name": "date",
+     "property": "Date",
+     "type": "LifeAstroDate?",
+     "required": false,
+     "kind": "scalar",
+     "wires": [
+      "date"
+     ]
+    },
+    {
+     "name": "time",
+     "property": "Time",
+     "type": "LifeAstroTime?",
+     "required": false,
+     "kind": "scalar",
+     "wires": [
+      "time"
+     ]
+    },
+    {
+     "name": "ayanamsa",
+     "property": "Ayanamsa",
+     "type": "Ayanamsa?",
+     "required": false,
+     "kind": "scalar",
+     "wires": [
+      "ayanamsa"
+     ]
+    },
+    {
+     "name": "lang",
+     "property": "Lang",
+     "type": "Lang?",
+     "required": false,
+     "kind": "scalar",
+     "wires": [
+      "lang",
+      "locale"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "muhurta.vahan",
+   "group": "Muhurta",
+   "resource": "MuhurtaResource",
+   "method": "VahanAsync",
+   "path": "/v1/muhurta/vahan",
+   "shape": "moment",
+   "cost": 20,
+   "params": "MuhurtaVahanParams",
+   "optionalParams": false,
+   "extras": [
+    {
+     "wire": "lang",
+     "field": "lang",
+     "required": false
+    }
+   ],
+   "fields": [
+    {
+     "name": "lat",
+     "property": "Lat",
+     "type": "double",
+     "required": true,
+     "kind": "scalar",
+     "wires": [
+      "lat"
+     ]
+    },
+    {
+     "name": "lon",
+     "property": "Lon",
+     "type": "double",
+     "required": true,
+     "kind": "scalar",
+     "wires": [
+      "lon"
+     ]
+    },
+    {
+     "name": "tz",
+     "property": "Tz",
+     "type": "string",
+     "required": true,
+     "kind": "scalar",
+     "wires": [
+      "tz"
+     ]
+    },
+    {
+     "name": "date",
+     "property": "Date",
+     "type": "LifeAstroDate?",
+     "required": false,
+     "kind": "scalar",
+     "wires": [
+      "date"
+     ]
+    },
+    {
+     "name": "time",
+     "property": "Time",
+     "type": "LifeAstroTime?",
+     "required": false,
+     "kind": "scalar",
+     "wires": [
+      "time"
+     ]
+    },
+    {
+     "name": "ayanamsa",
+     "property": "Ayanamsa",
+     "type": "Ayanamsa?",
+     "required": false,
+     "kind": "scalar",
+     "wires": [
+      "ayanamsa"
+     ]
+    },
+    {
+     "name": "lang",
+     "property": "Lang",
+     "type": "Lang?",
+     "required": false,
+     "kind": "scalar",
+     "wires": [
+      "lang",
+      "locale"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "muhurta.vidyarambh",
+   "group": "Muhurta",
+   "resource": "MuhurtaResource",
+   "method": "VidyarambhAsync",
+   "path": "/v1/muhurta/vidyarambh",
+   "shape": "moment",
+   "cost": 20,
+   "params": "MuhurtaVidyarambhParams",
+   "optionalParams": false,
+   "extras": [
+    {
+     "wire": "birth_date",
+     "field": "birthDate",
+     "required": false
+    },
+    {
+     "wire": "lang",
+     "field": "lang",
+     "required": false
+    }
+   ],
+   "fields": [
+    {
+     "name": "lat",
+     "property": "Lat",
+     "type": "double",
+     "required": true,
+     "kind": "scalar",
+     "wires": [
+      "lat"
+     ]
+    },
+    {
+     "name": "lon",
+     "property": "Lon",
+     "type": "double",
+     "required": true,
+     "kind": "scalar",
+     "wires": [
+      "lon"
+     ]
+    },
+    {
+     "name": "tz",
+     "property": "Tz",
+     "type": "string",
+     "required": true,
+     "kind": "scalar",
+     "wires": [
+      "tz"
+     ]
+    },
+    {
+     "name": "date",
+     "property": "Date",
+     "type": "LifeAstroDate?",
+     "required": false,
+     "kind": "scalar",
+     "wires": [
+      "date"
+     ]
+    },
+    {
+     "name": "time",
+     "property": "Time",
+     "type": "LifeAstroTime?",
+     "required": false,
+     "kind": "scalar",
+     "wires": [
+      "time"
+     ]
+    },
+    {
+     "name": "ayanamsa",
+     "property": "Ayanamsa",
+     "type": "Ayanamsa?",
+     "required": false,
+     "kind": "scalar",
+     "wires": [
+      "ayanamsa"
+     ]
+    },
+    {
+     "name": "birthDate",
+     "property": "BirthDate",
+     "type": "LifeAstroDate?",
+     "required": false,
+     "kind": "scalar",
+     "wires": [
+      "birth_date"
+     ]
+    },
+    {
+     "name": "lang",
+     "property": "Lang",
+     "type": "Lang?",
+     "required": false,
+     "kind": "scalar",
+     "wires": [
+      "lang",
+      "locale"
+     ]
+    }
+   ]
+  },
+  {
    "key": "muhurta.vivah",
    "group": "Muhurta",
    "resource": "MuhurtaResource",
@@ -8977,6 +10343,11 @@
    "optionalParams": false,
    "extras": [
     {
+     "wire": "direction",
+     "field": "direction",
+     "required": false
+    },
+    {
      "wire": "lang",
      "field": "lang",
      "required": false
@@ -9041,6 +10412,16 @@
      "kind": "scalar",
      "wires": [
       "ayanamsa"
+     ]
+    },
+    {
+     "name": "direction",
+     "property": "Direction",
+     "type": "string?",
+     "required": false,
+     "kind": "scalar",
+     "wires": [
+      "direction"
      ]
     },
     {

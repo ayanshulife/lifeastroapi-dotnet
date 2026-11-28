@@ -13,9 +13,12 @@ namespace LifeAstroApi.Params
     /// <remarks>
     /// <para>
     /// Find auspicious Yatra (travel/journey) muhurta windows — avoids Disha Shool (directional inauspiciousness), Rahu
-    /// Kaal, Nak Shool, and favours Pushya/Hasta/Ashwini/Anuradha nakshatras for journeys. Each <c>factors[]</c> item
-    /// has a stable English <c>id</c> (e.g. <c>Tithi</c>, <c>RahuKaal</c>); <c>name</c> and <c>value</c> follow
-    /// <c>lang</c>.
+    /// Kaal, Nak Shool, and favours Pushya/Hasta/Ashwini/Anuradha nakshatras for journeys. <c>direction</c> (N, NE, E,
+    /// SE, S, SW, W, NW; full names such as north are also accepted) is the direction of travel: when it is sent the
+    /// weekday's Disha Shool is checked; without it there is no direction check. result.prohibited_by lists the
+    /// classical prohibitions that apply (English factor ids); whenever it is not empty grade is <c>inauspicious</c>
+    /// and is_acceptable is false. Each <c>factors[]</c> item has a stable English <c>id</c> (e.g. <c>Tithi</c>,
+    /// <c>RahuKaal</c>); <c>name</c> and <c>value</c> follow <c>lang</c>.
     /// </para>
     /// <code>
     /// var p = new MuhurtaYatraParams(new Place(19.076, 72.8777, "Asia/Kolkata")) { Date = "2026-11-20", Time = "12:00" };
@@ -67,6 +70,12 @@ namespace LifeAstroApi.Params
         /// <summary>Ayanamsa (sidereal offset) to use. Defaults to lahiri.</summary>
         public Ayanamsa? Ayanamsa { get; set; }
 
+        /// <summary>
+        /// Direction of travel: N, NE, E, SE, S, SW, W or NW (full names such as north or south-east are also
+        /// accepted). Optional; without it there is no direction check.
+        /// </summary>
+        public string? Direction { get; set; }
+
         /// <summary>Response language. Sent as <c>lang</c> and <c>locale</c>.</summary>
         public Lang? Lang { get; set; }
 
@@ -81,6 +90,7 @@ namespace LifeAstroApi.Params
             query.Put("date", Date ?? Wire.TodayIn(Tz));
             query.Put("time", Time);
             query.Put("ayanamsa", Ayanamsa);
+            query.Put("direction", Direction);
             query.Put("lang", Lang);
             query.Put("locale", Lang);
         }

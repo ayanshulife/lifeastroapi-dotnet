@@ -24,11 +24,79 @@ namespace LifeAstroApi.Resources
         }
 
         /// <summary>
+        /// Score a proposed moment for Annaprashan (a child's first solid food) (20 credits): tithi, weekday,
+        /// nakshatra, paksha, Rahu Kaal, Yamaganda, Durmuhurta and Bhadra. result has score (0-100), grade,
+        /// is_acceptable, prohibited_by, factors and warnings; prohibited_by lists the classical prohibitions that
+        /// apply (English factor ids), and whenever it is not empty grade is <c>inauspicious</c> and is_acceptable is
+        /// false. The prohibition for this purpose is Bhadra. result.notes holds informational sentences (age by
+        /// tradition, festival days) that never change the score. With birthDate (YYYY-MM-DD) and sex (<c>male</c> or
+        /// <c>female</c>) a note gives the child's running month and the months tradition names. Each <c>factors[]</c>
+        /// item has a stable English <c>id</c> (e.g. <c>Tithi</c>, <c>RahuKaal</c>); <c>name</c> and <c>value</c>
+        /// follow <c>lang</c>.
+        /// </summary>
+        /// <remarks>
+        /// Cost: 20 credits per call. <c>GET /v1/muhurta/annaprashan</c>. Node.js SDK: <c>muhurta.annaprashan</c>.
+        /// </remarks>
+        /// <param name="parameters">
+        /// The parameters (<see cref="LifeAstroApi.Params.MuhurtaAnnaprashanParams"/>).
+        /// </param>
+        /// <param name="options">Per-call timeout, raw body or <c>OnResponse</c> hook; null for none.</param>
+        /// <param name="cancellationToken">Cancels the call.</param>
+        /// <returns>The response JSON.</returns>
+        /// <exception cref="System.ArgumentNullException"><paramref name="parameters"/> is null.</exception>
+        /// <exception cref="LifeAstroApi.LifeAstroException">
+        /// An API error (a subclass per status), or a network failure or timeout.
+        /// </exception>
+        /// <exception cref="System.OperationCanceledException">
+        /// <paramref name="cancellationToken"/> was cancelled.
+        /// </exception>
+        public Task<JsonElement> AnnaprashanAsync(MuhurtaAnnaprashanParams parameters, RequestOptions? options = null, CancellationToken cancellationToken = default) =>
+            _client.SendAsync<JsonElement>(Wire.NotNull(parameters, nameof(parameters)), options, cancellationToken);
+
+        /// <summary>
+        /// Score a proposed moment for Annaprashan (a child's first solid food) (20 credits): tithi, weekday,
+        /// nakshatra, paksha, Rahu Kaal, Yamaganda, Durmuhurta and Bhadra. result has score (0-100), grade,
+        /// is_acceptable, prohibited_by, factors and warnings; prohibited_by lists the classical prohibitions that
+        /// apply (English factor ids), and whenever it is not empty grade is <c>inauspicious</c> and is_acceptable is
+        /// false. The prohibition for this purpose is Bhadra. result.notes holds informational sentences (age by
+        /// tradition, festival days) that never change the score. With birthDate (YYYY-MM-DD) and sex (<c>male</c> or
+        /// <c>female</c>) a note gives the child's running month and the months tradition names. Each <c>factors[]</c>
+        /// item has a stable English <c>id</c> (e.g. <c>Tithi</c>, <c>RahuKaal</c>); <c>name</c> and <c>value</c>
+        /// follow <c>lang</c>. Mapped to your own type.
+        /// </summary>
+        /// <remarks>
+        /// Cost: 20 credits per call. <c>GET /v1/muhurta/annaprashan</c>. Node.js SDK: <c>muhurta.annaprashan</c>.
+        /// </remarks>
+        /// <typeparam name="T">
+        /// Your type, read with System.Text.Json
+        /// (<see cref="LifeAstroApi.LifeAstroClientOptions.JsonSerializerOptions"/>).
+        /// </typeparam>
+        /// <param name="parameters">
+        /// The parameters (<see cref="LifeAstroApi.Params.MuhurtaAnnaprashanParams"/>).
+        /// </param>
+        /// <param name="options">Per-call timeout, raw body or <c>OnResponse</c> hook; null for none.</param>
+        /// <param name="cancellationToken">Cancels the call.</param>
+        /// <returns>The response mapped to <typeparamref name="T"/>; default for a JSON null.</returns>
+        /// <exception cref="System.ArgumentNullException"><paramref name="parameters"/> is null.</exception>
+        /// <exception cref="LifeAstroApi.LifeAstroException">
+        /// An API error (a subclass per status), a network failure or timeout, or a response that does not map to
+        /// <typeparamref name="T"/> (code <c>invalid_response</c>).
+        /// </exception>
+        /// <exception cref="System.OperationCanceledException">
+        /// <paramref name="cancellationToken"/> was cancelled.
+        /// </exception>
+        public Task<T?> AnnaprashanAsync<T>(MuhurtaAnnaprashanParams parameters, RequestOptions? options = null, CancellationToken cancellationToken = default) =>
+            _client.SendAsync<T>(Wire.NotNull(parameters, nameof(parameters)), options, cancellationToken);
+
+        /// <summary>
         /// Best-scoring muhurta windows in a date range. <c>purpose</c> is <c>general</c> (default), <c>vivah</c>,
-        /// <c>graha_pravesh</c> or <c>naamkaran</c>; <c>topN</c> (1-20, default 5) sets how many windows come back;
-        /// <c>birthDate</c> (YYYY-MM-DD) weights the windows by the person's tara bala and chandra bala. Each
-        /// <c>factors[]</c> item has a stable English <c>id</c> (e.g. <c>Tithi</c>, <c>RahuKaal</c>); <c>name</c> and
-        /// <c>value</c> follow <c>lang</c>.
+        /// <c>graha_pravesh</c>, <c>naamkaran</c>, <c>vyapar</c>, <c>yatra</c>, <c>vahan</c> or <c>bhoomi_pujan</c>;
+        /// each purpose uses the scorer of its own muhurta method, and moments under one of its classical prohibitions
+        /// are never returned, so fewer windows (or none) can come back. <c>direction</c> (N, NE, E, SE, S, SW, W, NW)
+        /// is the direction of travel, used only with purpose <c>yatra</c>. <c>topN</c> (1-20, default 5) sets how many
+        /// windows come back; <c>birthDate</c> (YYYY-MM-DD) weights the windows by the person's tara bala and chandra
+        /// bala. Each <c>factors[]</c> item has a stable English <c>id</c> (e.g. <c>Tithi</c>, <c>RahuKaal</c>);
+        /// <c>name</c> and <c>value</c> follow <c>lang</c>.
         /// </summary>
         /// <remarks>
         /// Cost: 30 credits per call. <c>GET /v1/muhurta/best-time</c>. Node.js SDK: <c>muhurta.bestTime</c>.
@@ -49,10 +117,13 @@ namespace LifeAstroApi.Resources
 
         /// <summary>
         /// Best-scoring muhurta windows in a date range. <c>purpose</c> is <c>general</c> (default), <c>vivah</c>,
-        /// <c>graha_pravesh</c> or <c>naamkaran</c>; <c>topN</c> (1-20, default 5) sets how many windows come back;
-        /// <c>birthDate</c> (YYYY-MM-DD) weights the windows by the person's tara bala and chandra bala. Each
-        /// <c>factors[]</c> item has a stable English <c>id</c> (e.g. <c>Tithi</c>, <c>RahuKaal</c>); <c>name</c> and
-        /// <c>value</c> follow <c>lang</c>. Mapped to your own type.
+        /// <c>graha_pravesh</c>, <c>naamkaran</c>, <c>vyapar</c>, <c>yatra</c>, <c>vahan</c> or <c>bhoomi_pujan</c>;
+        /// each purpose uses the scorer of its own muhurta method, and moments under one of its classical prohibitions
+        /// are never returned, so fewer windows (or none) can come back. <c>direction</c> (N, NE, E, SE, S, SW, W, NW)
+        /// is the direction of travel, used only with purpose <c>yatra</c>. <c>topN</c> (1-20, default 5) sets how many
+        /// windows come back; <c>birthDate</c> (YYYY-MM-DD) weights the windows by the person's tara bala and chandra
+        /// bala. Each <c>factors[]</c> item has a stable English <c>id</c> (e.g. <c>Tithi</c>, <c>RahuKaal</c>);
+        /// <c>name</c> and <c>value</c> follow <c>lang</c>. Mapped to your own type.
         /// </summary>
         /// <remarks>
         /// Cost: 30 credits per call. <c>GET /v1/muhurta/best-time</c>. Node.js SDK: <c>muhurta.bestTime</c>.
@@ -74,6 +145,69 @@ namespace LifeAstroApi.Resources
         /// <paramref name="cancellationToken"/> was cancelled.
         /// </exception>
         public Task<T?> BestTimeAsync<T>(MuhurtaBestTimeParams parameters, RequestOptions? options = null, CancellationToken cancellationToken = default) =>
+            _client.SendAsync<T>(Wire.NotNull(parameters, nameof(parameters)), options, cancellationToken);
+
+        /// <summary>
+        /// Score a proposed moment for Bhoomi Pujan (ground-breaking, laying a foundation) (20 credits): tithi,
+        /// weekday, nakshatra, solar month, Rahu Kaal, Yamaganda, Durmuhurta, Bhadra, paksha, Jupiter and Venus set,
+        /// adhika masa. result has score (0-100), grade, is_acceptable, prohibited_by, factors and warnings;
+        /// prohibited_by lists the classical prohibitions that apply (English factor ids), and whenever it is not empty
+        /// grade is <c>inauspicious</c> and is_acceptable is false. The prohibitions for this purpose are Bhadra,
+        /// GuruShukraAsta and AdhikaMasa. result.direction (informational, never scored) gives rahu_mukha and
+        /// start_digging for the solar month. Each <c>factors[]</c> item has a stable English <c>id</c> (e.g.
+        /// <c>Tithi</c>, <c>RahuKaal</c>); <c>name</c> and <c>value</c> follow <c>lang</c>.
+        /// </summary>
+        /// <remarks>
+        /// Cost: 20 credits per call. <c>GET /v1/muhurta/bhoomi-pujan</c>. Node.js SDK: <c>muhurta.bhoomiPujan</c>.
+        /// </remarks>
+        /// <param name="parameters">
+        /// The parameters (<see cref="LifeAstroApi.Params.MuhurtaBhoomiPujanParams"/>).
+        /// </param>
+        /// <param name="options">Per-call timeout, raw body or <c>OnResponse</c> hook; null for none.</param>
+        /// <param name="cancellationToken">Cancels the call.</param>
+        /// <returns>The response JSON.</returns>
+        /// <exception cref="System.ArgumentNullException"><paramref name="parameters"/> is null.</exception>
+        /// <exception cref="LifeAstroApi.LifeAstroException">
+        /// An API error (a subclass per status), or a network failure or timeout.
+        /// </exception>
+        /// <exception cref="System.OperationCanceledException">
+        /// <paramref name="cancellationToken"/> was cancelled.
+        /// </exception>
+        public Task<JsonElement> BhoomiPujanAsync(MuhurtaBhoomiPujanParams parameters, RequestOptions? options = null, CancellationToken cancellationToken = default) =>
+            _client.SendAsync<JsonElement>(Wire.NotNull(parameters, nameof(parameters)), options, cancellationToken);
+
+        /// <summary>
+        /// Score a proposed moment for Bhoomi Pujan (ground-breaking, laying a foundation) (20 credits): tithi,
+        /// weekday, nakshatra, solar month, Rahu Kaal, Yamaganda, Durmuhurta, Bhadra, paksha, Jupiter and Venus set,
+        /// adhika masa. result has score (0-100), grade, is_acceptable, prohibited_by, factors and warnings;
+        /// prohibited_by lists the classical prohibitions that apply (English factor ids), and whenever it is not empty
+        /// grade is <c>inauspicious</c> and is_acceptable is false. The prohibitions for this purpose are Bhadra,
+        /// GuruShukraAsta and AdhikaMasa. result.direction (informational, never scored) gives rahu_mukha and
+        /// start_digging for the solar month. Each <c>factors[]</c> item has a stable English <c>id</c> (e.g.
+        /// <c>Tithi</c>, <c>RahuKaal</c>); <c>name</c> and <c>value</c> follow <c>lang</c>. Mapped to your own type.
+        /// </summary>
+        /// <remarks>
+        /// Cost: 20 credits per call. <c>GET /v1/muhurta/bhoomi-pujan</c>. Node.js SDK: <c>muhurta.bhoomiPujan</c>.
+        /// </remarks>
+        /// <typeparam name="T">
+        /// Your type, read with System.Text.Json
+        /// (<see cref="LifeAstroApi.LifeAstroClientOptions.JsonSerializerOptions"/>).
+        /// </typeparam>
+        /// <param name="parameters">
+        /// The parameters (<see cref="LifeAstroApi.Params.MuhurtaBhoomiPujanParams"/>).
+        /// </param>
+        /// <param name="options">Per-call timeout, raw body or <c>OnResponse</c> hook; null for none.</param>
+        /// <param name="cancellationToken">Cancels the call.</param>
+        /// <returns>The response mapped to <typeparamref name="T"/>; default for a JSON null.</returns>
+        /// <exception cref="System.ArgumentNullException"><paramref name="parameters"/> is null.</exception>
+        /// <exception cref="LifeAstroApi.LifeAstroException">
+        /// An API error (a subclass per status), a network failure or timeout, or a response that does not map to
+        /// <typeparamref name="T"/> (code <c>invalid_response</c>).
+        /// </exception>
+        /// <exception cref="System.OperationCanceledException">
+        /// <paramref name="cancellationToken"/> was cancelled.
+        /// </exception>
+        public Task<T?> BhoomiPujanAsync<T>(MuhurtaBhoomiPujanParams parameters, RequestOptions? options = null, CancellationToken cancellationToken = default) =>
             _client.SendAsync<T>(Wire.NotNull(parameters, nameof(parameters)), options, cancellationToken);
 
         /// <summary>
@@ -128,8 +262,10 @@ namespace LifeAstroApi.Resources
 
         /// <summary>
         /// Find auspicious Griha Pravesh (housewarming) muhurta windows in a date range — checks tithi, nakshatra,
-        /// vara, Sun position, and lagna for the ceremony. Each <c>factors[]</c> item has a stable English <c>id</c>
-        /// (e.g. <c>Tithi</c>, <c>RahuKaal</c>); <c>name</c> and <c>value</c> follow <c>lang</c>.
+        /// vara, Sun position, and lagna for the ceremony. result.prohibited_by lists the classical prohibitions that
+        /// apply (English factor ids); whenever it is not empty grade is <c>inauspicious</c> and is_acceptable is
+        /// false. Each <c>factors[]</c> item has a stable English <c>id</c> (e.g. <c>Tithi</c>, <c>RahuKaal</c>);
+        /// <c>name</c> and <c>value</c> follow <c>lang</c>.
         /// </summary>
         /// <remarks>
         /// Cost: 20 credits per call. <c>GET /v1/muhurta/graha-pravesh</c>. Node.js SDK: <c>muhurta.grahaPravesh</c>.
@@ -152,9 +288,10 @@ namespace LifeAstroApi.Resources
 
         /// <summary>
         /// Find auspicious Griha Pravesh (housewarming) muhurta windows in a date range — checks tithi, nakshatra,
-        /// vara, Sun position, and lagna for the ceremony. Each <c>factors[]</c> item has a stable English <c>id</c>
-        /// (e.g. <c>Tithi</c>, <c>RahuKaal</c>); <c>name</c> and <c>value</c> follow <c>lang</c>. Mapped to your own
-        /// type.
+        /// vara, Sun position, and lagna for the ceremony. result.prohibited_by lists the classical prohibitions that
+        /// apply (English factor ids); whenever it is not empty grade is <c>inauspicious</c> and is_acceptable is
+        /// false. Each <c>factors[]</c> item has a stable English <c>id</c> (e.g. <c>Tithi</c>, <c>RahuKaal</c>);
+        /// <c>name</c> and <c>value</c> follow <c>lang</c>. Mapped to your own type.
         /// </summary>
         /// <remarks>
         /// Cost: 20 credits per call. <c>GET /v1/muhurta/graha-pravesh</c>. Node.js SDK: <c>muhurta.grahaPravesh</c>.
@@ -181,8 +318,71 @@ namespace LifeAstroApi.Resources
             _client.SendAsync<T>(Wire.NotNull(parameters, nameof(parameters)), options, cancellationToken);
 
         /// <summary>
-        /// Naamkaran (naming ceremony) muhurta windows. Each <c>factors[]</c> item has a stable English <c>id</c> (e.g.
-        /// <c>Tithi</c>, <c>RahuKaal</c>); <c>name</c> and <c>value</c> follow <c>lang</c>.
+        /// Score a proposed moment for Karnavedha (ear piercing) (20 credits): tithi, weekday, nakshatra, the Sun's
+        /// sign, Hari Shayana, Jupiter and Venus set, Rahu Kaal, Yamaganda, Durmuhurta, Bhadra and adhika masa. result
+        /// has score (0-100), grade, is_acceptable, prohibited_by, factors and warnings; prohibited_by lists the
+        /// classical prohibitions that apply (English factor ids), and whenever it is not empty grade is
+        /// <c>inauspicious</c> and is_acceptable is false. The prohibitions for this purpose are GuruShukraAsta,
+        /// AdhikaMasa, HariShayana and Bhadra. result.notes holds informational sentences (age by tradition, festival
+        /// days) that never change the score. With birthDate (YYYY-MM-DD) a note gives the child's running day, month
+        /// and year. Each <c>factors[]</c> item has a stable English <c>id</c> (e.g. <c>Tithi</c>, <c>RahuKaal</c>);
+        /// <c>name</c> and <c>value</c> follow <c>lang</c>.
+        /// </summary>
+        /// <remarks>
+        /// Cost: 20 credits per call. <c>GET /v1/muhurta/karnavedha</c>. Node.js SDK: <c>muhurta.karnavedha</c>.
+        /// </remarks>
+        /// <param name="parameters">The parameters (<see cref="LifeAstroApi.Params.MuhurtaKarnavedhaParams"/>).</param>
+        /// <param name="options">Per-call timeout, raw body or <c>OnResponse</c> hook; null for none.</param>
+        /// <param name="cancellationToken">Cancels the call.</param>
+        /// <returns>The response JSON.</returns>
+        /// <exception cref="System.ArgumentNullException"><paramref name="parameters"/> is null.</exception>
+        /// <exception cref="LifeAstroApi.LifeAstroException">
+        /// An API error (a subclass per status), or a network failure or timeout.
+        /// </exception>
+        /// <exception cref="System.OperationCanceledException">
+        /// <paramref name="cancellationToken"/> was cancelled.
+        /// </exception>
+        public Task<JsonElement> KarnavedhaAsync(MuhurtaKarnavedhaParams parameters, RequestOptions? options = null, CancellationToken cancellationToken = default) =>
+            _client.SendAsync<JsonElement>(Wire.NotNull(parameters, nameof(parameters)), options, cancellationToken);
+
+        /// <summary>
+        /// Score a proposed moment for Karnavedha (ear piercing) (20 credits): tithi, weekday, nakshatra, the Sun's
+        /// sign, Hari Shayana, Jupiter and Venus set, Rahu Kaal, Yamaganda, Durmuhurta, Bhadra and adhika masa. result
+        /// has score (0-100), grade, is_acceptable, prohibited_by, factors and warnings; prohibited_by lists the
+        /// classical prohibitions that apply (English factor ids), and whenever it is not empty grade is
+        /// <c>inauspicious</c> and is_acceptable is false. The prohibitions for this purpose are GuruShukraAsta,
+        /// AdhikaMasa, HariShayana and Bhadra. result.notes holds informational sentences (age by tradition, festival
+        /// days) that never change the score. With birthDate (YYYY-MM-DD) a note gives the child's running day, month
+        /// and year. Each <c>factors[]</c> item has a stable English <c>id</c> (e.g. <c>Tithi</c>, <c>RahuKaal</c>);
+        /// <c>name</c> and <c>value</c> follow <c>lang</c>. Mapped to your own type.
+        /// </summary>
+        /// <remarks>
+        /// Cost: 20 credits per call. <c>GET /v1/muhurta/karnavedha</c>. Node.js SDK: <c>muhurta.karnavedha</c>.
+        /// </remarks>
+        /// <typeparam name="T">
+        /// Your type, read with System.Text.Json
+        /// (<see cref="LifeAstroApi.LifeAstroClientOptions.JsonSerializerOptions"/>).
+        /// </typeparam>
+        /// <param name="parameters">The parameters (<see cref="LifeAstroApi.Params.MuhurtaKarnavedhaParams"/>).</param>
+        /// <param name="options">Per-call timeout, raw body or <c>OnResponse</c> hook; null for none.</param>
+        /// <param name="cancellationToken">Cancels the call.</param>
+        /// <returns>The response mapped to <typeparamref name="T"/>; default for a JSON null.</returns>
+        /// <exception cref="System.ArgumentNullException"><paramref name="parameters"/> is null.</exception>
+        /// <exception cref="LifeAstroApi.LifeAstroException">
+        /// An API error (a subclass per status), a network failure or timeout, or a response that does not map to
+        /// <typeparamref name="T"/> (code <c>invalid_response</c>).
+        /// </exception>
+        /// <exception cref="System.OperationCanceledException">
+        /// <paramref name="cancellationToken"/> was cancelled.
+        /// </exception>
+        public Task<T?> KarnavedhaAsync<T>(MuhurtaKarnavedhaParams parameters, RequestOptions? options = null, CancellationToken cancellationToken = default) =>
+            _client.SendAsync<T>(Wire.NotNull(parameters, nameof(parameters)), options, cancellationToken);
+
+        /// <summary>
+        /// Naamkaran (naming ceremony) muhurta windows. result.prohibited_by lists the classical prohibitions that
+        /// apply (English factor ids); whenever it is not empty grade is <c>inauspicious</c> and is_acceptable is
+        /// false. Each <c>factors[]</c> item has a stable English <c>id</c> (e.g. <c>Tithi</c>, <c>RahuKaal</c>);
+        /// <c>name</c> and <c>value</c> follow <c>lang</c>.
         /// </summary>
         /// <remarks>
         /// Cost: 20 credits per call. <c>GET /v1/muhurta/naamkaran</c>. Node.js SDK: <c>muhurta.naamkaran</c>.
@@ -202,8 +402,10 @@ namespace LifeAstroApi.Resources
             _client.SendAsync<JsonElement>(Wire.NotNull(parameters, nameof(parameters)), options, cancellationToken);
 
         /// <summary>
-        /// Naamkaran (naming ceremony) muhurta windows. Each <c>factors[]</c> item has a stable English <c>id</c> (e.g.
-        /// <c>Tithi</c>, <c>RahuKaal</c>); <c>name</c> and <c>value</c> follow <c>lang</c>. Mapped to your own type.
+        /// Naamkaran (naming ceremony) muhurta windows. result.prohibited_by lists the classical prohibitions that
+        /// apply (English factor ids); whenever it is not empty grade is <c>inauspicious</c> and is_acceptable is
+        /// false. Each <c>factors[]</c> item has a stable English <c>id</c> (e.g. <c>Tithi</c>, <c>RahuKaal</c>);
+        /// <c>name</c> and <c>value</c> follow <c>lang</c>. Mapped to your own type.
         /// </summary>
         /// <remarks>
         /// Cost: 20 credits per call. <c>GET /v1/muhurta/naamkaran</c>. Node.js SDK: <c>muhurta.naamkaran</c>.
@@ -429,8 +631,184 @@ namespace LifeAstroApi.Resources
             _client.SendAsync<T>(Wire.NotNull(parameters, nameof(parameters)), options, cancellationToken);
 
         /// <summary>
-        /// Auspicious wedding (vivah) muhurta windows in a date range. Each <c>factors[]</c> item has a stable English
+        /// Score a proposed moment for the Upanayan (sacred thread) ceremony (20 credits): tithi, weekday, nakshatra,
+        /// the Sun's course, part of the day, Jupiter and Venus set, Rahu Kaal, Yamaganda, Durmuhurta, Bhadra and
+        /// adhika masa. result has score (0-100), grade, is_acceptable, prohibited_by, factors and warnings;
+        /// prohibited_by lists the classical prohibitions that apply (English factor ids), and whenever it is not empty
+        /// grade is <c>inauspicious</c> and is_acceptable is false. The prohibitions for this purpose are
+        /// GuruShukraAsta, AdhikaMasa, Ayana (Dakshinayana) and Bhadra. result.notes holds informational sentences (age
+        /// by tradition, festival days) that never change the score. Each <c>factors[]</c> item has a stable English
         /// <c>id</c> (e.g. <c>Tithi</c>, <c>RahuKaal</c>); <c>name</c> and <c>value</c> follow <c>lang</c>.
+        /// </summary>
+        /// <remarks>
+        /// Cost: 20 credits per call. <c>GET /v1/muhurta/upanayan</c>. Node.js SDK: <c>muhurta.upanayan</c>.
+        /// </remarks>
+        /// <param name="parameters">The parameters (<see cref="LifeAstroApi.Params.MuhurtaUpanayanParams"/>).</param>
+        /// <param name="options">Per-call timeout, raw body or <c>OnResponse</c> hook; null for none.</param>
+        /// <param name="cancellationToken">Cancels the call.</param>
+        /// <returns>The response JSON.</returns>
+        /// <exception cref="System.ArgumentNullException"><paramref name="parameters"/> is null.</exception>
+        /// <exception cref="LifeAstroApi.LifeAstroException">
+        /// An API error (a subclass per status), or a network failure or timeout.
+        /// </exception>
+        /// <exception cref="System.OperationCanceledException">
+        /// <paramref name="cancellationToken"/> was cancelled.
+        /// </exception>
+        public Task<JsonElement> UpanayanAsync(MuhurtaUpanayanParams parameters, RequestOptions? options = null, CancellationToken cancellationToken = default) =>
+            _client.SendAsync<JsonElement>(Wire.NotNull(parameters, nameof(parameters)), options, cancellationToken);
+
+        /// <summary>
+        /// Score a proposed moment for the Upanayan (sacred thread) ceremony (20 credits): tithi, weekday, nakshatra,
+        /// the Sun's course, part of the day, Jupiter and Venus set, Rahu Kaal, Yamaganda, Durmuhurta, Bhadra and
+        /// adhika masa. result has score (0-100), grade, is_acceptable, prohibited_by, factors and warnings;
+        /// prohibited_by lists the classical prohibitions that apply (English factor ids), and whenever it is not empty
+        /// grade is <c>inauspicious</c> and is_acceptable is false. The prohibitions for this purpose are
+        /// GuruShukraAsta, AdhikaMasa, Ayana (Dakshinayana) and Bhadra. result.notes holds informational sentences (age
+        /// by tradition, festival days) that never change the score. Each <c>factors[]</c> item has a stable English
+        /// <c>id</c> (e.g. <c>Tithi</c>, <c>RahuKaal</c>); <c>name</c> and <c>value</c> follow <c>lang</c>. Mapped to
+        /// your own type.
+        /// </summary>
+        /// <remarks>
+        /// Cost: 20 credits per call. <c>GET /v1/muhurta/upanayan</c>. Node.js SDK: <c>muhurta.upanayan</c>.
+        /// </remarks>
+        /// <typeparam name="T">
+        /// Your type, read with System.Text.Json
+        /// (<see cref="LifeAstroApi.LifeAstroClientOptions.JsonSerializerOptions"/>).
+        /// </typeparam>
+        /// <param name="parameters">The parameters (<see cref="LifeAstroApi.Params.MuhurtaUpanayanParams"/>).</param>
+        /// <param name="options">Per-call timeout, raw body or <c>OnResponse</c> hook; null for none.</param>
+        /// <param name="cancellationToken">Cancels the call.</param>
+        /// <returns>The response mapped to <typeparamref name="T"/>; default for a JSON null.</returns>
+        /// <exception cref="System.ArgumentNullException"><paramref name="parameters"/> is null.</exception>
+        /// <exception cref="LifeAstroApi.LifeAstroException">
+        /// An API error (a subclass per status), a network failure or timeout, or a response that does not map to
+        /// <typeparamref name="T"/> (code <c>invalid_response</c>).
+        /// </exception>
+        /// <exception cref="System.OperationCanceledException">
+        /// <paramref name="cancellationToken"/> was cancelled.
+        /// </exception>
+        public Task<T?> UpanayanAsync<T>(MuhurtaUpanayanParams parameters, RequestOptions? options = null, CancellationToken cancellationToken = default) =>
+            _client.SendAsync<T>(Wire.NotNull(parameters, nameof(parameters)), options, cancellationToken);
+
+        /// <summary>
+        /// Score a proposed moment for buying a vehicle or its first use (20 credits): tithi, weekday, nakshatra, Rahu
+        /// Kaal, Yamaganda, Durmuhurta and Bhadra. result has score (0-100), grade, is_acceptable, prohibited_by,
+        /// factors and warnings; prohibited_by lists the classical prohibitions that apply (English factor ids), and
+        /// whenever it is not empty grade is <c>inauspicious</c> and is_acceptable is false. The prohibition for this
+        /// purpose is Bhadra. Each <c>factors[]</c> item has a stable English <c>id</c> (e.g. <c>Tithi</c>,
+        /// <c>RahuKaal</c>); <c>name</c> and <c>value</c> follow <c>lang</c>.
+        /// </summary>
+        /// <remarks>
+        /// Cost: 20 credits per call. <c>GET /v1/muhurta/vahan</c>. Node.js SDK: <c>muhurta.vahan</c>.
+        /// </remarks>
+        /// <param name="parameters">The parameters (<see cref="LifeAstroApi.Params.MuhurtaVahanParams"/>).</param>
+        /// <param name="options">Per-call timeout, raw body or <c>OnResponse</c> hook; null for none.</param>
+        /// <param name="cancellationToken">Cancels the call.</param>
+        /// <returns>The response JSON.</returns>
+        /// <exception cref="System.ArgumentNullException"><paramref name="parameters"/> is null.</exception>
+        /// <exception cref="LifeAstroApi.LifeAstroException">
+        /// An API error (a subclass per status), or a network failure or timeout.
+        /// </exception>
+        /// <exception cref="System.OperationCanceledException">
+        /// <paramref name="cancellationToken"/> was cancelled.
+        /// </exception>
+        public Task<JsonElement> VahanAsync(MuhurtaVahanParams parameters, RequestOptions? options = null, CancellationToken cancellationToken = default) =>
+            _client.SendAsync<JsonElement>(Wire.NotNull(parameters, nameof(parameters)), options, cancellationToken);
+
+        /// <summary>
+        /// Score a proposed moment for buying a vehicle or its first use (20 credits): tithi, weekday, nakshatra, Rahu
+        /// Kaal, Yamaganda, Durmuhurta and Bhadra. result has score (0-100), grade, is_acceptable, prohibited_by,
+        /// factors and warnings; prohibited_by lists the classical prohibitions that apply (English factor ids), and
+        /// whenever it is not empty grade is <c>inauspicious</c> and is_acceptable is false. The prohibition for this
+        /// purpose is Bhadra. Each <c>factors[]</c> item has a stable English <c>id</c> (e.g. <c>Tithi</c>,
+        /// <c>RahuKaal</c>); <c>name</c> and <c>value</c> follow <c>lang</c>. Mapped to your own type.
+        /// </summary>
+        /// <remarks>
+        /// Cost: 20 credits per call. <c>GET /v1/muhurta/vahan</c>. Node.js SDK: <c>muhurta.vahan</c>.
+        /// </remarks>
+        /// <typeparam name="T">
+        /// Your type, read with System.Text.Json
+        /// (<see cref="LifeAstroApi.LifeAstroClientOptions.JsonSerializerOptions"/>).
+        /// </typeparam>
+        /// <param name="parameters">The parameters (<see cref="LifeAstroApi.Params.MuhurtaVahanParams"/>).</param>
+        /// <param name="options">Per-call timeout, raw body or <c>OnResponse</c> hook; null for none.</param>
+        /// <param name="cancellationToken">Cancels the call.</param>
+        /// <returns>The response mapped to <typeparamref name="T"/>; default for a JSON null.</returns>
+        /// <exception cref="System.ArgumentNullException"><paramref name="parameters"/> is null.</exception>
+        /// <exception cref="LifeAstroApi.LifeAstroException">
+        /// An API error (a subclass per status), a network failure or timeout, or a response that does not map to
+        /// <typeparamref name="T"/> (code <c>invalid_response</c>).
+        /// </exception>
+        /// <exception cref="System.OperationCanceledException">
+        /// <paramref name="cancellationToken"/> was cancelled.
+        /// </exception>
+        public Task<T?> VahanAsync<T>(MuhurtaVahanParams parameters, RequestOptions? options = null, CancellationToken cancellationToken = default) =>
+            _client.SendAsync<T>(Wire.NotNull(parameters, nameof(parameters)), options, cancellationToken);
+
+        /// <summary>
+        /// Score a proposed moment for Vidyarambh (a child's first letters) (20 credits): tithi, weekday, nakshatra,
+        /// the Sun's course, Rahu Kaal, Yamaganda, Durmuhurta, Bhadra and adhika masa. result has score (0-100), grade,
+        /// is_acceptable, prohibited_by, factors and warnings; prohibited_by lists the classical prohibitions that
+        /// apply (English factor ids), and whenever it is not empty grade is <c>inauspicious</c> and is_acceptable is
+        /// false. The prohibitions for this purpose are AdhikaMasa and Bhadra. result.notes holds informational
+        /// sentences (age by tradition, festival days) that never change the score. With birthDate (YYYY-MM-DD) a note
+        /// gives the child's running year. Each <c>factors[]</c> item has a stable English <c>id</c> (e.g.
+        /// <c>Tithi</c>, <c>RahuKaal</c>); <c>name</c> and <c>value</c> follow <c>lang</c>.
+        /// </summary>
+        /// <remarks>
+        /// Cost: 20 credits per call. <c>GET /v1/muhurta/vidyarambh</c>. Node.js SDK: <c>muhurta.vidyarambh</c>.
+        /// </remarks>
+        /// <param name="parameters">The parameters (<see cref="LifeAstroApi.Params.MuhurtaVidyarambhParams"/>).</param>
+        /// <param name="options">Per-call timeout, raw body or <c>OnResponse</c> hook; null for none.</param>
+        /// <param name="cancellationToken">Cancels the call.</param>
+        /// <returns>The response JSON.</returns>
+        /// <exception cref="System.ArgumentNullException"><paramref name="parameters"/> is null.</exception>
+        /// <exception cref="LifeAstroApi.LifeAstroException">
+        /// An API error (a subclass per status), or a network failure or timeout.
+        /// </exception>
+        /// <exception cref="System.OperationCanceledException">
+        /// <paramref name="cancellationToken"/> was cancelled.
+        /// </exception>
+        public Task<JsonElement> VidyarambhAsync(MuhurtaVidyarambhParams parameters, RequestOptions? options = null, CancellationToken cancellationToken = default) =>
+            _client.SendAsync<JsonElement>(Wire.NotNull(parameters, nameof(parameters)), options, cancellationToken);
+
+        /// <summary>
+        /// Score a proposed moment for Vidyarambh (a child's first letters) (20 credits): tithi, weekday, nakshatra,
+        /// the Sun's course, Rahu Kaal, Yamaganda, Durmuhurta, Bhadra and adhika masa. result has score (0-100), grade,
+        /// is_acceptable, prohibited_by, factors and warnings; prohibited_by lists the classical prohibitions that
+        /// apply (English factor ids), and whenever it is not empty grade is <c>inauspicious</c> and is_acceptable is
+        /// false. The prohibitions for this purpose are AdhikaMasa and Bhadra. result.notes holds informational
+        /// sentences (age by tradition, festival days) that never change the score. With birthDate (YYYY-MM-DD) a note
+        /// gives the child's running year. Each <c>factors[]</c> item has a stable English <c>id</c> (e.g.
+        /// <c>Tithi</c>, <c>RahuKaal</c>); <c>name</c> and <c>value</c> follow <c>lang</c>. Mapped to your own type.
+        /// </summary>
+        /// <remarks>
+        /// Cost: 20 credits per call. <c>GET /v1/muhurta/vidyarambh</c>. Node.js SDK: <c>muhurta.vidyarambh</c>.
+        /// </remarks>
+        /// <typeparam name="T">
+        /// Your type, read with System.Text.Json
+        /// (<see cref="LifeAstroApi.LifeAstroClientOptions.JsonSerializerOptions"/>).
+        /// </typeparam>
+        /// <param name="parameters">The parameters (<see cref="LifeAstroApi.Params.MuhurtaVidyarambhParams"/>).</param>
+        /// <param name="options">Per-call timeout, raw body or <c>OnResponse</c> hook; null for none.</param>
+        /// <param name="cancellationToken">Cancels the call.</param>
+        /// <returns>The response mapped to <typeparamref name="T"/>; default for a JSON null.</returns>
+        /// <exception cref="System.ArgumentNullException"><paramref name="parameters"/> is null.</exception>
+        /// <exception cref="LifeAstroApi.LifeAstroException">
+        /// An API error (a subclass per status), a network failure or timeout, or a response that does not map to
+        /// <typeparamref name="T"/> (code <c>invalid_response</c>).
+        /// </exception>
+        /// <exception cref="System.OperationCanceledException">
+        /// <paramref name="cancellationToken"/> was cancelled.
+        /// </exception>
+        public Task<T?> VidyarambhAsync<T>(MuhurtaVidyarambhParams parameters, RequestOptions? options = null, CancellationToken cancellationToken = default) =>
+            _client.SendAsync<T>(Wire.NotNull(parameters, nameof(parameters)), options, cancellationToken);
+
+        /// <summary>
+        /// Auspicious wedding (vivah) muhurta windows in a date range. result.prohibited_by lists the classical
+        /// prohibitions that apply (English factor ids); whenever it is not empty grade is <c>inauspicious</c> and
+        /// is_acceptable is false. Each <c>factors[]</c> item has a stable English <c>id</c> (e.g. <c>Tithi</c>,
+        /// <c>RahuKaal</c>); <c>name</c> and <c>value</c> follow <c>lang</c>.
         /// </summary>
         /// <remarks>
         /// Cost: 30 credits per call. <c>GET /v1/muhurta/vivah</c>. Node.js SDK: <c>muhurta.vivah</c>.
@@ -450,9 +828,10 @@ namespace LifeAstroApi.Resources
             _client.SendAsync<JsonElement>(Wire.NotNull(parameters, nameof(parameters)), options, cancellationToken);
 
         /// <summary>
-        /// Auspicious wedding (vivah) muhurta windows in a date range. Each <c>factors[]</c> item has a stable English
-        /// <c>id</c> (e.g. <c>Tithi</c>, <c>RahuKaal</c>); <c>name</c> and <c>value</c> follow <c>lang</c>. Mapped to
-        /// your own type.
+        /// Auspicious wedding (vivah) muhurta windows in a date range. result.prohibited_by lists the classical
+        /// prohibitions that apply (English factor ids); whenever it is not empty grade is <c>inauspicious</c> and
+        /// is_acceptable is false. Each <c>factors[]</c> item has a stable English <c>id</c> (e.g. <c>Tithi</c>,
+        /// <c>RahuKaal</c>); <c>name</c> and <c>value</c> follow <c>lang</c>. Mapped to your own type.
         /// </summary>
         /// <remarks>
         /// Cost: 30 credits per call. <c>GET /v1/muhurta/vivah</c>. Node.js SDK: <c>muhurta.vivah</c>.
@@ -478,8 +857,10 @@ namespace LifeAstroApi.Resources
 
         /// <summary>
         /// Find auspicious Vyapar (business/trade) muhurta windows — suitable for starting a business, signing
-        /// contracts, launching a product, or opening a shop. Each <c>factors[]</c> item has a stable English <c>id</c>
-        /// (e.g. <c>Tithi</c>, <c>RahuKaal</c>); <c>name</c> and <c>value</c> follow <c>lang</c>.
+        /// contracts, launching a product, or opening a shop. result.prohibited_by lists the classical prohibitions
+        /// that apply (English factor ids); whenever it is not empty grade is <c>inauspicious</c> and is_acceptable is
+        /// false. Each <c>factors[]</c> item has a stable English <c>id</c> (e.g. <c>Tithi</c>, <c>RahuKaal</c>);
+        /// <c>name</c> and <c>value</c> follow <c>lang</c>.
         /// </summary>
         /// <remarks>
         /// Cost: 20 credits per call. <c>GET /v1/muhurta/vyapar</c>. Node.js SDK: <c>muhurta.vyapar</c>.
@@ -500,9 +881,10 @@ namespace LifeAstroApi.Resources
 
         /// <summary>
         /// Find auspicious Vyapar (business/trade) muhurta windows — suitable for starting a business, signing
-        /// contracts, launching a product, or opening a shop. Each <c>factors[]</c> item has a stable English <c>id</c>
-        /// (e.g. <c>Tithi</c>, <c>RahuKaal</c>); <c>name</c> and <c>value</c> follow <c>lang</c>. Mapped to your own
-        /// type.
+        /// contracts, launching a product, or opening a shop. result.prohibited_by lists the classical prohibitions
+        /// that apply (English factor ids); whenever it is not empty grade is <c>inauspicious</c> and is_acceptable is
+        /// false. Each <c>factors[]</c> item has a stable English <c>id</c> (e.g. <c>Tithi</c>, <c>RahuKaal</c>);
+        /// <c>name</c> and <c>value</c> follow <c>lang</c>. Mapped to your own type.
         /// </summary>
         /// <remarks>
         /// Cost: 20 credits per call. <c>GET /v1/muhurta/vyapar</c>. Node.js SDK: <c>muhurta.vyapar</c>.
@@ -528,9 +910,12 @@ namespace LifeAstroApi.Resources
 
         /// <summary>
         /// Find auspicious Yatra (travel/journey) muhurta windows — avoids Disha Shool (directional inauspiciousness),
-        /// Rahu Kaal, Nak Shool, and favours Pushya/Hasta/Ashwini/Anuradha nakshatras for journeys. Each
-        /// <c>factors[]</c> item has a stable English <c>id</c> (e.g. <c>Tithi</c>, <c>RahuKaal</c>); <c>name</c> and
-        /// <c>value</c> follow <c>lang</c>.
+        /// Rahu Kaal, Nak Shool, and favours Pushya/Hasta/Ashwini/Anuradha nakshatras for journeys. <c>direction</c>
+        /// (N, NE, E, SE, S, SW, W, NW; full names such as north are also accepted) is the direction of travel: when it
+        /// is sent the weekday's Disha Shool is checked; without it there is no direction check. result.prohibited_by
+        /// lists the classical prohibitions that apply (English factor ids); whenever it is not empty grade is
+        /// <c>inauspicious</c> and is_acceptable is false. Each <c>factors[]</c> item has a stable English <c>id</c>
+        /// (e.g. <c>Tithi</c>, <c>RahuKaal</c>); <c>name</c> and <c>value</c> follow <c>lang</c>.
         /// </summary>
         /// <remarks>
         /// Cost: 20 credits per call. <c>GET /v1/muhurta/yatra</c>. Node.js SDK: <c>muhurta.yatra</c>.
@@ -551,9 +936,13 @@ namespace LifeAstroApi.Resources
 
         /// <summary>
         /// Find auspicious Yatra (travel/journey) muhurta windows — avoids Disha Shool (directional inauspiciousness),
-        /// Rahu Kaal, Nak Shool, and favours Pushya/Hasta/Ashwini/Anuradha nakshatras for journeys. Each
-        /// <c>factors[]</c> item has a stable English <c>id</c> (e.g. <c>Tithi</c>, <c>RahuKaal</c>); <c>name</c> and
-        /// <c>value</c> follow <c>lang</c>. Mapped to your own type.
+        /// Rahu Kaal, Nak Shool, and favours Pushya/Hasta/Ashwini/Anuradha nakshatras for journeys. <c>direction</c>
+        /// (N, NE, E, SE, S, SW, W, NW; full names such as north are also accepted) is the direction of travel: when it
+        /// is sent the weekday's Disha Shool is checked; without it there is no direction check. result.prohibited_by
+        /// lists the classical prohibitions that apply (English factor ids); whenever it is not empty grade is
+        /// <c>inauspicious</c> and is_acceptable is false. Each <c>factors[]</c> item has a stable English <c>id</c>
+        /// (e.g. <c>Tithi</c>, <c>RahuKaal</c>); <c>name</c> and <c>value</c> follow <c>lang</c>. Mapped to your own
+        /// type.
         /// </summary>
         /// <remarks>
         /// Cost: 20 credits per call. <c>GET /v1/muhurta/yatra</c>. Node.js SDK: <c>muhurta.yatra</c>.

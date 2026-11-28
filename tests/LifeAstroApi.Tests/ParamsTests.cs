@@ -480,6 +480,152 @@ namespace LifeAstroApi.Tests
             Assert.Equal("/v1/panchang/basic?date=2027-01-15&lang=gu&lat=19.076&locale=gu&lon=72.8777&tz=Asia%2FKolkata", a.ToString());
         }
 
+        // The "Ashtottari, Jaimini and muhurta rites endpoints (1.1.0)" cases of the Node SDK's client.test.ts.
+
+        private static void AssertArjunUnprefixed(Dictionary<string, string> q)
+        {
+            Assert.Equal("1990-01-15", q["date"]);
+            Assert.Equal("10:30", q["time"]);
+            Assert.Equal("Asia/Kolkata", q["tz"]);
+            Assert.Equal("19.076", q["lat"]);
+            Assert.Equal("72.8777", q["lon"]);
+            Assert.False(q.ContainsKey("birth.date"));
+        }
+
+        [Fact]
+        public async Task AshtottariSendsDepthSchemeAndAntarStart()
+        {
+            Recorded r = await Call(c => c.Dasha.AshtottariAsync(
+                new DashaAshtottariParams(Arjun) { Depth = 2, Scheme = 27, AntarStart = "next_lord", Lang = Lang.Hi }));
+            Assert.Equal("/v1/dasha/ashtottari", r.Path);
+            AssertArjunUnprefixed(r.Query);
+            Assert.Equal("2", r.Query["depth"]);
+            Assert.Equal("27", r.Query["scheme"]);
+            Assert.Equal("next_lord", r.Query["antar_start"]);
+            Assert.Equal("hi", r.Query["lang"]);
+            Assert.Equal("hi", r.Query["locale"]);
+
+            r = await Call(c => c.Dasha.AshtottariCurrentAsync(
+                new DashaAshtottariCurrentParams(Arjun) { At = "2027-01-15T00:00:00Z", Scheme = 28, AntarStart = "maha_lord" }));
+            Assert.Equal("/v1/dasha/ashtottari/current", r.Path);
+            AssertArjunUnprefixed(r.Query);
+            Assert.Equal("2027-01-15T00:00:00Z", r.Query["at"]);
+            Assert.Equal("28", r.Query["scheme"]);
+            Assert.Equal("maha_lord", r.Query["antar_start"]);
+        }
+
+        [Fact]
+        public async Task ArudhaPadasAndUpapadaSendTheLordOptions()
+        {
+            Recorded r = await Call(c => c.Chart.ArudhaPadasAsync(
+                new ChartArudhaPadasParams(Arjun) { Exception = "none", ScorpioLord = "ketu", AquariusLord = "rahu" }));
+            Assert.Equal("/v1/chart/arudha-padas", r.Path);
+            AssertArjunUnprefixed(r.Query);
+            Assert.Equal("none", r.Query["exception"]);
+            Assert.Equal("ketu", r.Query["scorpio_lord"]);
+            Assert.Equal("rahu", r.Query["aquarius_lord"]);
+
+            r = await Call(c => c.Chart.UpapadaAsync(
+                new ChartUpapadaParams(Arjun) { Exception = "none", ScorpioLord = "ketu", AquariusLord = "rahu" }));
+            Assert.Equal("/v1/chart/upapada", r.Path);
+            AssertArjunUnprefixed(r.Query);
+            Assert.Equal("none", r.Query["exception"]);
+            Assert.Equal("ketu", r.Query["scorpio_lord"]);
+            Assert.Equal("rahu", r.Query["aquarius_lord"]);
+        }
+
+        [Fact]
+        public async Task ArgalaSendsHouseAndRuleOptions()
+        {
+            Recorded r = await Call(c => c.Chart.ArgalaAsync(new ChartArgalaParams(Arjun)
+            {
+                House = 7,
+                IncludeEighth = true,
+                NodeReversal = "rahu_ketu",
+                VipareetaMinMalefics = 2,
+            }));
+            Assert.Equal("/v1/chart/argala", r.Path);
+            AssertArjunUnprefixed(r.Query);
+            Assert.Equal("7", r.Query["house"]);
+            Assert.Equal("true", r.Query["include_eighth"]);
+            Assert.Equal("rahu_ketu", r.Query["node_reversal"]);
+            Assert.Equal("2", r.Query["vipareeta_min_malefics"]);
+
+            Dictionary<string, string> q = await Query(c => c.Chart.ArgalaAsync(new ChartArgalaParams(Arjun)));
+            Assert.False(q.ContainsKey("house"));
+            Assert.False(q.ContainsKey("include_eighth"));
+        }
+
+        [Fact]
+        public async Task MuhurtaRitesScoreOneMoment()
+        {
+            var calls = new (string Path, Func<LifeAstroClient, Task> Call)[]
+            {
+                ("/v1/muhurta/vahan", c => c.Muhurta.VahanAsync(new MuhurtaVahanParams(Mumbai) { Date = "2027-01-18", Time = "10:30" })),
+                ("/v1/muhurta/bhoomi-pujan", c => c.Muhurta.BhoomiPujanAsync(new MuhurtaBhoomiPujanParams(Mumbai) { Date = "2027-01-18", Time = "10:30" })),
+                ("/v1/muhurta/upanayan", c => c.Muhurta.UpanayanAsync(new MuhurtaUpanayanParams(Mumbai) { Date = "2027-01-18", Time = "10:30", Lang = Lang.Mr })),
+            };
+            foreach (var (path, call) in calls)
+            {
+                Recorded r = await Call(call);
+                Assert.Equal(path, r.Path);
+                Assert.Equal("2027-01-18", r.Query["date"]);
+                Assert.Equal("10:30", r.Query["time"]);
+                Assert.Equal("19.076", r.Query["lat"]);
+                Assert.Equal("Asia/Kolkata", r.Query["tz"]);
+                Assert.False(r.Query.ContainsKey("start_date"));
+            }
+        }
+
+        [Fact]
+        public async Task SanskarRitesSendTheOptionalBirthDateAndSex()
+        {
+            Recorded r = await Call(c => c.Muhurta.AnnaprashanAsync(
+                new MuhurtaAnnaprashanParams(Mumbai) { Date = "2027-01-18", Time = "10:30", BirthDate = "2026-07-01", Sex = "female" }));
+            Assert.Equal("/v1/muhurta/annaprashan", r.Path);
+            Assert.Equal("2026-07-01", r.Query["birth_date"]);
+            Assert.Equal("female", r.Query["sex"]);
+
+            r = await Call(c => c.Muhurta.VidyarambhAsync(new MuhurtaVidyarambhParams(Mumbai) { Date = "2027-01-18", BirthDate = "2022-03-10" }));
+            Assert.Equal("/v1/muhurta/vidyarambh", r.Path);
+            Assert.Equal("2022-03-10", r.Query["birth_date"]);
+
+            r = await Call(c => c.Muhurta.KarnavedhaAsync(new MuhurtaKarnavedhaParams(Mumbai) { Date = "2027-01-18", BirthDate = "2026-11-01" }));
+            Assert.Equal("/v1/muhurta/karnavedha", r.Path);
+            Assert.Equal("2026-11-01", r.Query["birth_date"]);
+
+            Dictionary<string, string> q = await Query(c => c.Muhurta.AnnaprashanAsync(new MuhurtaAnnaprashanParams(Mumbai) { Date = "2027-01-18" }));
+            Assert.False(q.ContainsKey("birth_date"));
+            Assert.False(q.ContainsKey("sex"));
+        }
+
+        [Fact]
+        public async Task BestTimeSendsTheNewPurposesAndDirection()
+        {
+            Recorded r = await Call(c => c.Muhurta.BestTimeAsync(
+                new MuhurtaBestTimeParams(Mumbai, "2027-01-01", "2027-01-31") { Purpose = "yatra", Direction = "NE" }));
+            Assert.Equal("/v1/muhurta/best-time", r.Path);
+            Assert.Equal("yatra", r.Query["purpose"]);
+            Assert.Equal("NE", r.Query["direction"]);
+            foreach (string purpose in new[] { "vyapar", "vahan", "bhoomi_pujan" })
+            {
+                Dictionary<string, string> q = await Query(c => c.Muhurta.BestTimeAsync(
+                    new MuhurtaBestTimeParams(Mumbai, "2027-01-01", "2027-01-31") { Purpose = purpose }));
+                Assert.Equal(purpose, q["purpose"]);
+                Assert.False(q.ContainsKey("direction"));
+            }
+        }
+
+        [Fact]
+        public async Task YatraSendsDirectionOnlyWhenGiven()
+        {
+            Recorded r = await Call(c => c.Muhurta.YatraAsync(new MuhurtaYatraParams(Mumbai) { Date = "2027-01-18", Time = "07:00", Direction = "W" }));
+            Assert.Equal("/v1/muhurta/yatra", r.Path);
+            Assert.Equal("W", r.Query["direction"]);
+            Dictionary<string, string> q = await Query(c => c.Muhurta.YatraAsync(new MuhurtaYatraParams(Mumbai) { Date = "2027-01-18", Time = "07:00" }));
+            Assert.False(q.ContainsKey("direction"));
+        }
+
         [Fact]
         public void ValueTypesHaveValueEquality()
         {

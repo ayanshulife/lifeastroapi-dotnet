@@ -13,8 +13,11 @@ namespace LifeAstroApi.Params
     /// <remarks>
     /// <para>
     /// Best-scoring muhurta windows in a date range. <c>purpose</c> is <c>general</c> (default), <c>vivah</c>,
-    /// <c>graha_pravesh</c> or <c>naamkaran</c>; <c>topN</c> (1-20, default 5) sets how many windows come back;
-    /// <c>birthDate</c> (YYYY-MM-DD) weights the windows by the person's tara bala and chandra bala. Each
+    /// <c>graha_pravesh</c>, <c>naamkaran</c>, <c>vyapar</c>, <c>yatra</c>, <c>vahan</c> or <c>bhoomi_pujan</c>; each
+    /// purpose uses the scorer of its own muhurta method, and moments under one of its classical prohibitions are never
+    /// returned, so fewer windows (or none) can come back. <c>direction</c> (N, NE, E, SE, S, SW, W, NW) is the
+    /// direction of travel, used only with purpose <c>yatra</c>. <c>topN</c> (1-20, default 5) sets how many windows
+    /// come back; <c>birthDate</c> (YYYY-MM-DD) weights the windows by the person's tara bala and chandra bala. Each
     /// <c>factors[]</c> item has a stable English <c>id</c> (e.g. <c>Tithi</c>, <c>RahuKaal</c>); <c>name</c> and
     /// <c>value</c> follow <c>lang</c>.
     /// </para>
@@ -72,10 +75,13 @@ namespace LifeAstroApi.Params
         /// <summary>Max 31 days from start_date. Wire name <c>end_date</c>.</summary>
         public LifeAstroDate EndDate { get; }
 
-        /// <summary>The <c>purpose</c> value.</summary>
+        /// <summary>
+        /// Event the windows are scored for: general (default), vivah, graha_pravesh, naamkaran, vyapar, yatra, vahan
+        /// or bhoomi_pujan.
+        /// </summary>
         public string? Purpose { get; set; }
 
-        /// <summary>The <c>top_n</c> value. Wire name <c>top_n</c>.</summary>
+        /// <summary>How many windows come back (1-20). Defaults to 5. Wire name <c>top_n</c>.</summary>
         public int? TopN { get; set; }
 
         /// <summary>Optional birth date for Chandra Bala and Tara Bala scoring. Wire name <c>birth_date</c>.</summary>
@@ -83,6 +89,9 @@ namespace LifeAstroApi.Params
 
         /// <summary>Ayanamsa (sidereal offset) to use. Defaults to lahiri.</summary>
         public Ayanamsa? Ayanamsa { get; set; }
+
+        /// <summary>Direction of travel (N, NE, E, SE, S, SW, W, NW), used only with purpose yatra. Optional.</summary>
+        public string? Direction { get; set; }
 
         /// <summary>Response language. Sent as <c>lang</c> and <c>locale</c>.</summary>
         public Lang? Lang { get; set; }
@@ -101,6 +110,7 @@ namespace LifeAstroApi.Params
             query.Put("top_n", TopN);
             query.Put("birth_date", BirthDate);
             query.Put("ayanamsa", Ayanamsa);
+            query.Put("direction", Direction);
             query.Put("lang", Lang);
             query.Put("locale", Lang);
         }

@@ -12,8 +12,10 @@ namespace LifeAstroApi.Params
     /// </summary>
     /// <remarks>
     /// <para>
-    /// Auspicious wedding (vivah) muhurta windows in a date range. Each <c>factors[]</c> item has a stable English
-    /// <c>id</c> (e.g. <c>Tithi</c>, <c>RahuKaal</c>); <c>name</c> and <c>value</c> follow <c>lang</c>.
+    /// Auspicious wedding (vivah) muhurta windows in a date range. result.prohibited_by lists the classical
+    /// prohibitions that apply (English factor ids); whenever it is not empty grade is <c>inauspicious</c> and
+    /// is_acceptable is false. Each <c>factors[]</c> item has a stable English <c>id</c> (e.g. <c>Tithi</c>,
+    /// <c>RahuKaal</c>); <c>name</c> and <c>value</c> follow <c>lang</c>.
     /// </para>
     /// <code>
     /// var p = new MuhurtaVivahParams(new Place(19.076, 72.8777, "Asia/Kolkata")) { Date = "2026-11-20", Time = "12:00" };

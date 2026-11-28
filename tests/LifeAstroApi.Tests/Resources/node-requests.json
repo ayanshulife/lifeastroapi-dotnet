@@ -1,5 +1,5 @@
 {
- "node_sdk_version": "0.13.0",
+ "node_sdk_version": "1.1.0",
  "methods": {
   "ashtakavarga.bhinna": {
    "url": "/v1/ashtakavarga/bhinna/Jupiter?birth.date=1990-01-15&birth.lat=19.076&birth.lon=72.8777&birth.time=10%3A30&birth.tz=Asia%2FKolkata",
@@ -35,6 +35,14 @@
   "calendar.solstices": {
    "url": "/v1/calendar/solstices?year=2026",
    "lang_url": "/v1/calendar/solstices?lang=bn&locale=bn&year=2026"
+  },
+  "chart.argala": {
+   "url": "/v1/chart/argala?date=1990-01-15&lat=19.076&lon=72.8777&time=10%3A30&tz=Asia%2FKolkata",
+   "lang_url": "/v1/chart/argala?date=1990-01-15&lang=bn&lat=19.076&locale=bn&lon=72.8777&time=10%3A30&tz=Asia%2FKolkata"
+  },
+  "chart.arudhaPadas": {
+   "url": "/v1/chart/arudha-padas?date=1990-01-15&lat=19.076&lon=72.8777&time=10%3A30&tz=Asia%2FKolkata",
+   "lang_url": "/v1/chart/arudha-padas?date=1990-01-15&lang=bn&lat=19.076&locale=bn&lon=72.8777&time=10%3A30&tz=Asia%2FKolkata"
   },
   "chart.ascendant": {
    "url": "/v1/chart/ascendant?date=1990-01-15&lat=19.076&lon=72.8777&time=10%3A30&tz=Asia%2FKolkata",
@@ -133,8 +141,20 @@
    "url": "/v1/chart/shadbala/sthana?date=1990-01-15&lat=19.076&lon=72.8777&time=10%3A30&tz=Asia%2FKolkata",
    "lang_url": "/v1/chart/shadbala/sthana?date=1990-01-15&lang=bn&lat=19.076&locale=bn&lon=72.8777&time=10%3A30&tz=Asia%2FKolkata"
   },
+  "chart.upapada": {
+   "url": "/v1/chart/upapada?date=1990-01-15&lat=19.076&lon=72.8777&time=10%3A30&tz=Asia%2FKolkata",
+   "lang_url": "/v1/chart/upapada?date=1990-01-15&lang=bn&lat=19.076&locale=bn&lon=72.8777&time=10%3A30&tz=Asia%2FKolkata"
+  },
   "chart.yogas": {
    "url": "/v1/chart/yogas?date=1990-01-15&lat=19.076&lon=72.8777&time=10%3A30&tz=Asia%2FKolkata"
+  },
+  "dasha.ashtottari": {
+   "url": "/v1/dasha/ashtottari?date=1990-01-15&lat=19.076&lon=72.8777&time=10%3A30&tz=Asia%2FKolkata",
+   "lang_url": "/v1/dasha/ashtottari?date=1990-01-15&lang=bn&lat=19.076&locale=bn&lon=72.8777&time=10%3A30&tz=Asia%2FKolkata"
+  },
+  "dasha.ashtottariCurrent": {
+   "url": "/v1/dasha/ashtottari/current?date=1990-01-15&lat=19.076&lon=72.8777&time=10%3A30&tz=Asia%2FKolkata",
+   "lang_url": "/v1/dasha/ashtottari/current?date=1990-01-15&lang=bn&lat=19.076&locale=bn&lon=72.8777&time=10%3A30&tz=Asia%2FKolkata"
   },
   "dasha.char": {
    "url": "/v1/dasha/char?date=1990-01-15&lat=19.076&lon=72.8777&time=10%3A30&tz=Asia%2FKolkata",
@@ -253,7 +273,7 @@
    "lang_url": "/v1/lalkitab/dasha/current?date=1990-01-15&lang=bn&lat=19.076&locale=bn&lon=72.8777&time=10%3A30&tz=Asia%2FKolkata"
   },
   "meta.ayanamsas": {
-   "url": "/v1/meta/ayanamsas?date=2026-11-21&tz=UTC"
+   "url": "/v1/meta/ayanamsas?date=2026-11-28&tz=UTC"
   },
   "meta.endpoints": {
    "url": "/v1/meta/endpoints"
@@ -335,9 +355,17 @@
    "url": "/v1/milan/vivah-phal?birth.date=1990-01-15&birth.lat=19.076&birth.lon=72.8777&birth.time=10%3A30&birth.tz=Asia%2FKolkata",
    "lang_url": "/v1/milan/vivah-phal?birth.date=1990-01-15&birth.lat=19.076&birth.lon=72.8777&birth.time=10%3A30&birth.tz=Asia%2FKolkata&lang=bn&locale=bn"
   },
+  "muhurta.annaprashan": {
+   "url": "/v1/muhurta/annaprashan?date=2026-11-20&lat=19.076&lon=72.8777&time=12%3A00&tz=Asia%2FKolkata",
+   "lang_url": "/v1/muhurta/annaprashan?date=2026-11-20&lang=bn&lat=19.076&locale=bn&lon=72.8777&time=12%3A00&tz=Asia%2FKolkata"
+  },
   "muhurta.bestTime": {
    "url": "/v1/muhurta/best-time?end_date=2026-11-30&lat=19.076&lon=72.8777&start_date=2026-11-01&tz=Asia%2FKolkata",
    "lang_url": "/v1/muhurta/best-time?end_date=2026-11-30&lang=bn&lat=19.076&locale=bn&lon=72.8777&start_date=2026-11-01&tz=Asia%2FKolkata"
+  },
+  "muhurta.bhoomiPujan": {
+   "url": "/v1/muhurta/bhoomi-pujan?date=2026-11-20&lat=19.076&lon=72.8777&time=12%3A00&tz=Asia%2FKolkata",
+   "lang_url": "/v1/muhurta/bhoomi-pujan?date=2026-11-20&lang=bn&lat=19.076&locale=bn&lon=72.8777&time=12%3A00&tz=Asia%2FKolkata"
   },
   "muhurta.chandraBala": {
    "url": "/v1/muhurta/chandra-bala?birth_moon_sign=3&date=1990-01-15&lat=19.076&lon=72.8777&time=10%3A30&tz=Asia%2FKolkata"
@@ -345,6 +373,10 @@
   "muhurta.grahaPravesh": {
    "url": "/v1/muhurta/graha-pravesh?date=2026-11-20&lat=19.076&lon=72.8777&time=12%3A00&tz=Asia%2FKolkata",
    "lang_url": "/v1/muhurta/graha-pravesh?date=2026-11-20&lang=bn&lat=19.076&locale=bn&lon=72.8777&time=12%3A00&tz=Asia%2FKolkata"
+  },
+  "muhurta.karnavedha": {
+   "url": "/v1/muhurta/karnavedha?date=2026-11-20&lat=19.076&lon=72.8777&time=12%3A00&tz=Asia%2FKolkata",
+   "lang_url": "/v1/muhurta/karnavedha?date=2026-11-20&lang=bn&lat=19.076&locale=bn&lon=72.8777&time=12%3A00&tz=Asia%2FKolkata"
   },
   "muhurta.naamkaran": {
    "url": "/v1/muhurta/naamkaran?birth_date=2026-11-05&date=2026-11-20&lat=19.076&lon=72.8777&time=12%3A00&tz=Asia%2FKolkata",
@@ -364,6 +396,18 @@
   },
   "muhurta.taraBala": {
    "url": "/v1/muhurta/tara-bala?birth_nak=7&date=1990-01-15&lat=19.076&lon=72.8777&time=10%3A30&tz=Asia%2FKolkata"
+  },
+  "muhurta.upanayan": {
+   "url": "/v1/muhurta/upanayan?date=2026-11-20&lat=19.076&lon=72.8777&time=12%3A00&tz=Asia%2FKolkata",
+   "lang_url": "/v1/muhurta/upanayan?date=2026-11-20&lang=bn&lat=19.076&locale=bn&lon=72.8777&time=12%3A00&tz=Asia%2FKolkata"
+  },
+  "muhurta.vahan": {
+   "url": "/v1/muhurta/vahan?date=2026-11-20&lat=19.076&lon=72.8777&time=12%3A00&tz=Asia%2FKolkata",
+   "lang_url": "/v1/muhurta/vahan?date=2026-11-20&lang=bn&lat=19.076&locale=bn&lon=72.8777&time=12%3A00&tz=Asia%2FKolkata"
+  },
+  "muhurta.vidyarambh": {
+   "url": "/v1/muhurta/vidyarambh?date=2026-11-20&lat=19.076&lon=72.8777&time=12%3A00&tz=Asia%2FKolkata",
+   "lang_url": "/v1/muhurta/vidyarambh?date=2026-11-20&lang=bn&lat=19.076&locale=bn&lon=72.8777&time=12%3A00&tz=Asia%2FKolkata"
   },
   "muhurta.vivah": {
    "url": "/v1/muhurta/vivah?date=2026-11-20&lat=19.076&lon=72.8777&time=12%3A00&tz=Asia%2FKolkata",
@@ -828,12 +872,12 @@
    "lang_url": "/v1/transit/ashtakavarga?birth.date=1990-01-15&birth.lat=19.076&birth.lon=72.8777&birth.time=10%3A30&birth.tz=Asia%2FKolkata&date=2026-11-20&lang=bn&locale=bn&time=12%3A00&tz=Asia%2FKolkata"
   },
   "transit.doubleTransit": {
-   "url": "/v1/transit/double-transit?date=2026-11-21&tz=UTC",
-   "lang_url": "/v1/transit/double-transit?date=2026-11-21&lang=bn&locale=bn&tz=UTC"
+   "url": "/v1/transit/double-transit?date=2026-11-28&tz=UTC",
+   "lang_url": "/v1/transit/double-transit?date=2026-11-28&lang=bn&locale=bn&tz=UTC"
   },
   "transit.positions": {
-   "url": "/v1/transit/positions?date=2026-11-21&tz=UTC",
-   "lang_url": "/v1/transit/positions?date=2026-11-21&lang=bn&locale=bn&tz=UTC"
+   "url": "/v1/transit/positions?date=2026-11-28&tz=UTC",
+   "lang_url": "/v1/transit/positions?date=2026-11-28&lang=bn&locale=bn&tz=UTC"
   },
   "transit.sadeSati": {
    "url": "/v1/transit/sade-sati?birth.date=1990-01-15&birth.lat=19.076&birth.lon=72.8777&birth.time=10%3A30&birth.tz=Asia%2FKolkata"

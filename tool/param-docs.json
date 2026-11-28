@@ -67,6 +67,31 @@
   "lon": "Longitude in decimal degrees.",
   "lang": "Language of names, labels and readings in the response: `en` (default), `hi`, `mr`, `gu`, `bn`, `te`, `ta`, `kn`, `ml`, `pa`. `locale` is accepted as an alias."
  },
+ "/v1/chart/argala": {
+  "date": "Birth date (YYYY-MM-DD).",
+  "tz": "Birth place timezone: IANA name (Asia/Kolkata) or UTC offset (+05:30).",
+  "lat": "Birth place latitude in decimal degrees.",
+  "lon": "Birth place longitude in decimal degrees.",
+  "time": "Birth time (HH:MM, 24-hour, local). Defaults to 12:00.",
+  "house": "Return only this house (1 to 12 from the lagna). Leave out for all twelve houses.",
+  "include_eighth": "Also return the 8th-place secondary argala, obstructed from the 6th. Defaults to false.",
+  "node_reversal": "When the places are counted in reverse: ketu (default, a house that holds Ketu), rahu_ketu (a house that holds Rahu or Ketu) or none.",
+  "vipareeta_min_malefics": "Natural malefics needed in the 3rd place for vipareeta argala. Defaults to 3.",
+  "ayanamsa": "Ayanamsa (sidereal offset) to use. Defaults to lahiri.",
+  "lang": "Language of names, labels and readings in the response: `en` (default), `hi`, `mr`, `gu`, `bn`, `te`, `ta`, `kn`, `ml`, `pa`. `locale` is accepted as an alias."
+ },
+ "/v1/chart/arudha-padas": {
+  "date": "Birth date (YYYY-MM-DD).",
+  "tz": "Birth place timezone: IANA name (Asia/Kolkata) or UTC offset (+05:30).",
+  "lat": "Birth place latitude in decimal degrees.",
+  "lon": "Birth place longitude in decimal degrees.",
+  "time": "Birth time (HH:MM, 24-hour, local). Defaults to 12:00.",
+  "exception": "When the pada falls in the bhava or the 7th from it: parashari (default, take the 10th from it) or none.",
+  "scorpio_lord": "Lord taken for Scorpio: mars (default) or ketu.",
+  "aquarius_lord": "Lord taken for Aquarius: saturn (default) or rahu.",
+  "ayanamsa": "Ayanamsa (sidereal offset) to use. Defaults to lahiri.",
+  "lang": "Language of names, labels and readings in the response: `en` (default), `hi`, `mr`, `gu`, `bn`, `te`, `ta`, `kn`, `ml`, `pa`. `locale` is accepted as an alias."
+ },
  "/v1/chart/ascendant": {
   "date": "Birth date (YYYY-MM-DD).",
   "tz": "Birth place timezone: IANA name (Asia/Kolkata) or UTC offset (+05:30).",
@@ -285,6 +310,18 @@
   "ayanamsa": "Ayanamsa (sidereal offset) to use. Defaults to lahiri.",
   "lang": "Language of names, labels and readings in the response: `en` (default), `hi`, `mr`, `gu`, `bn`, `te`, `ta`, `kn`, `ml`, `pa`. `locale` is accepted as an alias."
  },
+ "/v1/chart/upapada": {
+  "date": "Birth date (YYYY-MM-DD).",
+  "tz": "Birth place timezone: IANA name (Asia/Kolkata) or UTC offset (+05:30).",
+  "lat": "Birth place latitude in decimal degrees.",
+  "lon": "Birth place longitude in decimal degrees.",
+  "time": "Birth time (HH:MM, 24-hour, local). Defaults to 12:00.",
+  "exception": "When the pada falls in the bhava or the 7th from it: parashari (default, take the 10th from it) or none.",
+  "scorpio_lord": "Lord taken for Scorpio: mars (default) or ketu.",
+  "aquarius_lord": "Lord taken for Aquarius: saturn (default) or rahu.",
+  "ayanamsa": "Ayanamsa (sidereal offset) to use. Defaults to lahiri.",
+  "lang": "Language of names, labels and readings in the response: `en` (default), `hi`, `mr`, `gu`, `bn`, `te`, `ta`, `kn`, `ml`, `pa`. `locale` is accepted as an alias."
+ },
  "/v1/chart/yogas": {
   "date": "Birth date (YYYY-MM-DD).",
   "tz": "Birth place timezone: IANA name (Asia/Kolkata) or UTC offset (+05:30).",
@@ -294,6 +331,30 @@
   "ayanamsa": "Ayanamsa (sidereal offset) to use. Defaults to lahiri.",
   "all": "false (default): present items, plus items whose pattern formed but was cancelled (present:false, cancelled:true). true: also every catalogue id that is absent, with present:false.",
   "gender": "Optional. Narrows Mahabhagya (male day birth / female night birth) exactly like /v1/vedic/narrative/yogas."
+ },
+ "/v1/dasha/ashtottari": {
+  "date": "Birth date (YYYY-MM-DD).",
+  "tz": "Birth place timezone: IANA name (Asia/Kolkata) or UTC offset (+05:30).",
+  "lat": "Birth place latitude in decimal degrees.",
+  "lon": "Birth place longitude in decimal degrees.",
+  "time": "Birth time (HH:MM, 24-hour, local). Defaults to 12:00.",
+  "depth": "Levels to return: 1 = mahadashas (default), 2 = with antardashas, 3 = with pratyantardashas.",
+  "scheme": "How Saturn's nakshatras are counted: 28 (default, with Abhijit) or 27.",
+  "antar_start": "Lord of the first sub-period: maha_lord (default) or next_lord.",
+  "ayanamsa": "Ayanamsa (sidereal offset) to use. Defaults to lahiri.",
+  "lang": "Language of names, labels and readings in the response: `en` (default), `hi`, `mr`, `gu`, `bn`, `te`, `ta`, `kn`, `ml`, `pa`. `locale` is accepted as an alias."
+ },
+ "/v1/dasha/ashtottari/current": {
+  "date": "Birth date (YYYY-MM-DD).",
+  "tz": "Birth place timezone: IANA name (Asia/Kolkata) or UTC offset (+05:30).",
+  "lat": "Birth place latitude in decimal degrees.",
+  "lon": "Birth place longitude in decimal degrees.",
+  "time": "Birth time (HH:MM, 24-hour, local). Defaults to 12:00.",
+  "at": "UTC moment to find the running dasha for (RFC3339 like 2027-01-15T00:00:00Z, or YYYY-MM-DD). Defaults to now.",
+  "scheme": "How Saturn's nakshatras are counted: 28 (default, with Abhijit) or 27.",
+  "antar_start": "Lord of the first sub-period: maha_lord (default) or next_lord.",
+  "ayanamsa": "Ayanamsa (sidereal offset) to use. Defaults to lahiri.",
+  "lang": "Language of names, labels and readings in the response: `en` (default), `hi`, `mr`, `gu`, `bn`, `te`, `ta`, `kn`, `ml`, `pa`. `locale` is accepted as an alias."
  },
  "/v1/dasha/char": {
   "date": "Birth date (YYYY-MM-DD).",
@@ -694,13 +755,36 @@
   "ayanamsa": "Ayanamsa (sidereal offset) to use. Defaults to lahiri.",
   "lang": "Language of names, labels and readings in the response: `en` (default), `hi`, `mr`, `gu`, `bn`, `te`, `ta`, `kn`, `ml`, `pa`. `locale` is accepted as an alias."
  },
+ "/v1/muhurta/annaprashan": {
+  "date": "Date (YYYY-MM-DD).",
+  "tz": "Timezone: IANA name (Asia/Kolkata) or UTC offset (+05:30).",
+  "lat": "Latitude in decimal degrees.",
+  "lon": "Longitude in decimal degrees.",
+  "time": "Local time (HH:MM, 24-hour). Defaults to 12:00.",
+  "birth_date": "Child's birth date (YYYY-MM-DD). Optional; with sex it adds the age note. It never changes the score.",
+  "sex": "Child's sex for the age note: male or female. Optional.",
+  "ayanamsa": "Ayanamsa (sidereal offset) to use. Defaults to lahiri.",
+  "lang": "Language of names, labels and readings in the response: `en` (default), `hi`, `mr`, `gu`, `bn`, `te`, `ta`, `kn`, `ml`, `pa`. `locale` is accepted as an alias."
+ },
  "/v1/muhurta/best-time": {
   "start_date": "First date of the range (YYYY-MM-DD).",
   "end_date": "Max 31 days from start_date.",
   "tz": "Timezone: IANA name (Asia/Kolkata) or UTC offset (+05:30).",
   "lat": "Latitude in decimal degrees.",
   "lon": "Longitude in decimal degrees.",
+  "purpose": "Event the windows are scored for: general (default), vivah, graha_pravesh, naamkaran, vyapar, yatra, vahan or bhoomi_pujan.",
+  "top_n": "How many windows come back (1-20). Defaults to 5.",
   "birth_date": "Optional birth date for Chandra Bala and Tara Bala scoring.",
+  "ayanamsa": "Ayanamsa (sidereal offset) to use. Defaults to lahiri.",
+  "direction": "Direction of travel (N, NE, E, SE, S, SW, W, NW), used only with purpose yatra. Optional.",
+  "lang": "Language of names, labels and readings in the response: `en` (default), `hi`, `mr`, `gu`, `bn`, `te`, `ta`, `kn`, `ml`, `pa`. `locale` is accepted as an alias."
+ },
+ "/v1/muhurta/bhoomi-pujan": {
+  "date": "Date (YYYY-MM-DD).",
+  "tz": "Timezone: IANA name (Asia/Kolkata) or UTC offset (+05:30).",
+  "lat": "Latitude in decimal degrees.",
+  "lon": "Longitude in decimal degrees.",
+  "time": "Local time (HH:MM, 24-hour). Defaults to 12:00.",
   "ayanamsa": "Ayanamsa (sidereal offset) to use. Defaults to lahiri.",
   "lang": "Language of names, labels and readings in the response: `en` (default), `hi`, `mr`, `gu`, `bn`, `te`, `ta`, `kn`, `ml`, `pa`. `locale` is accepted as an alias."
  },
@@ -718,6 +802,16 @@
   "lat": "Latitude in decimal degrees.",
   "lon": "Longitude in decimal degrees.",
   "time": "Local time (HH:MM, 24-hour). Defaults to 12:00.",
+  "ayanamsa": "Ayanamsa (sidereal offset) to use. Defaults to lahiri.",
+  "lang": "Language of names, labels and readings in the response: `en` (default), `hi`, `mr`, `gu`, `bn`, `te`, `ta`, `kn`, `ml`, `pa`. `locale` is accepted as an alias."
+ },
+ "/v1/muhurta/karnavedha": {
+  "date": "Date (YYYY-MM-DD).",
+  "tz": "Timezone: IANA name (Asia/Kolkata) or UTC offset (+05:30).",
+  "lat": "Latitude in decimal degrees.",
+  "lon": "Longitude in decimal degrees.",
+  "time": "Local time (HH:MM, 24-hour). Defaults to 12:00.",
+  "birth_date": "Child's birth date (YYYY-MM-DD). Optional; adds the age note. It never changes the score.",
   "ayanamsa": "Ayanamsa (sidereal offset) to use. Defaults to lahiri.",
   "lang": "Language of names, labels and readings in the response: `en` (default), `hi`, `mr`, `gu`, `bn`, `te`, `ta`, `kn`, `ml`, `pa`. `locale` is accepted as an alias."
  },
@@ -763,6 +857,34 @@
   "birth_nak": "Natal nakshatra index (0=Ashwini)",
   "ayanamsa": "Ayanamsa (sidereal offset) to use. Defaults to lahiri."
  },
+ "/v1/muhurta/upanayan": {
+  "date": "Date (YYYY-MM-DD).",
+  "tz": "Timezone: IANA name (Asia/Kolkata) or UTC offset (+05:30).",
+  "lat": "Latitude in decimal degrees.",
+  "lon": "Longitude in decimal degrees.",
+  "time": "Local time (HH:MM, 24-hour). Defaults to 12:00.",
+  "ayanamsa": "Ayanamsa (sidereal offset) to use. Defaults to lahiri.",
+  "lang": "Language of names, labels and readings in the response: `en` (default), `hi`, `mr`, `gu`, `bn`, `te`, `ta`, `kn`, `ml`, `pa`. `locale` is accepted as an alias."
+ },
+ "/v1/muhurta/vahan": {
+  "date": "Date (YYYY-MM-DD).",
+  "tz": "Timezone: IANA name (Asia/Kolkata) or UTC offset (+05:30).",
+  "lat": "Latitude in decimal degrees.",
+  "lon": "Longitude in decimal degrees.",
+  "time": "Local time (HH:MM, 24-hour). Defaults to 12:00.",
+  "ayanamsa": "Ayanamsa (sidereal offset) to use. Defaults to lahiri.",
+  "lang": "Language of names, labels and readings in the response: `en` (default), `hi`, `mr`, `gu`, `bn`, `te`, `ta`, `kn`, `ml`, `pa`. `locale` is accepted as an alias."
+ },
+ "/v1/muhurta/vidyarambh": {
+  "date": "Date (YYYY-MM-DD).",
+  "tz": "Timezone: IANA name (Asia/Kolkata) or UTC offset (+05:30).",
+  "lat": "Latitude in decimal degrees.",
+  "lon": "Longitude in decimal degrees.",
+  "time": "Local time (HH:MM, 24-hour). Defaults to 12:00.",
+  "birth_date": "Child's birth date (YYYY-MM-DD). Optional; adds the age note. It never changes the score.",
+  "ayanamsa": "Ayanamsa (sidereal offset) to use. Defaults to lahiri.",
+  "lang": "Language of names, labels and readings in the response: `en` (default), `hi`, `mr`, `gu`, `bn`, `te`, `ta`, `kn`, `ml`, `pa`. `locale` is accepted as an alias."
+ },
  "/v1/muhurta/vivah": {
   "date": "Date (YYYY-MM-DD).",
   "tz": "Timezone: IANA name (Asia/Kolkata) or UTC offset (+05:30).",
@@ -787,7 +909,7 @@
   "lat": "Latitude in decimal degrees.",
   "lon": "Longitude in decimal degrees.",
   "time": "Local time (HH:MM, 24-hour). Defaults to 12:00.",
-  "direction": "Direction of travel (compass point). Default: E.",
+  "direction": "Direction of travel: N, NE, E, SE, S, SW, W or NW (full names such as north or south-east are also accepted). Optional; without it there is no direction check.",
   "ayanamsa": "Ayanamsa (sidereal offset) to use. Defaults to lahiri.",
   "lang": "Language of names, labels and readings in the response: `en` (default), `hi`, `mr`, `gu`, `bn`, `te`, `ta`, `kn`, `ml`, `pa`. `locale` is accepted as an alias."
  },

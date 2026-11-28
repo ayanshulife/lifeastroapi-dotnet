@@ -34,8 +34,8 @@ namespace LifeAstroApi
     /// </remarks>
     public sealed partial class LifeAstroClient : IDisposable
     {
-        /// <summary>SDK version, sent in the <c>User-Agent</c> header (<c>lifeastroapi-dotnet/1.0.0</c>).</summary>
-        public const string Version = "1.0.0";
+        /// <summary>SDK version, sent in the <c>User-Agent</c> header (<c>lifeastroapi-dotnet/1.1.0</c>).</summary>
+        public const string Version = "1.1.0";
 
         /// <summary>The production API.</summary>
         public const string DefaultBaseUrl = "https://api.lifeastroapi.com";

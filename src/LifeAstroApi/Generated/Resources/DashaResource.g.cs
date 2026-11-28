@@ -20,6 +20,112 @@ namespace LifeAstroApi.Resources
             _client = client;
         }
 
+        /// <summary>
+        /// Full Ashtottari dasha tree (10 credits): the 108-year cycle of 8 lords from the Moon's nakshatra at birth,
+        /// with balance at birth and applicability (the Rahu and paksha conditions, information only). depth: 1
+        /// mahadashas (default), 2 with antardashas, 3 with pratyantardashas. scheme: 28 (default, with Abhijit) or 27.
+        /// antarStart: <c>maha_lord</c> (default) or <c>next_lord</c>.
+        /// </summary>
+        /// <remarks>
+        /// Cost: 10 credits per call. <c>GET /v1/dasha/ashtottari</c>. Node.js SDK: <c>dasha.ashtottari</c>.
+        /// </remarks>
+        /// <param name="parameters">The parameters (<see cref="LifeAstroApi.Params.DashaAshtottariParams"/>).</param>
+        /// <param name="options">Per-call timeout, raw body or <c>OnResponse</c> hook; null for none.</param>
+        /// <param name="cancellationToken">Cancels the call.</param>
+        /// <returns>The response JSON.</returns>
+        /// <exception cref="System.ArgumentNullException"><paramref name="parameters"/> is null.</exception>
+        /// <exception cref="LifeAstroApi.LifeAstroException">
+        /// An API error (a subclass per status), or a network failure or timeout.
+        /// </exception>
+        /// <exception cref="System.OperationCanceledException">
+        /// <paramref name="cancellationToken"/> was cancelled.
+        /// </exception>
+        public Task<JsonElement> AshtottariAsync(DashaAshtottariParams parameters, RequestOptions? options = null, CancellationToken cancellationToken = default) =>
+            _client.SendAsync<JsonElement>(Wire.NotNull(parameters, nameof(parameters)), options, cancellationToken);
+
+        /// <summary>
+        /// Full Ashtottari dasha tree (10 credits): the 108-year cycle of 8 lords from the Moon's nakshatra at birth,
+        /// with balance at birth and applicability (the Rahu and paksha conditions, information only). depth: 1
+        /// mahadashas (default), 2 with antardashas, 3 with pratyantardashas. scheme: 28 (default, with Abhijit) or 27.
+        /// antarStart: <c>maha_lord</c> (default) or <c>next_lord</c>. Mapped to your own type.
+        /// </summary>
+        /// <remarks>
+        /// Cost: 10 credits per call. <c>GET /v1/dasha/ashtottari</c>. Node.js SDK: <c>dasha.ashtottari</c>.
+        /// </remarks>
+        /// <typeparam name="T">
+        /// Your type, read with System.Text.Json
+        /// (<see cref="LifeAstroApi.LifeAstroClientOptions.JsonSerializerOptions"/>).
+        /// </typeparam>
+        /// <param name="parameters">The parameters (<see cref="LifeAstroApi.Params.DashaAshtottariParams"/>).</param>
+        /// <param name="options">Per-call timeout, raw body or <c>OnResponse</c> hook; null for none.</param>
+        /// <param name="cancellationToken">Cancels the call.</param>
+        /// <returns>The response mapped to <typeparamref name="T"/>; default for a JSON null.</returns>
+        /// <exception cref="System.ArgumentNullException"><paramref name="parameters"/> is null.</exception>
+        /// <exception cref="LifeAstroApi.LifeAstroException">
+        /// An API error (a subclass per status), a network failure or timeout, or a response that does not map to
+        /// <typeparamref name="T"/> (code <c>invalid_response</c>).
+        /// </exception>
+        /// <exception cref="System.OperationCanceledException">
+        /// <paramref name="cancellationToken"/> was cancelled.
+        /// </exception>
+        public Task<T?> AshtottariAsync<T>(DashaAshtottariParams parameters, RequestOptions? options = null, CancellationToken cancellationToken = default) =>
+            _client.SendAsync<T>(Wire.NotNull(parameters, nameof(parameters)), options, cancellationToken);
+
+        /// <summary>
+        /// Ashtottari mahadasha and antardasha running at <c>at</c> (UTC, RFC 3339 or YYYY-MM-DD; now when left out)
+        /// (10 credits). Same scheme and antarStart options as dasha.ashtottari; a moment outside the chart's 108 years
+        /// is a 400 invalid_param.
+        /// </summary>
+        /// <remarks>
+        /// Cost: 10 credits per call. <c>GET /v1/dasha/ashtottari/current</c>. Node.js SDK:
+        /// <c>dasha.ashtottariCurrent</c>.
+        /// </remarks>
+        /// <param name="parameters">
+        /// The parameters (<see cref="LifeAstroApi.Params.DashaAshtottariCurrentParams"/>).
+        /// </param>
+        /// <param name="options">Per-call timeout, raw body or <c>OnResponse</c> hook; null for none.</param>
+        /// <param name="cancellationToken">Cancels the call.</param>
+        /// <returns>The response JSON.</returns>
+        /// <exception cref="System.ArgumentNullException"><paramref name="parameters"/> is null.</exception>
+        /// <exception cref="LifeAstroApi.LifeAstroException">
+        /// An API error (a subclass per status), or a network failure or timeout.
+        /// </exception>
+        /// <exception cref="System.OperationCanceledException">
+        /// <paramref name="cancellationToken"/> was cancelled.
+        /// </exception>
+        public Task<JsonElement> AshtottariCurrentAsync(DashaAshtottariCurrentParams parameters, RequestOptions? options = null, CancellationToken cancellationToken = default) =>
+            _client.SendAsync<JsonElement>(Wire.NotNull(parameters, nameof(parameters)), options, cancellationToken);
+
+        /// <summary>
+        /// Ashtottari mahadasha and antardasha running at <c>at</c> (UTC, RFC 3339 or YYYY-MM-DD; now when left out)
+        /// (10 credits). Same scheme and antarStart options as dasha.ashtottari; a moment outside the chart's 108 years
+        /// is a 400 invalid_param. Mapped to your own type.
+        /// </summary>
+        /// <remarks>
+        /// Cost: 10 credits per call. <c>GET /v1/dasha/ashtottari/current</c>. Node.js SDK:
+        /// <c>dasha.ashtottariCurrent</c>.
+        /// </remarks>
+        /// <typeparam name="T">
+        /// Your type, read with System.Text.Json
+        /// (<see cref="LifeAstroApi.LifeAstroClientOptions.JsonSerializerOptions"/>).
+        /// </typeparam>
+        /// <param name="parameters">
+        /// The parameters (<see cref="LifeAstroApi.Params.DashaAshtottariCurrentParams"/>).
+        /// </param>
+        /// <param name="options">Per-call timeout, raw body or <c>OnResponse</c> hook; null for none.</param>
+        /// <param name="cancellationToken">Cancels the call.</param>
+        /// <returns>The response mapped to <typeparamref name="T"/>; default for a JSON null.</returns>
+        /// <exception cref="System.ArgumentNullException"><paramref name="parameters"/> is null.</exception>
+        /// <exception cref="LifeAstroApi.LifeAstroException">
+        /// An API error (a subclass per status), a network failure or timeout, or a response that does not map to
+        /// <typeparamref name="T"/> (code <c>invalid_response</c>).
+        /// </exception>
+        /// <exception cref="System.OperationCanceledException">
+        /// <paramref name="cancellationToken"/> was cancelled.
+        /// </exception>
+        public Task<T?> AshtottariCurrentAsync<T>(DashaAshtottariCurrentParams parameters, RequestOptions? options = null, CancellationToken cancellationToken = default) =>
+            _client.SendAsync<T>(Wire.NotNull(parameters, nameof(parameters)), options, cancellationToken);
+
         /// <summary>Sub-periods inside a Char Dasha mahadasha+antardasha sign pair.</summary>
         /// <remarks>
         /// Cost: 10 credits per call. <c>GET /v1/dasha/char/{md}/{ad}</c>. Node.js SDK: <c>dasha.charAntar</c>.

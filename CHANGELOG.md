@@ -1,5 +1,46 @@
 # Changelog
 
+## 1.1.0 (2026-11-28)
+
+New methods in `LifeAstroApi`; `LifeAstroApi.Extensions.DependencyInjection` 1.1.0 has no change of its own. Nothing
+changes for code written against 1.0.0, and there is no new dependency.
+
+- `Dasha.AshtottariAsync` (`DashaAshtottariParams`): the full Ashtottari dasha (108-year cycle of 8 lords) with the
+  balance at birth and whether the chart meets the classical conditions. Options `Depth` (1-3), `Scheme` (`28`
+  default or `27`) and `AntarStart` (`maha_lord` default or `next_lord`). 10 credits.
+- `Dasha.AshtottariCurrentAsync` (`DashaAshtottariCurrentParams`): the Ashtottari mahadasha and antardasha running
+  now, or at `At`. Same options. 10 credits.
+- `Chart.ArudhaPadasAsync` (`ChartArudhaPadasParams`): the twelve arudha padas (A1 to A12, with AL and UL) and how
+  each was counted. Options `Exception` (`parashari` default or `none`), `ScorpioLord` (`mars` or `ketu`) and
+  `AquariusLord` (`saturn` or `rahu`). 10 credits.
+- `Chart.UpapadaAsync` (`ChartUpapadaParams`): the Upapada Lagna with its lord, the planets in it and the planets that
+  aspect it. Same options as `ArudhaPadasAsync`. 10 credits.
+- `Chart.ArgalaAsync` (`ChartArgalaParams`): argala and its obstruction on every house, or on one `House`. Options
+  `IncludeEighth`, `NodeReversal` (`ketu` default, `rahu_ketu` or `none`) and `VipareetaMinMalefics` (default 3).
+  10 credits.
+- `Muhurta.VahanAsync`: score a moment for buying a vehicle or its first use. 20 credits.
+- `Muhurta.BhoomiPujanAsync`: score a moment for ground-breaking or laying a foundation. 20 credits.
+- `Muhurta.UpanayanAsync`: score a moment for the sacred thread ceremony. 20 credits.
+- `Muhurta.AnnaprashanAsync`: score a moment for a child's first solid food. Optional `BirthDate` and `Sex` add a
+  note on the child's age. 20 credits.
+- `Muhurta.VidyarambhAsync`: score a moment for a child's first letters. Optional `BirthDate` adds an age note.
+  20 credits.
+- `Muhurta.KarnavedhaAsync`: score a moment for ear piercing. Optional `BirthDate` adds an age note. 20 credits.
+
+Changes to existing methods (all optional, nothing to change in your code):
+
+- `Muhurta.BestTimeAsync` takes the purposes `vyapar`, `yatra`, `vahan` and `bhoomi_pujan`, next to `general`,
+  `vivah`, `graha_pravesh` and `naamkaran`, and a new `Direction` property (N, NE, E, SE, S, SW, W, NW) on
+  `MuhurtaBestTimeParams` for `yatra`.
+- `MuhurtaYatraParams` has a `Direction` property. When you leave it out, the API no longer assumes travel to the
+  East: there is then no direction check.
+- Every muhurta score now has `prohibited_by` in its `result`: the classical prohibitions that apply, as English ids
+  such as `Bhadra`, `GuruShukraAsta` or `AdhikaMasa`. When the list is not empty, `grade` is `inauspicious` and
+  `is_acceptable` is false. `BestTimeAsync` never returns a window under a prohibition, so it can return fewer
+  windows than `TopN`.
+- `UpanayanAsync`, `AnnaprashanAsync`, `VidyarambhAsync` and `KarnavedhaAsync` also return `result.notes`:
+  information such as the child's age by tradition or a festival on that day. Notes never change the score.
+
 ## 1.0.0 (2026-11-27)
 
 This is the first stable release, of both packages: `LifeAstroApi` and `LifeAstroApi.Extensions.DependencyInjection`.

@@ -34,7 +34,7 @@ A new policy can start "temporarily active" for 7 days (nuget.org does this most
 the first successful publish makes it permanent. If the window passes unused, restart it on the same page.
 
 **Each release:** set the version (step 1 below), update the CHANGELOG, commit and push with GitHub Desktop,
-then create the tag: on github.com → *Releases* → *Draft a new release* → *Choose a tag* → type `v1.0.0` →
+then create the tag: on github.com → *Releases* → *Draft a new release* → *Choose a tag* → type `v1.1.0` →
 *Create new tag on publish*, target `main`, paste the CHANGELOG entry, *Publish release*. The workflow
 (*Actions* tab → *Publish to nuget.org*) refuses a tag that does not match `<Version>` in
 `Directory.Build.props`. Then wait for validation and check (steps 7 and 8 below).
@@ -118,13 +118,13 @@ The manual route below (an API key on your machine) still works, for example if 
    This writes four files:
 
    ```
-   artifacts/LifeAstroApi.1.0.0.nupkg
-   artifacts/LifeAstroApi.1.0.0.snupkg
-   artifacts/LifeAstroApi.Extensions.DependencyInjection.1.0.0.nupkg
-   artifacts/LifeAstroApi.Extensions.DependencyInjection.1.0.0.snupkg
+   artifacts/LifeAstroApi.1.1.0.nupkg
+   artifacts/LifeAstroApi.1.1.0.snupkg
+   artifacts/LifeAstroApi.Extensions.DependencyInjection.1.1.0.nupkg
+   artifacts/LifeAstroApi.Extensions.DependencyInjection.1.1.0.snupkg
    ```
 
-   Optional check: `unzip -l artifacts/LifeAstroApi.1.0.0.nupkg` lists `lib/net8.0/` and
+   Optional check: `unzip -l artifacts/LifeAstroApi.1.1.0.nupkg` lists `lib/net8.0/` and
    `lib/netstandard2.0/` (each with `LifeAstroApi.dll`, which holds the PDF templates too, and `LifeAstroApi.xml`) and `README.md`,
    and no test fixtures.
 
@@ -134,17 +134,17 @@ The manual route below (an API key on your machine) still works, for example if 
    ```bash
    export NUGET_API_KEY='...'      # this terminal only
 
-   dotnet nuget push artifacts/LifeAstroApi.1.0.0.nupkg \
+   dotnet nuget push artifacts/LifeAstroApi.1.1.0.nupkg \
      --api-key "$NUGET_API_KEY" --source https://api.nuget.org/v3/index.json
 
-   dotnet nuget push artifacts/LifeAstroApi.Extensions.DependencyInjection.1.0.0.nupkg \
+   dotnet nuget push artifacts/LifeAstroApi.Extensions.DependencyInjection.1.1.0.nupkg \
      --api-key "$NUGET_API_KEY" --source https://api.nuget.org/v3/index.json
    ```
 
    If a symbol package did not go up with its package, push it on its own:
 
    ```bash
-   dotnet nuget push artifacts/LifeAstroApi.1.0.0.snupkg \
+   dotnet nuget push artifacts/LifeAstroApi.1.1.0.snupkg \
      --api-key "$NUGET_API_KEY" --source https://api.nuget.org/v3/index.json
    ```
 
@@ -160,12 +160,12 @@ The manual route below (an API key on your machine) still works, for example if 
 
    ```bash
    dotnet new console -o /tmp/lifeastro-check && cd /tmp/lifeastro-check
-   dotnet add package LifeAstroApi --version 1.0.0
-   dotnet add package LifeAstroApi.Extensions.DependencyInjection --version 1.0.0
+   dotnet add package LifeAstroApi --version 1.1.0
+   dotnet add package LifeAstroApi.Extensions.DependencyInjection --version 1.1.0
    dotnet build
    ```
 
-9. **Tag** `v1.0.0` and make the GitHub release from the tag (GitHub Desktop or github.com), with the
+9. **Tag** `v1.1.0` and make the GitHub release from the tag (GitHub Desktop or github.com), with the
    CHANGELOG entry as the notes.
 
 A published version cannot be deleted or replaced on nuget.org; it can only be *unlisted* (hidden from search,

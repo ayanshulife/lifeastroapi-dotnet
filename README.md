@@ -6,7 +6,7 @@ festivals, kundli, dasha, kundli matching, muhurat, transits, horoscopes, numero
 readings, reports with branded PDFs, plus Western astrology and tarot. Location-aware, in 10 languages, pay per call.
 Free tier: 1,500 credits a month, no card, [get a key](https://lifeastroapi.com/signup/).
 
-- **All 322 endpoints** as 323 async methods in 23 resource groups (`Chart.NavamsaAsync` is a shortcut for
+- **All 333 endpoints** as 334 async methods in 23 resource groups (`Chart.NavamsaAsync` is a shortcut for
   the D9 chart).
 - **.NET 8, 9 and 10, ASP.NET Core, and .NET Framework 4.6.2+** (the package targets `net8.0` and
   `netstandard2.0`). One dependency: `System.Text.Json`, which .NET 8 already has.
@@ -31,7 +31,7 @@ dotnet add package LifeAstroApi
 ```
 
 ```xml
-<PackageReference Include="LifeAstroApi" Version="1.0.0" />
+<PackageReference Include="LifeAstroApi" Version="1.1.0" />
 ```
 
 In an ASP.NET Core application, add the dependency injection package instead (it brings `LifeAstroApi`
@@ -42,7 +42,7 @@ dotnet add package LifeAstroApi.Extensions.DependencyInjection
 ```
 
 ```xml
-<PackageReference Include="LifeAstroApi.Extensions.DependencyInjection" Version="1.0.0" />
+<PackageReference Include="LifeAstroApi.Extensions.DependencyInjection" Version="1.1.0" />
 ```
 
 ## Quick start
@@ -211,7 +211,9 @@ JsonElement day = await client.Panchang.BasicAsync(new PanchangBasicParams(new P
 - **English only:** `Western`, `Tarot`, `Geo` and `Meta`. `Western.Narrative` takes `Lang` for `En`, `Hi`
   and `Mr`.
 - **Stable keys:** muhurta `factors[]` items carry an English `id` (`Tithi`, `RahuKaal`, …) next to the
-  localized `name`, so match on `id`.
+  localized `name`, so match on `id`. Muhurta `result.prohibited_by` lists the classical prohibitions that
+  apply as English ids (`Bhadra`, `GuruShukraAsta`, `AdhikaMasa`, …); when it is not empty, `grade` is
+  `inauspicious` and `is_acceptable` is false.
 
 ## Resource groups
 
@@ -220,13 +222,13 @@ JsonElement day = await client.Panchang.BasicAsync(new PanchangBasicParams(new P
 | Group | What it covers |
 |-------|----------------|
 | `Panchang` | tithi, nakshatra, yoga, karana, vara, sunrise/sunset, rahu kaal, choghadiya, hora, muhurtas, monthly calendar, `BasicAsync` / `AdvancedAsync` |
-| `Chart` | planets, ascendant, houses, divisional (D1–D60), dignity, aspects, shadbala, ashtakvarga, avakhada, KP (sub lords, ruling planets, significators, 4-step chain), astro details; data bundles `KundliFactsAsync`, `YogasAsync`, `DoshasAsync`, `SensitivityAsync` |
-| `Dasha` | Vimshottari (5 levels), Yogini and Chara (`CharAsync`) |
+| `Chart` | planets, ascendant, houses, divisional (D1–D60), dignity, aspects, shadbala, ashtakvarga, avakhada, KP (sub lords, ruling planets, significators, 4-step chain), astro details; Jaimini `ArudhaPadasAsync`, `UpapadaAsync`, `ArgalaAsync`; data bundles `KundliFactsAsync`, `YogasAsync`, `DoshasAsync`, `SensitivityAsync` |
+| `Dasha` | Vimshottari (5 levels), Yogini, Chara (`CharAsync`) and Ashtottari (`AshtottariAsync`, `AshtottariCurrentAsync`) |
 | `Milan` | Ashtakoota (total, full, per koota), mangal / nadi / shani dosha, navamsa and dasha compatibility, `OverlayAsync`, `SummaryAsync` |
 | `Transit` | positions, sade sati, ashtakavarga, tarabala, vedha, double transit, small panoti, dated `SadeSatiWindowsAsync` and `WindowsAsync` |
 | `Horoscope` | daily, weekly, monthly by rashi |
 | `Numerology` | driver, conductor, soul, personality, destiny, full, advanced, challenges, personal periods |
-| `Muhurta` | vivah, naamkaran, griha pravesh, vyapar, yatra, best time, chandra / tara bala |
+| `Muhurta` | score a moment: vivah, naamkaran, griha pravesh, vyapar, yatra, vahan, bhoomi pujan, upanayan, annaprashan, vidyarambh, karnavedha; best time windows in a date range; chandra / tara bala |
 | `Varshaphal` | annual chart, lord, muntha, mudda dasha, harsha bala, tajika yogas |
 | `Prashna` | horary answer, chart, arudha, significators, KP horary (1–249) |
 | `Eclipses` | solar, lunar, all (date range) |

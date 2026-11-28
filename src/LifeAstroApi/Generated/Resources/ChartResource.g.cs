@@ -24,6 +24,110 @@ namespace LifeAstroApi.Resources
             _client = client;
         }
 
+        /// <summary>
+        /// Argala and virodha argala on every house, or on one <c>house</c> (1-12) (10 credits): argala from the 2nd,
+        /// 4th, 11th and 5th, obstructed from the 12th, 10th, 3rd and 9th, each pair with its grahas and a status
+        /// (none, unobstructed, prevails, obstructed, tied), plus vipareeta argala. includeEighth adds the 8th-place
+        /// argala (default false); nodeReversal: <c>ketu</c> (default), <c>rahu_ketu</c> or <c>none</c>;
+        /// vipareetaMinMalefics: malefics in the 3rd needed for vipareeta argala (default 3). Display names follow
+        /// <c>lang</c>; *_idx, *_id and status values stay the same in every language.
+        /// </summary>
+        /// <remarks>Cost: 10 credits per call. <c>GET /v1/chart/argala</c>. Node.js SDK: <c>chart.argala</c>.</remarks>
+        /// <param name="parameters">The parameters (<see cref="LifeAstroApi.Params.ChartArgalaParams"/>).</param>
+        /// <param name="options">Per-call timeout, raw body or <c>OnResponse</c> hook; null for none.</param>
+        /// <param name="cancellationToken">Cancels the call.</param>
+        /// <returns>The response JSON.</returns>
+        /// <exception cref="System.ArgumentNullException"><paramref name="parameters"/> is null.</exception>
+        /// <exception cref="LifeAstroApi.LifeAstroException">
+        /// An API error (a subclass per status), or a network failure or timeout.
+        /// </exception>
+        /// <exception cref="System.OperationCanceledException">
+        /// <paramref name="cancellationToken"/> was cancelled.
+        /// </exception>
+        public Task<JsonElement> ArgalaAsync(ChartArgalaParams parameters, RequestOptions? options = null, CancellationToken cancellationToken = default) =>
+            _client.SendAsync<JsonElement>(Wire.NotNull(parameters, nameof(parameters)), options, cancellationToken);
+
+        /// <summary>
+        /// Argala and virodha argala on every house, or on one <c>house</c> (1-12) (10 credits): argala from the 2nd,
+        /// 4th, 11th and 5th, obstructed from the 12th, 10th, 3rd and 9th, each pair with its grahas and a status
+        /// (none, unobstructed, prevails, obstructed, tied), plus vipareeta argala. includeEighth adds the 8th-place
+        /// argala (default false); nodeReversal: <c>ketu</c> (default), <c>rahu_ketu</c> or <c>none</c>;
+        /// vipareetaMinMalefics: malefics in the 3rd needed for vipareeta argala (default 3). Display names follow
+        /// <c>lang</c>; *_idx, *_id and status values stay the same in every language. Mapped to your own type.
+        /// </summary>
+        /// <remarks>Cost: 10 credits per call. <c>GET /v1/chart/argala</c>. Node.js SDK: <c>chart.argala</c>.</remarks>
+        /// <typeparam name="T">
+        /// Your type, read with System.Text.Json
+        /// (<see cref="LifeAstroApi.LifeAstroClientOptions.JsonSerializerOptions"/>).
+        /// </typeparam>
+        /// <param name="parameters">The parameters (<see cref="LifeAstroApi.Params.ChartArgalaParams"/>).</param>
+        /// <param name="options">Per-call timeout, raw body or <c>OnResponse</c> hook; null for none.</param>
+        /// <param name="cancellationToken">Cancels the call.</param>
+        /// <returns>The response mapped to <typeparamref name="T"/>; default for a JSON null.</returns>
+        /// <exception cref="System.ArgumentNullException"><paramref name="parameters"/> is null.</exception>
+        /// <exception cref="LifeAstroApi.LifeAstroException">
+        /// An API error (a subclass per status), a network failure or timeout, or a response that does not map to
+        /// <typeparamref name="T"/> (code <c>invalid_response</c>).
+        /// </exception>
+        /// <exception cref="System.OperationCanceledException">
+        /// <paramref name="cancellationToken"/> was cancelled.
+        /// </exception>
+        public Task<T?> ArgalaAsync<T>(ChartArgalaParams parameters, RequestOptions? options = null, CancellationToken cancellationToken = default) =>
+            _client.SendAsync<T>(Wire.NotNull(parameters, nameof(parameters)), options, cancellationToken);
+
+        /// <summary>
+        /// Arudha padas A1 to A12 with the working (10 credits): bhava sign, lord and its sign, count,
+        /// exception_applied and the arudha sign and house (A1 is also AL, A12 also UL). exception: <c>parashari</c>
+        /// (default) or <c>none</c>; scorpioLord: <c>mars</c> (default) or <c>ketu</c>; aquariusLord: <c>saturn</c>
+        /// (default) or <c>rahu</c>. Display names follow <c>lang</c>; *_idx, *_id and status values stay the same in
+        /// every language.
+        /// </summary>
+        /// <remarks>
+        /// Cost: 10 credits per call. <c>GET /v1/chart/arudha-padas</c>. Node.js SDK: <c>chart.arudhaPadas</c>.
+        /// </remarks>
+        /// <param name="parameters">The parameters (<see cref="LifeAstroApi.Params.ChartArudhaPadasParams"/>).</param>
+        /// <param name="options">Per-call timeout, raw body or <c>OnResponse</c> hook; null for none.</param>
+        /// <param name="cancellationToken">Cancels the call.</param>
+        /// <returns>The response JSON.</returns>
+        /// <exception cref="System.ArgumentNullException"><paramref name="parameters"/> is null.</exception>
+        /// <exception cref="LifeAstroApi.LifeAstroException">
+        /// An API error (a subclass per status), or a network failure or timeout.
+        /// </exception>
+        /// <exception cref="System.OperationCanceledException">
+        /// <paramref name="cancellationToken"/> was cancelled.
+        /// </exception>
+        public Task<JsonElement> ArudhaPadasAsync(ChartArudhaPadasParams parameters, RequestOptions? options = null, CancellationToken cancellationToken = default) =>
+            _client.SendAsync<JsonElement>(Wire.NotNull(parameters, nameof(parameters)), options, cancellationToken);
+
+        /// <summary>
+        /// Arudha padas A1 to A12 with the working (10 credits): bhava sign, lord and its sign, count,
+        /// exception_applied and the arudha sign and house (A1 is also AL, A12 also UL). exception: <c>parashari</c>
+        /// (default) or <c>none</c>; scorpioLord: <c>mars</c> (default) or <c>ketu</c>; aquariusLord: <c>saturn</c>
+        /// (default) or <c>rahu</c>. Display names follow <c>lang</c>; *_idx, *_id and status values stay the same in
+        /// every language. Mapped to your own type.
+        /// </summary>
+        /// <remarks>
+        /// Cost: 10 credits per call. <c>GET /v1/chart/arudha-padas</c>. Node.js SDK: <c>chart.arudhaPadas</c>.
+        /// </remarks>
+        /// <typeparam name="T">
+        /// Your type, read with System.Text.Json
+        /// (<see cref="LifeAstroApi.LifeAstroClientOptions.JsonSerializerOptions"/>).
+        /// </typeparam>
+        /// <param name="parameters">The parameters (<see cref="LifeAstroApi.Params.ChartArudhaPadasParams"/>).</param>
+        /// <param name="options">Per-call timeout, raw body or <c>OnResponse</c> hook; null for none.</param>
+        /// <param name="cancellationToken">Cancels the call.</param>
+        /// <returns>The response mapped to <typeparamref name="T"/>; default for a JSON null.</returns>
+        /// <exception cref="System.ArgumentNullException"><paramref name="parameters"/> is null.</exception>
+        /// <exception cref="LifeAstroApi.LifeAstroException">
+        /// An API error (a subclass per status), a network failure or timeout, or a response that does not map to
+        /// <typeparamref name="T"/> (code <c>invalid_response</c>).
+        /// </exception>
+        /// <exception cref="System.OperationCanceledException">
+        /// <paramref name="cancellationToken"/> was cancelled.
+        /// </exception>
+        public Task<T?> ArudhaPadasAsync<T>(ChartArudhaPadasParams parameters, RequestOptions? options = null, CancellationToken cancellationToken = default) =>
+            _client.SendAsync<T>(Wire.NotNull(parameters, nameof(parameters)), options, cancellationToken);
+
         /// <summary>Ascendant (Lagna): sign, degree, nakshatra, pada and lord.</summary>
         /// <remarks>
         /// Cost: 10 credits per call. <c>GET /v1/chart/ascendant</c>. Node.js SDK: <c>chart.ascendant</c>.
@@ -1169,6 +1273,57 @@ namespace LifeAstroApi.Resources
         /// <paramref name="cancellationToken"/> was cancelled.
         /// </exception>
         public Task<T?> ShadbalaComponentAsync<T>(ChartShadbalaComponentParams parameters, RequestOptions? options = null, CancellationToken cancellationToken = default) =>
+            _client.SendAsync<T>(Wire.NotNull(parameters, nameof(parameters)), options, cancellationToken);
+
+        /// <summary>
+        /// Upapada Lagna (UL, the arudha of the 12th house) (10 credits): the A12 working, the UL sign and house, its
+        /// lord with sign, house and place from the UL, occupants, graha drishti and rashi drishti on it. Facts only,
+        /// no judgement. Same options as chart.arudhaPadas. Display names follow <c>lang</c>; *_idx, *_id and status
+        /// values stay the same in every language.
+        /// </summary>
+        /// <remarks>
+        /// Cost: 10 credits per call. <c>GET /v1/chart/upapada</c>. Node.js SDK: <c>chart.upapada</c>.
+        /// </remarks>
+        /// <param name="parameters">The parameters (<see cref="LifeAstroApi.Params.ChartUpapadaParams"/>).</param>
+        /// <param name="options">Per-call timeout, raw body or <c>OnResponse</c> hook; null for none.</param>
+        /// <param name="cancellationToken">Cancels the call.</param>
+        /// <returns>The response JSON.</returns>
+        /// <exception cref="System.ArgumentNullException"><paramref name="parameters"/> is null.</exception>
+        /// <exception cref="LifeAstroApi.LifeAstroException">
+        /// An API error (a subclass per status), or a network failure or timeout.
+        /// </exception>
+        /// <exception cref="System.OperationCanceledException">
+        /// <paramref name="cancellationToken"/> was cancelled.
+        /// </exception>
+        public Task<JsonElement> UpapadaAsync(ChartUpapadaParams parameters, RequestOptions? options = null, CancellationToken cancellationToken = default) =>
+            _client.SendAsync<JsonElement>(Wire.NotNull(parameters, nameof(parameters)), options, cancellationToken);
+
+        /// <summary>
+        /// Upapada Lagna (UL, the arudha of the 12th house) (10 credits): the A12 working, the UL sign and house, its
+        /// lord with sign, house and place from the UL, occupants, graha drishti and rashi drishti on it. Facts only,
+        /// no judgement. Same options as chart.arudhaPadas. Display names follow <c>lang</c>; *_idx, *_id and status
+        /// values stay the same in every language. Mapped to your own type.
+        /// </summary>
+        /// <remarks>
+        /// Cost: 10 credits per call. <c>GET /v1/chart/upapada</c>. Node.js SDK: <c>chart.upapada</c>.
+        /// </remarks>
+        /// <typeparam name="T">
+        /// Your type, read with System.Text.Json
+        /// (<see cref="LifeAstroApi.LifeAstroClientOptions.JsonSerializerOptions"/>).
+        /// </typeparam>
+        /// <param name="parameters">The parameters (<see cref="LifeAstroApi.Params.ChartUpapadaParams"/>).</param>
+        /// <param name="options">Per-call timeout, raw body or <c>OnResponse</c> hook; null for none.</param>
+        /// <param name="cancellationToken">Cancels the call.</param>
+        /// <returns>The response mapped to <typeparamref name="T"/>; default for a JSON null.</returns>
+        /// <exception cref="System.ArgumentNullException"><paramref name="parameters"/> is null.</exception>
+        /// <exception cref="LifeAstroApi.LifeAstroException">
+        /// An API error (a subclass per status), a network failure or timeout, or a response that does not map to
+        /// <typeparamref name="T"/> (code <c>invalid_response</c>).
+        /// </exception>
+        /// <exception cref="System.OperationCanceledException">
+        /// <paramref name="cancellationToken"/> was cancelled.
+        /// </exception>
+        public Task<T?> UpapadaAsync<T>(ChartUpapadaParams parameters, RequestOptions? options = null, CancellationToken cancellationToken = default) =>
             _client.SendAsync<T>(Wire.NotNull(parameters, nameof(parameters)), options, cancellationToken);
 
         /// <summary>

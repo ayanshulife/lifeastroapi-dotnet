@@ -89,6 +89,10 @@ namespace LifeAstroApi.Samples
 
         private static void AddChart(List<Sample> all)
         {
+            all.Add(new Sample("chart.argala", "/v1/chart/argala", "birth", true,
+                (c, lang) => c.Chart.ArgalaAsync(new ChartArgalaParams(new BirthInput("1990-01-15", "10:30", "Asia/Kolkata", 19.076, 72.8777)) { Lang = lang })));
+            all.Add(new Sample("chart.arudhaPadas", "/v1/chart/arudha-padas", "birth", true,
+                (c, lang) => c.Chart.ArudhaPadasAsync(new ChartArudhaPadasParams(new BirthInput("1990-01-15", "10:30", "Asia/Kolkata", 19.076, 72.8777)) { Lang = lang })));
             all.Add(new Sample("chart.ascendant", "/v1/chart/ascendant", "birth", true,
                 (c, lang) => c.Chart.AscendantAsync(new ChartAscendantParams(new BirthInput("1990-01-15", "10:30", "Asia/Kolkata", 19.076, 72.8777)) { Lang = lang })));
             all.Add(new Sample("chart.ashtakvarga", "/v1/chart/ashtakvarga", "birth", true,
@@ -139,12 +143,18 @@ namespace LifeAstroApi.Samples
                 (c, lang) => c.Chart.ShadbalaAsync(new ChartShadbalaParams(new BirthInput("1990-01-15", "10:30", "Asia/Kolkata", 19.076, 72.8777)) { Lang = lang })));
             all.Add(new Sample("chart.shadbalaComponent", "/v1/chart/shadbala/{component}", "birth", true,
                 (c, lang) => c.Chart.ShadbalaComponentAsync(new ChartShadbalaComponentParams("sthana", new BirthInput("1990-01-15", "10:30", "Asia/Kolkata", 19.076, 72.8777)) { Lang = lang })));
+            all.Add(new Sample("chart.upapada", "/v1/chart/upapada", "birth", true,
+                (c, lang) => c.Chart.UpapadaAsync(new ChartUpapadaParams(new BirthInput("1990-01-15", "10:30", "Asia/Kolkata", 19.076, 72.8777)) { Lang = lang })));
             all.Add(new Sample("chart.yogas", "/v1/chart/yogas", "birth", false,
                 (c, lang) => c.Chart.YogasAsync(new ChartYogasParams(new BirthInput("1990-01-15", "10:30", "Asia/Kolkata", 19.076, 72.8777)))));
         }
 
         private static void AddDasha(List<Sample> all)
         {
+            all.Add(new Sample("dasha.ashtottari", "/v1/dasha/ashtottari", "birth", true,
+                (c, lang) => c.Dasha.AshtottariAsync(new DashaAshtottariParams(new BirthInput("1990-01-15", "10:30", "Asia/Kolkata", 19.076, 72.8777)) { Lang = lang })));
+            all.Add(new Sample("dasha.ashtottariCurrent", "/v1/dasha/ashtottari/current", "birth", true,
+                (c, lang) => c.Dasha.AshtottariCurrentAsync(new DashaAshtottariCurrentParams(new BirthInput("1990-01-15", "10:30", "Asia/Kolkata", 19.076, 72.8777)) { Lang = lang })));
             all.Add(new Sample("dasha.charAntar", "/v1/dasha/char/{md}/{ad}", "birth", true,
                 (c, lang) => c.Dasha.CharAntarAsync(new DashaCharAntarParams("leo", "scorpio", new BirthInput("1990-01-15", "10:30", "Asia/Kolkata", 19.076, 72.8777)) { Lang = lang })));
             all.Add(new Sample("dasha.char", "/v1/dasha/char", "birth", true,
@@ -283,12 +293,18 @@ namespace LifeAstroApi.Samples
 
         private static void AddMuhurta(List<Sample> all)
         {
+            all.Add(new Sample("muhurta.annaprashan", "/v1/muhurta/annaprashan", "moment", true,
+                (c, lang) => c.Muhurta.AnnaprashanAsync(new MuhurtaAnnaprashanParams(new Place(19.076, 72.8777, "Asia/Kolkata")) { Date = "2026-11-20", Time = "12:00", Lang = lang })));
             all.Add(new Sample("muhurta.bestTime", "/v1/muhurta/best-time", "muhurta", true,
                 (c, lang) => c.Muhurta.BestTimeAsync(new MuhurtaBestTimeParams(new Place(19.076, 72.8777, "Asia/Kolkata"), "2026-11-01", "2026-11-30") { Lang = lang })));
+            all.Add(new Sample("muhurta.bhoomiPujan", "/v1/muhurta/bhoomi-pujan", "moment", true,
+                (c, lang) => c.Muhurta.BhoomiPujanAsync(new MuhurtaBhoomiPujanParams(new Place(19.076, 72.8777, "Asia/Kolkata")) { Date = "2026-11-20", Time = "12:00", Lang = lang })));
             all.Add(new Sample("muhurta.chandraBala", "/v1/muhurta/chandra-bala", "birth", false,
                 (c, lang) => c.Muhurta.ChandraBalaAsync(new MuhurtaChandraBalaParams(new BirthInput("1990-01-15", "10:30", "Asia/Kolkata", 19.076, 72.8777), 3))));
             all.Add(new Sample("muhurta.grahaPravesh", "/v1/muhurta/graha-pravesh", "moment", true,
                 (c, lang) => c.Muhurta.GrahaPraveshAsync(new MuhurtaGrahaPraveshParams(new Place(19.076, 72.8777, "Asia/Kolkata")) { Date = "2026-11-20", Time = "12:00", Lang = lang })));
+            all.Add(new Sample("muhurta.karnavedha", "/v1/muhurta/karnavedha", "moment", true,
+                (c, lang) => c.Muhurta.KarnavedhaAsync(new MuhurtaKarnavedhaParams(new Place(19.076, 72.8777, "Asia/Kolkata")) { Date = "2026-11-20", Time = "12:00", Lang = lang })));
             all.Add(new Sample("muhurta.naamkaran", "/v1/muhurta/naamkaran", "moment", true,
                 (c, lang) => c.Muhurta.NaamkaranAsync(new MuhurtaNaamkaranParams(new Place(19.076, 72.8777, "Asia/Kolkata"), "2026-11-05") { Date = "2026-11-20", Time = "12:00", Lang = lang })));
             all.Add(new Sample("muhurta.panchakaRahita", "/v1/muhurta/panchaka-rahita", "moment", true,
@@ -299,6 +315,12 @@ namespace LifeAstroApi.Samples
                 (c, lang) => c.Muhurta.ShubhaYogaAsync(new MuhurtaShubhaYogaParams(new Place(19.076, 72.8777, "Asia/Kolkata")) { Date = "2026-11-20", Time = "12:00", Lang = lang })));
             all.Add(new Sample("muhurta.taraBala", "/v1/muhurta/tara-bala", "birth", false,
                 (c, lang) => c.Muhurta.TaraBalaAsync(new MuhurtaTaraBalaParams(new BirthInput("1990-01-15", "10:30", "Asia/Kolkata", 19.076, 72.8777), 7))));
+            all.Add(new Sample("muhurta.upanayan", "/v1/muhurta/upanayan", "moment", true,
+                (c, lang) => c.Muhurta.UpanayanAsync(new MuhurtaUpanayanParams(new Place(19.076, 72.8777, "Asia/Kolkata")) { Date = "2026-11-20", Time = "12:00", Lang = lang })));
+            all.Add(new Sample("muhurta.vahan", "/v1/muhurta/vahan", "moment", true,
+                (c, lang) => c.Muhurta.VahanAsync(new MuhurtaVahanParams(new Place(19.076, 72.8777, "Asia/Kolkata")) { Date = "2026-11-20", Time = "12:00", Lang = lang })));
+            all.Add(new Sample("muhurta.vidyarambh", "/v1/muhurta/vidyarambh", "moment", true,
+                (c, lang) => c.Muhurta.VidyarambhAsync(new MuhurtaVidyarambhParams(new Place(19.076, 72.8777, "Asia/Kolkata")) { Date = "2026-11-20", Time = "12:00", Lang = lang })));
             all.Add(new Sample("muhurta.vivah", "/v1/muhurta/vivah", "moment", true,
                 (c, lang) => c.Muhurta.VivahAsync(new MuhurtaVivahParams(new Place(19.076, 72.8777, "Asia/Kolkata")) { Date = "2026-11-20", Time = "12:00", Lang = lang })));
             all.Add(new Sample("muhurta.vyapar", "/v1/muhurta/vyapar", "moment", true,

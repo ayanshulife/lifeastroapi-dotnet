@@ -73,7 +73,7 @@ namespace LifeAstroApi.Tests
     }
 
     /// <summary>
-    /// The client has one method per entry of the Node SDK's manifest (323), reachable as
+    /// The client has one method per entry of the Node SDK's manifest (334), reachable as
     /// <c>client.Group.MethodAsync(params)</c>, with a generic overload each.
     /// </summary>
     public class ManifestTests
@@ -89,9 +89,9 @@ namespace LifeAstroApi.Tests
         public void OneMethodPerNodeManifestEntry()
         {
             using JsonDocument manifest = Manifest();
-            Assert.Equal(323, manifest.RootElement.GetProperty("node_entries").GetInt32());
-            Assert.Equal(323, manifest.RootElement.GetProperty("methods").GetArrayLength());
-            Assert.Equal(323, Samples.Samples.All().Count);
+            Assert.Equal(334, manifest.RootElement.GetProperty("node_entries").GetInt32());
+            Assert.Equal(334, manifest.RootElement.GetProperty("methods").GetArrayLength());
+            Assert.Equal(334, Samples.Samples.All().Count);
         }
 
         [Fact]
@@ -119,7 +119,7 @@ namespace LifeAstroApi.Tests
         }
 
         [Fact]
-        public void TheResourceClassesHaveExactly323Methods()
+        public void TheResourceClassesHaveExactly334Methods()
         {
             var names = new HashSet<string>();
             foreach (Type group in ResourceTypes())
@@ -134,7 +134,7 @@ namespace LifeAstroApi.Tests
                 }
             }
 
-            Assert.Equal(323, names.Count);
+            Assert.Equal(334, names.Count);
         }
 
         [Fact]
